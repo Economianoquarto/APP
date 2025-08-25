@@ -1,0 +1,408 @@
+[
+  {
+    "objectID": "posts/modelo-classico-regressao/index.html",
+    "href": "posts/modelo-classico-regressao/index.html",
+    "title": "Modelo Clássico de Regressão MCRL",
+    "section": "",
+    "text": "Equação do Modelo: O modelo é definido como \\(y_i = f(x_{i1}, x_{i2}, ..., x_{ik}) + \\epsilon_i\\), que pode ser expresso de forma linear como \\(y_i = \\beta_1 x_{i1} + \\beta_2 x_{i2} + ... + \\beta_k x_{ik} + \\epsilon_i\\), para \\(i = 1, ..., n\\).\nRepresentação Matricial: O modelo também pode ser representado em forma matricial como \\(y = X\\beta + \\epsilon\\), onde: \\(y = \\begin{pmatrix} y_1 \\\\ y_2 \\\\ \\vdots \\\\ y_n \\end{pmatrix}\\) é o vetor das variáveis dependentes (n x 1). \\(X = \\begin{pmatrix} 1 & x_{12} & \\cdots & x_{1k} \\\\ 1 & x_{22} & \\cdots & x_{2k} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ 1 & x_{n2} & \\cdots & x_{nk} \\end{pmatrix}\\) é a matriz das variáveis independentes (n x k+1), assumindo \\(x_{i1} = 1\\) para o intercepto. \\(\\beta = \\begin{pmatrix} \\beta_1 \\\\ \\beta_2 \\\\ \\vdots \\\\ \\beta_k \\end{pmatrix}\\) é o vetor dos parâmetros (k+1 x 1). \\(\\epsilon = \\begin{pmatrix} \\epsilon_1 \\\\ \\epsilon_2 \\\\ \\vdots \\\\ \\epsilon_n \\end{pmatrix}\\) é o vetor dos erros (n x 1).\nHipóteses: O modelo clássico de regressão linear múltipla se baseia nas seguintes hipóteses: H1) Linearidade: A relação entre a variável dependente e as variáveis independentes é linear nos parâmetros. H2) Identificação (posto completo): A matriz das variáveis independentes \\(X\\) tem posto completo, ou seja, \\(posto(X) = K\\) (onde \\(K = k+1\\)). Isso garante que as colunas de \\(X\\) são linearmente independentes, permitindo a identificação única dos parâmetros. H3) Valor esperado dos erros é nulo: O valor esperado do vetor de erros é zero, \\(E[\\epsilon] = \\begin{pmatrix} E[\\epsilon_1] \\\\ \\vdots \\\\ E[\\epsilon_n] \\end{pmatrix} = \\begin{pmatrix} 0 \\\\ \\vdots \\\\ 0 \\end{pmatrix}\\).\nImplicações da H3 (Valor Esperado dos Erros é Nulo): 1. Se a média condicional do erro dado \\(X\\) é zero (\\(E[\\epsilon|X] = 0\\)), então a média não condicional do erro também é zero (\\(E[\\epsilon] = E[E[\\epsilon|X]] = E = 0\\)). 2. A hipótese \\(E[\\epsilon|X] = 0\\) implica que \\(E[y|X] = E[X\\beta + \\epsilon|X] = E[X\\beta|X] + E[\\epsilon|X] = X\\beta + 0 = X\\beta\\). Portanto, \\(E[y|X] - X\\beta = 0\\), o que implica \\(E[y - X\\beta|X] = E[\\epsilon|X] = 0\\). 3. Além disso, se \\(\\epsilon\\) e \\(X\\) são independentes, então \\(E[X'\\epsilon] = E[X']E[\\epsilon] = E[X'] \\cdot 0 = 0\\). Consequentemente, a covariância entre \\(X\\) e \\(\\epsilon\\) é \\(Cov(X, \\epsilon) = E[X\\epsilon'] - E[X]E[\\epsilon'] = E[X\\epsilon'] - E[X] \\cdot 0 = E[X\\epsilon'] = (E[X'\\epsilon])' = 0' = 0\\)."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "Post With Code",
+    "section": "",
+    "text": "1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "Since this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Avaliação de Política Públicas",
+    "section": "",
+    "text": "Dados de painel: \\(\\{y_{it}, x_{it}: i = 1, ..., N; t = 1, ..., T\\}\\)\n\n\\(i\\): índice de indivíduos (cross-section)\n\\(t\\): índice temporal\n\n\\(N\\): número de indivíduos\n\\(T\\): número de períodos\n\n\n\n\nPara cada indivíduo \\(i\\):\n\\[\\mathbf{y}_i = \\begin{pmatrix} y_{i1} \\\\ y_{i2} \\\\ \\vdots \\\\ y_{iT} \\end{pmatrix}, \\quad \\mathbf{X}_i = \\begin{pmatrix} x_{i1}' \\\\ x_{i2}' \\\\ \\vdots \\\\ x_{iT}' \\end{pmatrix}, \\quad \\boldsymbol{\\varepsilon}_i = \\begin{pmatrix} \\varepsilon_{i1} \\\\ \\varepsilon_{i2} \\\\ \\vdots \\\\ \\varepsilon_{iT} \\end{pmatrix}\\]\nDados empilhados (stacked):\n\\[\\mathbf{y} = \\begin{pmatrix} \\mathbf{y}_1 \\\\ \\mathbf{y}_2 \\\\ \\vdots \\\\ \\mathbf{y}_N \\end{pmatrix}_{NT \\times 1}, \\quad \\mathbf{X} = \\begin{pmatrix} \\mathbf{X}_1 \\\\ \\mathbf{X}_2 \\\\ \\vdots \\\\ \\mathbf{X}_N \\end{pmatrix}_{NT \\times K}\\]"
+  },
+  {
+    "objectID": "index.html#definição-e-características-dos-dados-de-painel",
+    "href": "index.html#definição-e-características-dos-dados-de-painel",
+    "title": "Avaliação de Política Públicas",
+    "section": "Definição e Características dos Dados de Painel",
+    "text": "Definição e Características dos Dados de Painel\nOs dados de painel constituem uma estrutura de dados que combina as dimensões cross-section e temporal, fornecendo observações repetidas das mesmas unidades (indivíduos, empresas, países, etc.) ao longo de múltiplos períodos de tempo. Formalmente, podemos representar um conjunto de dados de painel como \\(\\{y_{it}, x_{it}: i = 1, ..., N; t = 1, ..., T\\}\\), onde \\(i\\) indexa as unidades cross-section e \\(t\\) indexa os períodos temporais.\nEsta estrutura bidimensional distingue os dados de painel tanto de dados puramente cross-section (observações de múltiplas unidades em um único ponto no tempo) quanto de séries temporais (observações de uma única unidade ao longo de múltiplos períodos). A natureza híbrida dos dados de painel permite explorar tanto a variação entre unidades quanto a variação temporal dentro de cada unidade, oferecendo uma riqueza informacional única para a análise empírica.\nUma distinção importante na literatura de dados de painel é entre painéis curtos e painéis longos. Painéis curtos caracterizam-se por um grande número de unidades cross-section (\\(N\\) grande) observadas por um número relativamente pequeno de períodos (\\(T\\) pequeno), tipicamente \\(T < 10\\). Este é o caso mais comum em aplicações microeconométricas, onde podemos ter milhares de indivíduos ou empresas observados por alguns anos. Por outro lado, painéis longos envolvem um número menor de unidades observadas por muitos períodos, como no caso de estudos macroeconômicos com poucos países observados por décadas.\nO foco deste post está nos painéis curtos, que apresentam desafios metodológicos específicos relacionados ao tratamento da heterogeneidade individual quando o número de períodos é limitado. Neste contexto, os efeitos individuais não podem ser estimados consistentemente, exigindo abordagens alternativas para lidar com a heterogeneidade não observada."
+  },
+  {
+    "objectID": "index.html#as-três-principais-vantagens-dos-dados-de-painel",
+    "href": "index.html#as-três-principais-vantagens-dos-dados-de-painel",
+    "title": "Avaliação de Política Públicas",
+    "section": "As Três Principais Vantagens dos Dados de Painel",
+    "text": "As Três Principais Vantagens dos Dados de Painel\n\nMaior Precisão na Estimação\nA primeira e mais imediata vantagem dos dados de painel é o aumento substancial no tamanho da amostra. Ao combinar observações cross-section e temporais, obtemos \\(N \\times T\\) observações em vez de apenas \\(N\\) (no caso de dados cross-section) ou \\(T\\) (no caso de séries temporais). Este aumento no número de observações geralmente resulta em maior precisão na estimação dos parâmetros, refletida em erros padrão menores e intervalos de confiança mais estreitos.\nNo entanto, é crucial reconhecer que o ganho de precisão não é automático nem proporcional ao aumento no número de observações. A presença de correlação temporal nos erros para uma mesma unidade implica que as \\(T\\) observações de cada indivíduo não fornecem \\(T\\) vezes mais informação do que uma única observação. A correlação positiva entre os erros ao longo do tempo reduz o conteúdo informacional efetivo dos dados, e os erros padrão usuais do OLS podem subestimar drasticamente a verdadeira incerteza dos estimadores.\nEsta questão é particularmente relevante quando consideramos que características não observadas dos indivíduos tendem a persistir ao longo do tempo. Por exemplo, se um modelo subestima consistentemente a renda de um indivíduo em um ano devido a características não observadas (como habilidade ou motivação), é provável que continue subestimando a renda desse mesmo indivíduo em anos subsequentes. Esta persistência cria correlação positiva nos resíduos, violando o pressuposto de independência do OLS clássico.\n\n\nControle da Heterogeneidade Individual Não Observada\nA segunda vantagem fundamental dos dados de painel é a possibilidade de controlar heterogeneidade individual não observada que pode estar correlacionada com as variáveis explicativas. Esta é talvez a contribuição mais importante dos métodos de painel para a identificação causal em econometria.\nEm análises cross-section, a presença de variáveis omitidas correlacionadas tanto com a variável dependente quanto com as variáveis explicativas resulta em viés de variáveis omitidas. Por exemplo, ao estimar o retorno à educação usando dados cross-section, a habilidade individual não observada pode estar positivamente correlacionada tanto com educação quanto com renda, levando a uma superestimação do efeito causal da educação.\nOs dados de painel oferecem uma solução elegante para este problema quando a heterogeneidade não observada é aditiva e invariante no tempo. Se as características não observadas que afetam a variável dependente permanecem constantes ao longo do período de observação, podemos “diferenciá-las” usando transformações apropriadas dos dados. Esta capacidade de controlar heterogeneidade não observada representa uma alternativa poderosa aos métodos de variáveis instrumentais, que frequentemente enfrentam dificuldades na identificação de instrumentos válidos.\nO modelo de efeitos fixos explora precisamente esta ideia, permitindo que cada unidade tenha seu próprio intercepto específico que captura todas as características não observadas invariantes no tempo. Desta forma, a identificação dos parâmetros de interesse baseia-se exclusivamente na variação temporal dentro de cada unidade, eliminando o viés decorrente de características não observadas constantes.\n\n\nAnálise da Dinâmica Comportamental\nA terceira vantagem dos dados de painel é a capacidade de analisar a dinâmica comportamental de forma mais rica do que seria possível com dados cross-section ou séries temporais isoladamente. Esta dimensão temporal permite investigar questões fundamentais sobre persistência, mobilidade e heterogeneidade na dinâmica individual.\nConsidere, por exemplo, a análise da pobreza. Dados cross-section podem revelar que 20% da população está em situação de pobreza em um determinado ano, mas não conseguem distinguir entre diferentes cenários dinâmicos: os mesmos 20% permanecem pobres ano após ano, ou existe mobilidade significativa com diferentes indivíduos entrando e saindo da pobreza? Esta distinção é crucial para o desenho de políticas públicas efetivas.\nSimilarmente, na análise do desemprego, dados de painel permitem distinguir entre desemprego friccional (períodos curtos de desemprego durante transições entre empregos) e desemprego estrutural (períodos longos de desemprego concentrados em indivíduos específicos). Esta distinção tem implicações importantes tanto para a compreensão teórica dos mercados de trabalho quanto para o desenho de políticas de emprego.\nA dimensão temporal dos dados de painel também permite investigar questões sobre dependência de estado (state dependence) versus heterogeneidade não observada. Por exemplo, a alta correlação serial nos rendimentos individuais pode decorrer de características individuais persistentes (como habilidade) ou de verdadeira dependência temporal (onde rendimentos passados influenciam rendimentos futuros). Modelos de painel dinâmicos, embora mais complexos, podem ajudar a distinguir entre essas duas fontes de persistência."
+  },
+  {
+    "objectID": "index.html#o-modelo-geral-e-a-necessidade-de-restrições",
+    "href": "index.html#o-modelo-geral-e-a-necessidade-de-restrições",
+    "title": "Avaliação de Política Públicas",
+    "section": "O Modelo Geral e a Necessidade de Restrições",
+    "text": "O Modelo Geral e a Necessidade de Restrições\nA análise de dados de painel inicia-se com um modelo muito geral que permite que tanto o intercepto quanto os coeficientes angulares variem entre indivíduos e ao longo do tempo:\n\\[y_{it} = \\alpha_{it} + x_{it}'\\beta_{it} + u_{it}, \\quad i = 1, ..., N, \\quad t = 1, ..., T\\]\nonde \\(y_{it}\\) é a variável dependente escalar, \\(x_{it}\\) é um vetor \\(K \\times 1\\) de variáveis independentes, \\(u_{it}\\) é o termo de erro, \\(i\\) indexa indivíduos e \\(t\\) indexa tempo.\nEste modelo, embora teoricamente atrativo por sua flexibilidade, é impraticável na prática. Com \\(N\\) indivíduos, \\(T\\) períodos e \\(K\\) variáveis explicativas, teríamos \\(NT(K+1)\\) parâmetros para estimar com apenas \\(NT\\) observações. Claramente, este modelo é não identificado e requer restrições adicionais para tornar-se estimável.\nA questão central torna-se então: quais restrições devemos impor? A resposta a esta pergunta define os diferentes modelos de painel e suas propriedades estatísticas. As restrições mais comumente impostas referem-se à forma como os parâmetros variam (ou não variam) entre indivíduos e ao longo do tempo, e à natureza da correlação entre os efeitos individuais e as variáveis explicativas."
+  },
+  {
+    "objectID": "index.html#a-questão-fundamental-como-tratar-a-heterogeneidade-individual",
+    "href": "index.html#a-questão-fundamental-como-tratar-a-heterogeneidade-individual",
+    "title": "Avaliação de Política Públicas",
+    "section": "A Questão Fundamental: Como Tratar a Heterogeneidade Individual?",
+    "text": "A Questão Fundamental: Como Tratar a Heterogeneidade Individual?\nO cerne do debate sobre modelos de painel reside no tratamento da heterogeneidade individual não observada. Esta heterogeneidade manifesta-se através de características específicas de cada unidade de observação que afetam a variável dependente mas não são diretamente observáveis ou mensuráveis.\nEm termos práticos, consideremos um modelo de determinação de salários. Características como habilidade, motivação, conexões sociais, ou preferências por trabalho podem afetar significativamente os salários, mas são difíceis de medir diretamente. Se essas características não observadas estão correlacionadas com variáveis explicativas observáveis (como educação ou experiência), sua omissão do modelo resultará em estimadores viesados.\nA literatura de dados de painel oferece três abordagens principais para lidar com esta heterogeneidade, cada uma baseada em pressupostos diferentes sobre a natureza e comportamento dos efeitos individuais não observados."
+  },
+  {
+    "objectID": "index.html#os-três-modelos-principais-uma-visão-geral",
+    "href": "index.html#os-três-modelos-principais-uma-visão-geral",
+    "title": "Avaliação de Política Públicas",
+    "section": "Os Três Modelos Principais: Uma Visão Geral",
+    "text": "Os Três Modelos Principais: Uma Visão Geral\n\nModelo Pooled (Agrupado): A Abordagem da Homogeneidade\nO modelo pooled representa a abordagem mais restritiva, assumindo homogeneidade completa entre as unidades de observação. Este modelo trata os dados de painel como se fossem uma grande amostra cross-section, ignorando a estrutura temporal e a identidade específica de cada unidade.\nFormalmente, o modelo pooled especifica:\n\\[y_{it} = \\alpha + x_{it}'\\beta + u_{it}\\]\nonde \\(\\alpha\\) e \\(\\beta\\) são constantes para todos os indivíduos e períodos. Este modelo assume implicitamente que não existe heterogeneidade individual relevante, ou que qualquer heterogeneidade existente é não correlacionada com as variáveis explicativas e pode ser tratada como parte do termo de erro aleatório.\n\n\nModelo de Efeitos Aleatórios: Heterogeneidade Não Correlacionada\nO modelo de efeitos aleatórios reconhece a existência de heterogeneidade individual, mas assume que esta heterogeneidade é distribuída independentemente das variáveis explicativas. Este modelo pode ser visto como uma extensão do modelo pooled que permite interceptos específicos para cada indivíduo.\nA especificação do modelo de efeitos aleatórios é:\n\\[y_{it} = \\alpha + x_{it}'\\beta + (\\alpha_i + \\varepsilon_{it})\\]\nonde \\(\\alpha_i\\) representa o efeito aleatório individual e \\(\\varepsilon_{it}\\) é o erro idiossincrático. O pressuposto fundamental é que \\(\\alpha_i\\) é independente de \\(x_{it}\\) para todos os períodos, o que permite a estimação consistente de todos os parâmetros, incluindo coeficientes de variáveis invariantes no tempo.\n\n\nModelo de Efeitos Fixos: Heterogeneidade Correlacionada\nO modelo de efeitos fixos adota a abordagem mais flexível, permitindo que a heterogeneidade individual seja correlacionada com as variáveis explicativas. Este modelo não faz pressupostos sobre a distribuição dos efeitos individuais ou sua correlação com os regressores.\nA especificação é:\n\\[y_{it} = \\alpha_i + x_{it}'\\beta + \\varepsilon_{it}\\]\nonde \\(\\alpha_i\\) são parâmetros fixos específicos para cada indivíduo, que podem ser correlacionados com \\(x_{it}\\). Esta flexibilidade tem um custo: apenas os coeficientes de variáveis que variam no tempo podem ser identificados, pois os efeitos fixos absorvem toda a variação cross-section."
+  },
+  {
+    "objectID": "index.html#por-que-a-escolha-importa-implicações-para-consistência-e-interpretação",
+    "href": "index.html#por-que-a-escolha-importa-implicações-para-consistência-e-interpretação",
+    "title": "Avaliação de Política Públicas",
+    "section": "Por Que a Escolha Importa: Implicações para Consistência e Interpretação",
+    "text": "Por Que a Escolha Importa: Implicações para Consistência e Interpretação\nA escolha entre estes três modelos não é meramente uma questão de preferência metodológica - ela tem implicações fundamentais para a consistência dos estimadores e a interpretação dos resultados. Um estimador é consistente sob um modelo específico se converge em probabilidade para o verdadeiro valor do parâmetro quando o tamanho da amostra aumenta, assumindo que o modelo está corretamente especificado.\nA Tabela 1 resume as propriedades de consistência dos principais estimadores sob cada especificação de modelo. Esta tabela revela uma hierarquia clara: estimadores que são consistentes sob pressupostos mais restritivos (como o modelo pooled) podem tornar-se inconsistentes quando esses pressupostos são violados, enquanto estimadores robustos a pressupostos mais fracos (como o estimador within para efeitos fixos) mantêm consistência mesmo sob especificações mais gerais.\n\n\nTable 1: Consistência dos Estimadores por Modelo Assumido\n\n\n\n\n\n\n\n\nEstimador\nModelo Pooled\nEfeitos Aleatórios\nEfeitos Fixos\n\n\n\n\nPooled OLS\nConsistente\nConsistente\nInconsistente\n\n\nBetween\nConsistente\nConsistente\nInconsistente\n\n\nWithin (Efeitos Fixos)\nConsistente\nConsistente\nConsistente\n\n\nPrimeiras Diferenças\nConsistente\nConsistente\nConsistente\n\n\nEfeitos Aleatórios (GLS)\nConsistente\nConsistente\nInconsistente\n\n\n\n\nEsta tabela ilustra um princípio fundamental da econometria: a robustez tem um preço. Estimadores mais robustos (como within e primeiras diferenças) mantêm consistência sob pressupostos mais fracos, mas podem ser menos eficientes quando os pressupostos mais restritivos são válidos. Por outro lado, estimadores mais eficientes sob pressupostos específicos (como pooled OLS ou efeitos aleatórios) podem produzir resultados severamente viesados quando esses pressupostos são violados.\nA implicação prática é clara: a escolha do modelo deve ser baseada em uma avaliação cuidadosa da plausibilidade dos pressupostos subjacentes no contexto específico da aplicação. Em muitas aplicações microeconométricas, a presença de heterogeneidade individual correlacionada com os regressores é altamente plausível, favorecendo o uso de modelos de efeitos fixos. Em outras situações, particularmente quando o interesse recai sobre efeitos de variáveis invariantes no tempo, o modelo de efeitos aleatórios pode ser mais apropriado, desde que seus pressupostos sejam defensáveis."
+  },
+  {
+    "objectID": "index.html#formulação-matemática-e-pressupostos-fundamentais",
+    "href": "index.html#formulação-matemática-e-pressupostos-fundamentais",
+    "title": "Avaliação de Política Públicas",
+    "section": "Formulação Matemática e Pressupostos Fundamentais",
+    "text": "Formulação Matemática e Pressupostos Fundamentais\nO modelo Pooled OLS representa a extensão mais direta dos métodos de regressão linear clássica para dados de painel. Sua formulação matemática é deceptivamente simples:\n\\[y_{it} = \\alpha + x_{it}'\\beta + u_{it}, \\quad i = 1, ..., N, \\quad t = 1, ..., T\\]\nonde \\(y_{it}\\) é a variável dependente para o indivíduo \\(i\\) no período \\(t\\), \\(x_{it}\\) é um vetor \\(K \\times 1\\) de variáveis explicativas, \\(\\alpha\\) é o intercepto comum a todas as observações, \\(\\beta\\) é um vetor \\(K \\times 1\\) de coeficientes angulares constantes, e \\(u_{it}\\) é o termo de erro.\nA implementação prática do modelo pooled consiste em “empilhar” todas as observações de painel em uma única regressão com \\(NT\\) observações, tratando cada observação \\((i,t)\\) como independente das demais. Esta abordagem ignora completamente a estrutura de painel dos dados, tratando-os como se fossem uma grande amostra cross-section.\nOs pressupostos fundamentais do modelo pooled incluem:\nHomogeneidade dos Parâmetros: Todos os indivíduos possuem o mesmo intercepto \\(\\alpha\\) e os mesmos coeficientes angulares \\(\\beta\\). Este pressuposto implica que a relação entre as variáveis explicativas e a variável dependente é idêntica para todos os indivíduos em todos os períodos.\nExogeneidade Estrita: \\(E[u_{it}|x_{i1}, ..., x_{iT}] = 0\\) para todos \\(i\\) e \\(t\\). Este pressuposto, conhecido como exogeneidade estrita ou forte, requer que o termo de erro seja não correlacionado com os valores passados, presentes e futuros de todas as variáveis explicativas.\nHomocedasticidade: \\(Var[u_{it}|x_{i1}, ..., x_{iT}] = \\sigma^2\\) para todos \\(i\\) e \\(t\\). A variância do erro é constante across indivíduos e tempo.\nNão Autocorrelação: \\(Cov[u_{it}, u_{is}|x_{i1}, ..., x_{iT}] = 0\\) para \\(t \\neq s\\). Os erros para o mesmo indivíduo em períodos diferentes são não correlacionados."
+  },
+  {
+    "objectID": "index.html#quando-o-modelo-pooled-é-apropriado",
+    "href": "index.html#quando-o-modelo-pooled-é-apropriado",
+    "title": "Avaliação de Política Públicas",
+    "section": "Quando o Modelo Pooled é Apropriado",
+    "text": "Quando o Modelo Pooled é Apropriado\nO modelo pooled é apropriado quando os pressupostos de homogeneidade e independência são plausíveis. Em termos práticos, isto ocorre quando:\nAusência de Heterogeneidade Individual Relevante: Não existem características não observadas específicas dos indivíduos que afetem significativamente a variável dependente. Alternativamente, qualquer heterogeneidade existente é não correlacionada com as variáveis explicativas e pode ser tratada como ruído aleatório.\nEstabilidade Temporal da Relação: A relação entre as variáveis explicativas e a variável dependente permanece estável ao longo do tempo, sem mudanças estruturais ou efeitos de aprendizado que possam afetar os coeficientes.\nIndependência Temporal dos Choques: Os choques que afetam a variável dependente em um período não persistem ou influenciam períodos subsequentes. Esta condição é particularmente restritiva em aplicações microeconométricas, onde choques individuais frequentemente exibem persistência.\nExemplos de situações onde o modelo pooled pode ser apropriado incluem análises de mercados com produtos homogêneos e participantes com características similares, estudos de fenômenos com pouca persistência temporal, ou análises exploratórias iniciais onde a simplicidade metodológica é valorizada sobre a sofisticação."
+  },
+  {
+    "objectID": "index.html#vantagens-do-modelo-pooled",
+    "href": "index.html#vantagens-do-modelo-pooled",
+    "title": "Avaliação de Política Públicas",
+    "section": "Vantagens do Modelo Pooled",
+    "text": "Vantagens do Modelo Pooled\n\nSimplicidade Conceitual e Computacional\nA principal vantagem do modelo pooled é sua simplicidade. A estimação reduz-se a uma regressão OLS padrão com \\(NT\\) observações, utilizando procedimentos computacionais bem estabelecidos e amplamente disponíveis. Esta simplicidade facilita a interpretação dos resultados e a comunicação dos achados para audiências não especializadas.\n\n\nEficiência sob Pressupostos Corretos\nQuando os pressupostos do modelo pooled são válidos, o estimador OLS é o melhor estimador linear não viesado (BLUE - Best Linear Unbiased Estimator) pelo teorema de Gauss-Markov. Neste caso, o modelo pooled oferece a maior eficiência possível entre todos os estimadores lineares não viesados.\n\n\nIdentificação de Todos os Parâmetros\nDiferentemente do modelo de efeitos fixos, o modelo pooled permite a identificação e estimação de coeficientes para todas as variáveis explicativas, incluindo aquelas que são invariantes no tempo. Esta capacidade é particularmente valiosa quando o interesse da pesquisa recai sobre efeitos de características demográficas, geográficas, ou outras variáveis que não mudam ao longo do período de observação."
+  },
+  {
+    "objectID": "index.html#limitações-e-problemas-do-modelo-pooled",
+    "href": "index.html#limitações-e-problemas-do-modelo-pooled",
+    "title": "Avaliação de Política Públicas",
+    "section": "Limitações e Problemas do Modelo Pooled",
+    "text": "Limitações e Problemas do Modelo Pooled\n\nO Problema da Correlação Temporal dos Erros\nA limitação mais séria do modelo pooled em aplicações práticas é a violação quase inevitável do pressuposto de não autocorrelação dos erros. Em dados de painel, é altamente plausível que características não observadas dos indivíduos criem correlação positiva entre os erros ao longo do tempo.\nPara compreender este problema, considere um modelo de determinação de salários onde a habilidade individual não observada afeta positivamente os salários. Se a habilidade é relativamente estável ao longo do tempo, indivíduos com alta habilidade tenderão a ter salários sistematicamente acima do previsto pelo modelo em todos os períodos, enquanto indivíduos com baixa habilidade terão salários sistematicamente abaixo do previsto.\nEsta correlação temporal dos erros tem consequências graves para a inferência estatística. Os erros padrão usuais do OLS, que assumem independência das observações, subestimarão sistematicamente a verdadeira incerteza dos estimadores. Como resultado, as estatísticas t serão inflacionadas, levando a rejeições espúrias da hipótese nula e conclusões errôneas sobre a significância estatística dos coeficientes.\n\n\nViés de Variáveis Omitidas\nQuando existem características individuais não observadas correlacionadas com as variáveis explicativas, o modelo pooled sofre de viés de variáveis omitidas. Este viés surge porque o termo de erro \\(u_{it}\\) inclui implicitamente os efeitos individuais não observados, violando o pressuposto de exogeneidade estrita.\nFormalmente, se o verdadeiro modelo é \\(y_{it} = \\alpha_i + x_{it}'\\beta + \\varepsilon_{it}\\) (um modelo de efeitos fixos), mas estimamos o modelo pooled \\(y_{it} = \\alpha + x_{it}'\\beta + u_{it}\\), então \\(u_{it} = (\\alpha_i - \\alpha) + \\varepsilon_{it}\\). Se \\(\\alpha_i\\) está correlacionado com \\(x_{it}\\), então \\(E[u_{it}|x_{it}] \\neq 0\\), violando o pressuposto de exogeneidade e resultando em estimadores inconsistentes.\n\n\nSuperestimação da Precisão\nMesmo quando os coeficientes estimados são não viesados, a presença de correlação temporal nos erros leva à superestimação da precisão dos estimadores. O modelo pooled trata cada uma das \\(NT\\) observações como fornecendo informação independente, mas na realidade, as \\(T\\) observações de cada indivíduo fornecem menos informação do que \\(T\\) observações verdadeiramente independentes devido à correlação temporal.\nEsta superestimação da precisão é particularmente problemática em painéis com muitos períodos ou alta correlação temporal dos erros. Em casos extremos, os erros padrão reportados podem ser uma fração pequena dos erros padrão corretos, levando a conclusões completamente errôneas sobre a significância estatística dos resultados."
+  },
+  {
+    "objectID": "index.html#correções-e-extensões-do-modelo-pooled",
+    "href": "index.html#correções-e-extensões-do-modelo-pooled",
+    "title": "Avaliação de Política Públicas",
+    "section": "Correções e Extensões do Modelo Pooled",
+    "text": "Correções e Extensões do Modelo Pooled\n\nErros Padrão Robustos à Correlação Temporal\nUma abordagem para lidar com a correlação temporal dos erros mantendo a estrutura do modelo pooled é o uso de erros padrão robustos que permitem correlação arbitrária dentro de cada cluster (indivíduo). Estes erros padrão “clustered” fornecem inferência válida mesmo na presença de correlação temporal, desde que o número de clusters seja suficientemente grande.\nA matriz de variância-covariância robusta a clusters tem a forma:\n\\[\\hat{V}_{cluster} = (X'X)^{-1}\\left(\\sum_{i=1}^N X_i'\\hat{u}_i\\hat{u}_i'X_i\\right)(X'X)^{-1}\\]\nonde \\(X_i\\) e \\(\\hat{u}_i\\) são, respectivamente, a matriz de regressores e o vetor de resíduos para o indivíduo \\(i\\).\n\n\nModelo Pooled com Dummies Temporais\nUma extensão comum do modelo pooled básico é a inclusão de dummies temporais para controlar efeitos de tempo comuns a todos os indivíduos:\n\\[y_{it} = \\alpha + \\sum_{s=2}^T \\gamma_s d_{s,it} + x_{it}'\\beta + u_{it}\\]\nonde \\(d_{s,it}\\) são dummies temporais que assumem valor 1 se \\(t = s\\) e 0 caso contrário. Esta especificação permite controlar choques macroeconômicos, mudanças de política, ou outros fatores que afetam todos os indivíduos simultaneamente em períodos específicos.\nA inclusão de dummies temporais é particularmente importante em aplicações onde o período de observação inclui eventos significativos (como crises econômicas, mudanças regulatórias, ou choques externos) que podem afetar a relação entre as variáveis de interesse."
+  },
+  {
+    "objectID": "index.html#formulação-matemática-e-estrutura-do-erro-composto",
+    "href": "index.html#formulação-matemática-e-estrutura-do-erro-composto",
+    "title": "Avaliação de Política Públicas",
+    "section": "Formulação Matemática e Estrutura do Erro Composto",
+    "text": "Formulação Matemática e Estrutura do Erro Composto\nO modelo de efeitos aleatórios representa um meio-termo entre a rigidez do modelo pooled e a flexibilidade do modelo de efeitos fixos. Sua formulação reconhece a existência de heterogeneidade individual, mas impõe restrições específicas sobre a natureza desta heterogeneidade.\nA especificação fundamental do modelo de efeitos aleatórios é:\n\\[y_{it} = \\alpha + x_{it}'\\beta + (\\alpha_i + \\varepsilon_{it})\\]\nonde \\(\\alpha\\) é o intercepto médio comum, \\(x_{it}'\\beta\\) representa os efeitos das variáveis observáveis, \\(\\alpha_i\\) é o efeito aleatório individual específico, e \\(\\varepsilon_{it}\\) é o erro idiossincrático. O termo entre parênteses, \\(u_{it} = \\alpha_i + \\varepsilon_{it}\\), constitui o erro composto que caracteriza este modelo.\nEsta decomposição do erro em dois componentes tem implicações profundas para a estrutura de correlação dos dados. O componente \\(\\alpha_i\\) é específico do indivíduo mas constante ao longo do tempo, criando correlação entre as observações do mesmo indivíduo em diferentes períodos. O componente \\(\\varepsilon_{it}\\) varia tanto entre indivíduos quanto ao longo do tempo, representando choques idiossincráticos não correlacionados.\nOs pressupostos distribucional padrão do modelo de efeitos aleatórios especificam:\n\\[\\alpha_i \\sim iid(0, \\sigma_\\alpha^2)\\] \\[\\varepsilon_{it} \\sim iid(0, \\sigma_\\varepsilon^2)\\] \\[Cov[\\alpha_i, \\varepsilon_{it}] = 0 \\text{ para todos } i, t\\]\nEstes pressupostos implicam que tanto os efeitos individuais quanto os erros idiossincráticos são independente e identicamente distribuídos, com médias zero e variâncias constantes."
+  },
+  {
+    "objectID": "index.html#o-pressuposto-fundamental-independência-dos-efeitos-aleatórios",
+    "href": "index.html#o-pressuposto-fundamental-independência-dos-efeitos-aleatórios",
+    "title": "Avaliação de Política Públicas",
+    "section": "O Pressuposto Fundamental: Independência dos Efeitos Aleatórios",
+    "text": "O Pressuposto Fundamental: Independência dos Efeitos Aleatórios\nO pressuposto mais crítico do modelo de efeitos aleatórios é a independência entre os efeitos individuais e as variáveis explicativas:\n\\[E[\\alpha_i | x_{i1}, ..., x_{iT}] = 0\\]\nEste pressuposto, conhecido como exogeneidade dos efeitos aleatórios, requer que as características não observadas específicas dos indivíduos sejam não correlacionadas com todas as variáveis explicativas em todos os períodos. Em outras palavras, a heterogeneidade individual deve ser “puramente aleatória” em relação aos regressores observados.\nA plausibilidade deste pressuposto varia significativamente entre aplicações. Em estudos microeconométricos, é frequentemente questionável assumir que características como habilidade, motivação, ou preferências individuais são não correlacionadas com variáveis como educação, experiência, ou escolhas ocupacionais. Esta limitação levou muitos economistas a favorecer modelos de efeitos fixos em aplicações empíricas."
+  },
+  {
+    "objectID": "index.html#estrutura-de-correlação-o-modelo-equicorrelacionado",
+    "href": "index.html#estrutura-de-correlação-o-modelo-equicorrelacionado",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estrutura de Correlação: O Modelo Equicorrelacionado",
+    "text": "Estrutura de Correlação: O Modelo Equicorrelacionado\nUma característica distintiva do modelo de efeitos aleatórios é a estrutura de correlação específica que impõe aos dados. A presença do componente \\(\\alpha_i\\) no erro composto cria correlação entre observações do mesmo indivíduo:\n\\[Cov[u_{it}, u_{is}] = Cov[(\\alpha_i + \\varepsilon_{it}), (\\alpha_i + \\varepsilon_{is})] = \\sigma_\\alpha^2\\]\npara \\(t \\neq s\\), enquanto:\n\\[Var[u_{it}] = \\sigma_\\alpha^2 + \\sigma_\\varepsilon^2\\]\nIsto resulta em uma correlação intraclasse constante:\n\\[\\rho = \\frac{\\sigma_\\alpha^2}{\\sigma_\\alpha^2 + \\sigma_\\varepsilon^2}\\]\nEsta correlação é independente da distância temporal entre as observações, caracterizando o que é conhecido como estrutura equicorrelacionada ou exchangeable. Sob esta estrutura, a correlação entre observações do mesmo indivíduo nos períodos 1 e 2 é idêntica à correlação entre os períodos 1 e 5, ou qualquer outro par de períodos.\nA estrutura equicorrelacionada é uma restrição forte que pode não ser realística em muitas aplicações. Em dados econômicos, é comum observar que a correlação entre observações decresce com a distância temporal, refletindo a dissipação gradual de choques ao longo do tempo. O modelo de efeitos aleatórios não acomoda esta possibilidade, assumindo correlação constante independentemente do intervalo temporal."
+  },
+  {
+    "objectID": "index.html#estimação-o-método-de-mínimos-quadrados-generalizados-gls",
+    "href": "index.html#estimação-o-método-de-mínimos-quadrados-generalizados-gls",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estimação: O Método de Mínimos Quadrados Generalizados (GLS)",
+    "text": "Estimação: O Método de Mínimos Quadrados Generalizados (GLS)\nDevido à estrutura de correlação não esférica dos erros, o estimador OLS, embora consistente sob os pressupostos do modelo de efeitos aleatórios, não é eficiente. O estimador eficiente é obtido através do método de Mínimos Quadrados Generalizados (GLS), que leva em conta a estrutura de correlação conhecida dos erros.\nO estimador GLS para o modelo de efeitos aleatórios pode ser implementado através de uma transformação dos dados que remove a correlação serial. A transformação específica é:\n\\[y_{it}^* = y_{it} - \\theta \\bar{y}_i\\] \\[x_{it}^* = x_{it} - \\theta \\bar{x}_i\\]\nonde \\(\\bar{y}_i = T^{-1}\\sum_{t=1}^T y_{it}\\) e \\(\\bar{x}_i = T^{-1}\\sum_{t=1}^T x_{it}\\) são as médias temporais para o indivíduo \\(i\\), e:\n\\[\\theta = 1 - \\sqrt{\\frac{\\sigma_\\varepsilon^2}{\\sigma_\\varepsilon^2 + T\\sigma_\\alpha^2}}\\]\nO parâmetro \\(\\theta\\) determina o grau de “demeaning” aplicado aos dados. Quando \\(\\sigma_\\alpha^2 = 0\\) (ausência de efeitos aleatórios), \\(\\theta = 0\\) e a transformação se reduz ao modelo pooled original. Quando \\(\\sigma_\\alpha^2 \\to \\infty\\) (efeitos aleatórios dominantes), \\(\\theta \\to 1\\) e a transformação aproxima-se da transformação within do modelo de efeitos fixos.\nNa prática, os parâmetros de variância \\(\\sigma_\\alpha^2\\) e \\(\\sigma_\\varepsilon^2\\) são desconhecidos e devem ser estimados. O procedimento padrão envolve estimação em dois estágios: primeiro, obtêm-se estimativas consistentes dos parâmetros de variância usando resíduos de regressões auxiliares; segundo, aplica-se a transformação GLS usando estas estimativas. Este procedimento é conhecido como GLS factível (FGLS)."
+  },
+  {
+    "objectID": "index.html#vantagens-do-modelo-de-efeitos-aleatórios",
+    "href": "index.html#vantagens-do-modelo-de-efeitos-aleatórios",
+    "title": "Avaliação de Política Públicas",
+    "section": "Vantagens do Modelo de Efeitos Aleatórios",
+    "text": "Vantagens do Modelo de Efeitos Aleatórios\n\nEficiência sob Pressupostos Corretos\nQuando os pressupostos do modelo de efeitos aleatórios são válidos, o estimador GLS é mais eficiente que tanto o estimador pooled OLS quanto o estimador within de efeitos fixos. Esta maior eficiência reflete-se em erros padrão menores e intervalos de confiança mais estreitos, proporcionando maior precisão na estimação dos parâmetros.\nA vantagem de eficiência é particularmente pronunciada quando a correlação intraclasse \\(\\rho\\) é alta, indicando que uma proporção substancial da variação total é devida a diferenças entre indivíduos. Nestes casos, o modelo de efeitos aleatórios explora eficientemente tanto a variação within quanto a variação between, enquanto o modelo de efeitos fixos descarta completamente a informação between.\n\n\nIdentificação de Variáveis Invariantes no Tempo\nUma vantagem crucial do modelo de efeitos aleatórios sobre o modelo de efeitos fixos é a capacidade de identificar e estimar coeficientes de variáveis que são invariantes no tempo. Características como gênero, raça, local de nascimento, ou outras variáveis demográficas fixas podem ter coeficientes estimados no modelo de efeitos aleatórios, mas são perfeitamente colineares com os efeitos fixos individuais.\nEsta capacidade é particularmente valiosa em aplicações onde o interesse principal recai sobre efeitos de características demográficas ou geográficas. Por exemplo, em estudos de discriminação salarial, a capacidade de estimar diretamente o efeito do gênero ou raça é fundamental para os objetivos da pesquisa.\n\n\nParcimônia Paramétrica\nO modelo de efeitos aleatórios é mais parcimonioso que o modelo de efeitos fixos, estimando apenas \\(K + 3\\) parâmetros (\\(K\\) coeficientes angulares, um intercepto, e dois parâmetros de variância) em vez de \\(K + N\\) parâmetros no modelo de efeitos fixos. Esta parcimônia é particularmente vantajosa em painéis com muitos indivíduos, onde o modelo de efeitos fixos pode enfrentar problemas de dimensionalidade."
+  },
+  {
+    "objectID": "index.html#limitações-e-críticas-do-modelo-de-efeitos-aleatórios",
+    "href": "index.html#limitações-e-críticas-do-modelo-de-efeitos-aleatórios",
+    "title": "Avaliação de Política Públicas",
+    "section": "Limitações e Críticas do Modelo de Efeitos Aleatórios",
+    "text": "Limitações e Críticas do Modelo de Efeitos Aleatórios\n\nA Implausibilidade do Pressuposto de Exogeneidade\nA crítica mais fundamental ao modelo de efeitos aleatórios em aplicações microeconométricas é a implausibilidade do pressuposto de exogeneidade dos efeitos aleatórios. Em muitos contextos econômicos, é altamente provável que características individuais não observadas estejam correlacionadas com as variáveis explicativas de interesse.\nConsidere, por exemplo, um modelo de determinação de salários onde a educação é uma variável explicativa principal. O pressuposto de efeitos aleatórios requer que características como habilidade, motivação, ou background familiar sejam não correlacionadas com o nível educacional. Esta assumção é questionável, dado que indivíduos com maior habilidade ou de famílias mais favorecidas tendem a investir mais em educação.\n\n\nRigidez da Estrutura de Correlação\nA estrutura equicorrelacionada imposta pelo modelo de efeitos aleatórios pode ser excessivamente restritiva em muitas aplicações. A assumção de correlação constante entre observações do mesmo indivíduo, independentemente da distância temporal, raramente é realística em dados econômicos.\nEm muitos contextos, esperaríamos que a correlação entre observações diminuísse com a distância temporal, refletindo a dissipação gradual de choques ou a evolução das características individuais ao longo do tempo. O modelo de efeitos aleatórios não acomoda esta possibilidade, potencialmente levando a ineficiência ou especificação incorreta.\n\n\nSensibilidade a Violações dos Pressupostos\nQuando o pressuposto de exogeneidade dos efeitos aleatórios é violado, o estimador GLS torna-se inconsistente. Diferentemente do estimador within de efeitos fixos, que mantém consistência mesmo quando os efeitos individuais são correlacionados com os regressores, o estimador de efeitos aleatórios não oferece robustez a violações de seus pressupostos fundamentais.\nEsta sensibilidade implica que a escolha entre modelos de efeitos aleatórios e efeitos fixos não é meramente uma questão de eficiência, mas uma questão fundamental de consistência. Se existe qualquer dúvida sobre a validade do pressuposto de exogeneidade, o modelo de efeitos fixos oferece uma alternativa mais robusta, mesmo ao custo de menor eficiência quando os pressupostos de efeitos aleatórios são válidos."
+  },
+  {
+    "objectID": "index.html#formulação-matemática-e-filosofia-subjacente",
+    "href": "index.html#formulação-matemática-e-filosofia-subjacente",
+    "title": "Avaliação de Política Públicas",
+    "section": "Formulação Matemática e Filosofia Subjacente",
+    "text": "Formulação Matemática e Filosofia Subjacente\nO modelo de efeitos fixos representa a abordagem mais flexível e robusta para lidar com heterogeneidade individual não observada em dados de painel. Sua formulação matemática é:\n\\[y_{it} = \\alpha_i + x_{it}'\\beta + \\varepsilon_{it}\\]\nonde \\(\\alpha_i\\) são parâmetros fixos específicos para cada indivíduo, \\(x_{it}'\\beta\\) captura os efeitos das variáveis observáveis, e \\(\\varepsilon_{it}\\) é o erro idiossincrático que satisfaz os pressupostos clássicos de ruído branco.\nA diferença fundamental entre este modelo e o modelo de efeitos aleatórios não reside na formulação matemática - ambos incluem efeitos individuais específicos - mas na natureza dos pressupostos sobre estes efeitos. No modelo de efeitos fixos, os \\(\\alpha_i\\) são tratados como parâmetros fixos desconhecidos que podem ser correlacionados arbitrariamente com as variáveis explicativas \\(x_{it}\\).\nEsta flexibilidade tem um preço: com \\(N\\) indivíduos, o modelo inclui \\(N\\) parâmetros \\(\\alpha_i\\) adicionais aos \\(K\\) coeficientes angulares de interesse. Em painéis curtos, onde \\(N\\) é grande mas \\(T\\) é pequeno, estes parâmetros não podem ser estimados consistentemente. No entanto, como demonstraremos, é possível estimar consistentemente os coeficientes \\(\\beta\\) mesmo sem estimar os \\(\\alpha_i\\) individualmente."
+  },
+  {
+    "objectID": "index.html#o-pressuposto-de-exogeneidade-estrita",
+    "href": "index.html#o-pressuposto-de-exogeneidade-estrita",
+    "title": "Avaliação de Política Públicas",
+    "section": "O Pressuposto de Exogeneidade Estrita",
+    "text": "O Pressuposto de Exogeneidade Estrita\nO modelo de efeitos fixos requer o pressuposto de exogeneidade estrita:\n\\[E[\\varepsilon_{it} | \\alpha_i, x_{i1}, ..., x_{iT}] = 0\\]\nEste pressuposto é substancialmente mais fraco que o requerido pelo modelo de efeitos aleatórios. Enquanto o modelo de efeitos aleatórios exige que \\(E[\\alpha_i | x_{i1}, ..., x_{iT}] = 0\\), o modelo de efeitos fixos permite correlação arbitrária entre \\(\\alpha_i\\) e as variáveis explicativas, requerendo apenas que o erro idiossincrático \\(\\varepsilon_{it}\\) seja não correlacionado com os regressores.\nEsta diferença é crucial para aplicações empíricas. O pressuposto de exogeneidade estrita permite que características individuais não observadas (capturadas por \\(\\alpha_i\\)) sejam correlacionadas com as variáveis explicativas, desde que esta correlação seja constante ao longo do tempo. Por exemplo, em um modelo de determinação de salários, a habilidade individual pode estar correlacionada com educação, mas o modelo requer apenas que choques idiossincráticos aos salários (como sorte ou erros de medida) sejam não correlacionados com educação."
+  },
+  {
+    "objectID": "index.html#identificação-através-da-variação-within",
+    "href": "index.html#identificação-através-da-variação-within",
+    "title": "Avaliação de Política Públicas",
+    "section": "Identificação através da Variação Within",
+    "text": "Identificação através da Variação Within\nA estratégia de identificação do modelo de efeitos fixos baseia-se exclusivamente na variação temporal dentro de cada indivíduo (variação within). Esta abordagem elimina todos os efeitos de características invariantes no tempo, sejam elas observadas ou não observadas.\nPara compreender esta estratégia, considere a média temporal da equação do modelo para cada indivíduo:\n\\[\\bar{y}_i = \\alpha_i + \\bar{x}_i'\\beta + \\bar{\\varepsilon}_i\\]\nonde \\(\\bar{y}_i = T^{-1}\\sum_{t=1}^T y_{it}\\), \\(\\bar{x}_i = T^{-1}\\sum_{t=1}^T x_{it}\\), e \\(\\bar{\\varepsilon}_i = T^{-1}\\sum_{t=1}^T \\varepsilon_{it}\\).\nSubtraindo esta equação da equação original, obtemos a transformação within:\n\\[y_{it} - \\bar{y}_i = (x_{it} - \\bar{x}_i)'\\beta + (\\varepsilon_{it} - \\bar{\\varepsilon}_i)\\]\nou, em notação mais compacta:\n\\[\\ddot{y}_{it} = \\ddot{x}_{it}'\\beta + \\ddot{\\varepsilon}_{it}\\]\nonde \\(\\ddot{z}_{it} = z_{it} - \\bar{z}_i\\) denota desvios das médias individuais.\nEsta transformação elimina completamente os efeitos fixos \\(\\alpha_i\\), permitindo estimação consistente de \\(\\beta\\) através de OLS aplicado aos dados transformados. O estimador resultante é conhecido como estimador within ou estimador de efeitos fixos."
+  },
+  {
+    "objectID": "index.html#propriedades-do-estimador-within",
+    "href": "index.html#propriedades-do-estimador-within",
+    "title": "Avaliação de Política Públicas",
+    "section": "Propriedades do Estimador Within",
+    "text": "Propriedades do Estimador Within\n\nConsistência e Não Viés\nO estimador within é consistente sob o pressuposto de exogeneidade estrita, mesmo quando os efeitos fixos são correlacionados com as variáveis explicativas. Esta robustez é uma vantagem crucial sobre os estimadores pooled OLS e efeitos aleatórios, que se tornam inconsistentes na presença de correlação entre efeitos individuais e regressores.\nA consistência do estimador within pode ser demonstrada notando que a transformação within preserva o pressuposto de exogeneidade:\n\\[E[\\ddot{\\varepsilon}_{it} | \\ddot{x}_{i1}, ..., \\ddot{x}_{iT}] = 0\\]\ndesde que \\(E[\\varepsilon_{it} | x_{i1}, ..., x_{iT}] = 0\\). Consequentemente, o estimador OLS aplicado aos dados transformados satisfaz as condições para consistência.\n\n\nEficiência Condicional\nSob os pressupostos do modelo de efeitos fixos, incluindo homocedasticidade e não autocorrelação de \\(\\varepsilon_{it}\\), o estimador within é eficiente entre todos os estimadores lineares não viesados que utilizam apenas a variação within. No entanto, quando os pressupostos do modelo de efeitos aleatórios são válidos, o estimador within é menos eficiente que o estimador GLS de efeitos aleatórios, pois descarta a informação contida na variação between.\nEsta perda de eficiência reflete o trade-off fundamental entre robustez e eficiência em econometria. O estimador within oferece robustez à correlação entre efeitos individuais e regressores, mas ao custo de menor eficiência quando esta correlação está ausente."
+  },
+  {
+    "objectID": "index.html#limitações-do-modelo-de-efeitos-fixos",
+    "href": "index.html#limitações-do-modelo-de-efeitos-fixos",
+    "title": "Avaliação de Política Públicas",
+    "section": "Limitações do Modelo de Efeitos Fixos",
+    "text": "Limitações do Modelo de Efeitos Fixos\n\nImpossibilidade de Identificar Efeitos de Variáveis Invariantes no Tempo\nA limitação mais significativa do modelo de efeitos fixos é a impossibilidade de identificar coeficientes de variáveis que são invariantes no tempo. Variáveis como gênero, raça, local de nascimento, ou outras características demográficas fixas são perfeitamente colineares com os efeitos fixos individuais e, portanto, não podem ter seus efeitos estimados.\nEsta limitação é particularmente restritiva em aplicações onde o interesse principal recai sobre efeitos de características demográficas. Por exemplo, estudos de discriminação salarial que buscam estimar diretamente o efeito do gênero ou raça não podem utilizar modelos de efeitos fixos puros.\n\n\nProblema dos Parâmetros Incidentais\nEm painéis curtos, o modelo de efeitos fixos enfrenta o problema dos parâmetros incidentais identificado por Neyman e Scott (1948). Com \\(N\\) efeitos fixos para estimar e apenas \\(T\\) observações por indivíduo, os efeitos fixos individuais não podem ser estimados consistentemente quando \\(T\\) é fixo e \\(N \\to \\infty\\).\nEmbora este problema não afete a consistência do estimador within para os coeficientes \\(\\beta\\) em modelos lineares, ele pode causar viés em modelos não lineares. Em modelos logit ou probit com efeitos fixos, por exemplo, o viés dos parâmetros incidentais pode ser substancial quando \\(T\\) é pequeno.\n\n\nPerda de Graus de Liberdade\nO modelo de efeitos fixos consome \\(N\\) graus de liberdade para estimar os efeitos fixos individuais, reduzindo a eficiência da estimação, particularmente quando \\(N\\) é grande relativamente a \\(NT\\). Esta perda de graus de liberdade pode ser problemática em painéis com muitos indivíduos observados por poucos períodos."
+  },
+  {
+    "objectID": "index.html#estimadores-alternativos-primeiras-diferenças",
+    "href": "index.html#estimadores-alternativos-primeiras-diferenças",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estimadores Alternativos: Primeiras Diferenças",
+    "text": "Estimadores Alternativos: Primeiras Diferenças\nUma alternativa ao estimador within é o estimador de primeiras diferenças, que elimina os efeitos fixos através de diferenciação temporal em vez de demeaning:\n\\[y_{it} - y_{i,t-1} = (x_{it} - x_{i,t-1})'\\beta + (\\varepsilon_{it} - \\varepsilon_{i,t-1})\\]\nou:\n\\[\\Delta y_{it} = \\Delta x_{it}'\\beta + \\Delta \\varepsilon_{it}\\]\nO estimador de primeiras diferenças é obtido aplicando OLS a esta equação diferenciada.\n\nEquivalência e Diferenças com o Estimador Within\nQuando \\(T = 2\\), os estimadores within e primeiras diferenças são idênticos. Para \\(T > 2\\), ambos são consistentes sob os mesmos pressupostos, mas diferem em eficiência dependendo da estrutura de correlação serial dos erros.\nSe \\(\\varepsilon_{it}\\) segue um passeio aleatório, o estimador de primeiras diferenças é mais eficiente. Se \\(\\varepsilon_{it}\\) é não correlacionado serialmente, o estimador within é mais eficiente. Na prática, a escolha entre os dois estimadores pode ser baseada em testes de especificação ou considerações teóricas sobre a natureza dos choques idiossincráticos."
+  },
+  {
+    "objectID": "index.html#extensões-e-variações-do-modelo-de-efeitos-fixos",
+    "href": "index.html#extensões-e-variações-do-modelo-de-efeitos-fixos",
+    "title": "Avaliação de Política Públicas",
+    "section": "Extensões e Variações do Modelo de Efeitos Fixos",
+    "text": "Extensões e Variações do Modelo de Efeitos Fixos\n\nEfeitos Fixos Bidirecionais\nUma extensão comum do modelo básico de efeitos fixos é a inclusão de efeitos fixos temporais além dos efeitos fixos individuais:\n\\[y_{it} = \\alpha_i + \\gamma_t + x_{it}'\\beta + \\varepsilon_{it}\\]\nonde \\(\\gamma_t\\) são efeitos fixos temporais que capturam choques comuns a todos os indivíduos em cada período. Esta especificação é particularmente útil quando existem fatores macroeconômicos, mudanças de política, ou outros choques agregados que afetam todos os indivíduos simultaneamente.\nA estimação de modelos com efeitos fixos bidirecionais requer a inclusão de dummies tanto para indivíduos quanto para períodos, ou o uso de transformações que eliminem ambos os tipos de efeitos fixos.\n\n\nModelos com Efeitos Fixos Interativos\nEm algumas aplicações, pode ser apropriado permitir que os efeitos de variáveis observáveis variem entre indivíduos. Isto pode ser modelado através de efeitos fixos interativos:\n\\[y_{it} = \\alpha_i + x_{it}'\\beta_i + \\varepsilon_{it}\\]\nonde \\(\\beta_i\\) são coeficientes específicos para cada indivíduo. Este modelo é mais flexível, mas requer \\(N \\times K\\) parâmetros adicionais e pode enfrentar problemas de identificação em painéis curtos.\n\n\nModelos de Efeitos Fixos com Heterogeneidade de Inclinação\nUma abordagem intermediária permite que alguns coeficientes variem entre indivíduos enquanto outros permanecem constantes:\n\\[y_{it} = \\alpha_i + x_{1it}'\\beta + x_{2it}'\\beta_i + \\varepsilon_{it}\\]\nonde \\(x_{1it}\\) inclui variáveis com efeitos homogêneos e \\(x_{2it}\\) inclui variáveis com efeitos heterogêneos. Esta especificação oferece flexibilidade adicional mantendo parcimônia paramétrica."
+  },
+  {
+    "objectID": "index.html#tabela-comparativa-de-características-fundamentais",
+    "href": "index.html#tabela-comparativa-de-características-fundamentais",
+    "title": "Avaliação de Política Públicas",
+    "section": "Tabela Comparativa de Características Fundamentais",
+    "text": "Tabela Comparativa de Características Fundamentais\nA Table 2 apresenta uma síntese das características fundamentais dos três modelos de painel linear, facilitando a comparação direta de suas propriedades e limitações.\n\n\nTable 2: Comparativo das Características dos Modelos de Painel\n\n\n\n\n\n\n\n\nCaracterística\nPooled OLS\nEfeitos Aleatórios\nEfeitos Fixos\n\n\n\n\nPressuposto sobre \\(\\alpha_i\\)\nInexistente\n\\(E[\\alpha_i \\| x_{it}] = 0\\)\nCorrelação arbitrária\n\n\nEstrutura de correlação\nIndependência\nEquicorrelacionada\nArbitrária within\n\n\nVariáveis invariantes no tempo\nIdentificadas\nIdentificadas\nNão identificadas\n\n\nRobustez à correlação \\((\\alpha_i, x_{it})\\)\nNão\nNão\nSim\n\n\nEficiência (sob pressupostos corretos)\nAlta\nMáxima\nModerada\n\n\nGraus de liberdade consumidos\n\\(K+1\\)\n\\(K+3\\)\n\\(K+N\\)\n\n\nAdequado para \\(N\\) grande, \\(T\\) pequeno\nSim\nSim\nLimitado\n\n\n\n\nEsta tabela revela claramente os trade-offs envolvidos na escolha entre os diferentes modelos. O modelo pooled oferece simplicidade e eficiência sob pressupostos restritivos, mas carece de robustez. O modelo de efeitos aleatórios oferece eficiência máxima e permite identificação de todos os parâmetros, mas requer pressupostos fortes sobre a independência dos efeitos individuais. O modelo de efeitos fixos oferece máxima robustez, mas ao custo de menor eficiência e impossibilidade de identificar efeitos de variáveis invariantes no tempo."
+  },
+  {
+    "objectID": "index.html#cenários-de-aplicação-recomendados",
+    "href": "index.html#cenários-de-aplicação-recomendados",
+    "title": "Avaliação de Política Públicas",
+    "section": "Cenários de Aplicação Recomendados",
+    "text": "Cenários de Aplicação Recomendados\n\nQuando Usar o Modelo Pooled\nO modelo pooled é apropriado em situações específicas e relativamente raras:\nHomogeneidade Genuína: Quando existe razão teórica ou empírica para acreditar que as unidades de observação são genuinamente homogêneas em relação aos fatores que afetam a variável dependente. Isto pode ocorrer em experimentos controlados ou em análises de mercados com produtos e participantes altamente padronizados.\nAnálises Exploratórias: Como ponto de partida em análises exploratórias, onde a simplicidade metodológica é valorizada sobre a sofisticação. Os resultados do modelo pooled podem servir como benchmark para comparação com modelos mais complexos.\nPainéis Muito Curtos: Em painéis com apenas dois períodos, onde a distinção entre modelos pode ser menos crítica e a simplicidade do modelo pooled pode ser vantajosa.\n\n\nQuando Usar o Modelo de Efeitos Aleatórios\nO modelo de efeitos aleatórios é apropriado quando:\nInteresse em Variáveis Invariantes no Tempo: Quando o objetivo principal da pesquisa é estimar efeitos de características demográficas, geográficas, ou outras variáveis que não mudam ao longo do período de observação.\nAmostragem Aleatória de uma População: Quando as unidades de observação representam uma amostra aleatória de uma população maior, e não há razão teórica para esperar correlação sistemática entre características não observadas e as variáveis explicativas.\nEficiência é Prioritária: Quando a eficiência na estimação é prioritária e existe confiança na validade dos pressupostos do modelo, particularmente a exogeneidade dos efeitos aleatórios.\n\n\nQuando Usar o Modelo de Efeitos Fixos\nO modelo de efeitos fixos é frequentemente a escolha preferida em aplicações microeconométricas:\nPresença Provável de Heterogeneidade Correlacionada: Quando existe razão teórica ou empírica para suspeitar que características não observadas estão correlacionadas com as variáveis explicativas. Esta situação é comum em estudos de retornos à educação, efeitos de políticas públicas, ou análises de produtividade.\nFoco na Identificação Causal: Quando o objetivo principal é identificação causal e a robustez é prioritária sobre a eficiência. O modelo de efeitos fixos oferece uma estratégia de identificação credível baseada na variação within.\nDisponibilidade de Variação Temporal Suficiente: Quando as variáveis explicativas de interesse apresentam variação temporal suficiente dentro das unidades de observação para permitir identificação precisa dos parâmetros."
+  },
+  {
+    "objectID": "index.html#o-problema-dos-erros-padrão-em-dados-de-painel",
+    "href": "index.html#o-problema-dos-erros-padrão-em-dados-de-painel",
+    "title": "Avaliação de Política Públicas",
+    "section": "O Problema dos Erros Padrão em Dados de Painel",
+    "text": "O Problema dos Erros Padrão em Dados de Painel\nA inferência estatística em modelos de painel apresenta desafios únicos relacionados à estrutura de correlação dos dados. A presença de múltiplas observações para cada unidade cria dependência entre observações que deve ser adequadamente considerada no cálculo dos erros padrão.\n\nCorrelação Temporal e Spatial\nEm dados de painel, duas fontes principais de correlação podem afetar a inferência:\nCorrelação Temporal: Observações do mesmo indivíduo em diferentes períodos tendem a ser correlacionadas devido à persistência de características individuais e choques. Esta correlação viola o pressuposto de independência do OLS clássico.\nCorrelação Cross-Section: Em alguns contextos, observações de diferentes indivíduos no mesmo período podem ser correlacionadas devido a choques comuns, efeitos de pares, ou outras formas de interdependência.\n\n\nConsequências para a Inferência\nA presença de correlação não considerada tem consequências graves para a inferência estatística:\nSubestimação dos Erros Padrão: Os erros padrão usuais do OLS assumem independência das observações. Na presença de correlação positiva, estes erros padrão subestimam a verdadeira incerteza dos estimadores.\nInflação das Estatísticas t: Erros padrão subestimados resultam em estatísticas t inflacionadas, levando a rejeições espúrias da hipótese nula e conclusões errôneas sobre significância estatística.\nIntervalos de Confiança Incorretos: Intervalos de confiança baseados em erros padrão incorretos não mantêm a cobertura nominal, comprometendo a inferência estatística."
+  },
+  {
+    "objectID": "index.html#soluções-para-inferência-robusta",
+    "href": "index.html#soluções-para-inferência-robusta",
+    "title": "Avaliação de Política Públicas",
+    "section": "Soluções para Inferência Robusta",
+    "text": "Soluções para Inferência Robusta\n\nErros Padrão Clustered\nA solução mais comum para o problema de correlação em dados de painel é o uso de erros padrão robustos a clusters, onde cada indivíduo constitui um cluster. Esta abordagem permite correlação arbitrária entre observações do mesmo indivíduo, mantendo o pressuposto de independência entre indivíduos.\nA matriz de variância-covariância robusta a clusters é:\n\\[\\hat{V}_{cluster} = (X'X)^{-1}\\left(\\sum_{i=1}^N X_i'\\hat{u}_i\\hat{u}_i'X_i\\right)(X'X)^{-1}\\]\nEsta correção é válida assintoticamente quando o número de clusters (\\(N\\)) é grande, tipicamente requerendo \\(N \\geq 50\\) para propriedades assintóticas adequadas.\n\n\nBootstrap para Painéis\nEm situações onde o número de clusters é pequeno ou a estrutura de correlação é complexa, métodos de bootstrap podem fornecer inferência mais confiável. O bootstrap para dados de painel deve preservar a estrutura de dependência dos dados, tipicamente reamostrando clusters inteiros em vez de observações individuais.\n\n\nCorreções de Pequenas Amostras\nQuando o número de clusters é pequeno, correções de pequenas amostras podem melhorar as propriedades dos erros padrão clustered. Estas correções incluem ajustes nos graus de liberdade e fatores de correção para viés de pequenas amostras."
+  },
+  {
+    "objectID": "index.html#teste-de-hausman",
+    "href": "index.html#teste-de-hausman",
+    "title": "Avaliação de Política Públicas",
+    "section": "Teste de Hausman",
+    "text": "Teste de Hausman\nO teste de Hausman é o procedimento padrão para escolher entre modelos de efeitos aleatórios e efeitos fixos. Este teste baseia-se na ideia de que, sob a hipótese nula de que os efeitos aleatórios são não correlacionados com os regressores, ambos os estimadores são consistentes, mas o estimador de efeitos aleatórios é mais eficiente.\nA estatística de teste é:\n\\[H = (\\hat{\\beta}_{FE} - \\hat{\\beta}_{RE})'[\\hat{V}_{FE} - \\hat{V}_{RE}]^{-1}(\\hat{\\beta}_{FE} - \\hat{\\beta}_{RE})\\]\nonde \\(\\hat{\\beta}_{FE}\\) e \\(\\hat{\\beta}_{RE}\\) são os estimadores de efeitos fixos e aleatórios, respectivamente, e \\(\\hat{V}_{FE}\\) e \\(\\hat{V}_{RE}\\) são suas matrizes de variância-covariância estimadas.\nSob a hipótese nula, a estatística \\(H\\) segue uma distribuição qui-quadrado com graus de liberdade igual ao número de coeficientes testados. A rejeição da hipótese nula favorece o modelo de efeitos fixos."
+  },
+  {
+    "objectID": "index.html#testes-de-poolabilidade",
+    "href": "index.html#testes-de-poolabilidade",
+    "title": "Avaliação de Política Públicas",
+    "section": "Testes de Poolabilidade",
+    "text": "Testes de Poolabilidade\nAntes de escolher entre efeitos fixos e aleatórios, é útil testar se a estrutura de painel é necessária ou se o modelo pooled é adequado.\n\nTeste F para Efeitos Fixos\nO teste F padrão compara o modelo de efeitos fixos com o modelo pooled:\n\\[F = \\frac{(SSR_{pooled} - SSR_{FE})/(N-1)}{SSR_{FE}/(NT-N-K)}\\]\nonde \\(SSR_{pooled}\\) e \\(SSR_{FE}\\) são as somas dos quadrados dos resíduos dos modelos pooled e efeitos fixos, respectivamente.\n\n\nTeste de Breusch-Pagan para Efeitos Aleatórios\nO teste de Breusch-Pagan testa a hipótese nula de que \\(\\sigma_\\alpha^2 = 0\\), ou seja, que não existem efeitos aleatórios e o modelo pooled é apropriado."
+  },
+  {
+    "objectID": "index.html#princípios-orientadores-para-a-escolha",
+    "href": "index.html#princípios-orientadores-para-a-escolha",
+    "title": "Avaliação de Política Públicas",
+    "section": "Princípios Orientadores para a Escolha",
+    "text": "Princípios Orientadores para a Escolha\nA experiência acumulada na literatura econométrica sugere alguns princípios orientadores:\nPriorize a Robustez: Em caso de dúvida sobre a validade dos pressupostos, prefira modelos mais robustos. O modelo de efeitos fixos oferece robustez à correlação entre efeitos individuais e regressores, uma violação comum em aplicações microeconométricas.\nConsidere o Contexto Teórico: A plausibilidade dos pressupostos deve ser avaliada à luz da teoria econômica e do conhecimento institucional. Em estudos de retornos à educação, por exemplo, a correlação entre habilidade não observada e educação é teoricamente plausível, favorecendo modelos de efeitos fixos.\nUse Testes de Especificação: Testes formais como o teste de Hausman podem fornecer evidência estatística sobre a adequação dos pressupostos, mas devem ser interpretados em conjunto com considerações teóricas.\nReporte Múltiplas Especificações: A prática de reportar resultados de múltiplas especificações permite avaliar a robustez dos achados e fornece transparência sobre a sensibilidade dos resultados às escolhas metodológicas."
+  },
+  {
+    "objectID": "index.html#desenvolvimentos-futuros",
+    "href": "index.html#desenvolvimentos-futuros",
+    "title": "Avaliação de Política Públicas",
+    "section": "Desenvolvimentos Futuros",
+    "text": "Desenvolvimentos Futuros\nA literatura de dados de painel continua evoluindo, com desenvolvimentos recentes incluindo:\nModelos com Efeitos Fixos Interativos: Permitindo heterogeneidade mais rica na forma como variáveis observáveis afetam diferentes unidades.\nMétodos para Painéis com Dependência Cross-Section: Lidando com correlação entre unidades devido a fatores comuns não observados.\nAbordagens Bayesianas: Oferecendo frameworks alternativos para incorporar incerteza sobre a especificação do modelo.\nMétodos de Machine Learning: Explorando abordagens não paramétricas para modelar heterogeneidade complexa."
+  },
+  {
+    "objectID": "index.html#reflexão-final",
+    "href": "index.html#reflexão-final",
+    "title": "Avaliação de Política Públicas",
+    "section": "Reflexão Final",
+    "text": "Reflexão Final\nA análise de dados de painel exemplifica um tema central da econometria moderna: o trade-off entre robustez e eficiência. Não existe uma solução única que seja ótima em todas as situações. A escolha informada entre modelos requer compreensão profunda dos pressupostos subjacentes, avaliação cuidadosa de sua plausibilidade no contexto específico, e transparência sobre as implicações das escolhas metodológicas.\nO domínio destes conceitos e técnicas é essencial para qualquer pesquisador que trabalhe com dados longitudinais. A capacidade de navegar entre diferentes especificações, compreender suas implicações, e comunicar claramente as escolhas metodológicas distingue a análise empírica rigorosa da aplicação mecânica de técnicas estatísticas.\nÀ medida que a disponibilidade de dados de painel continua crescendo, impulsionada por avanços na coleta e armazenamento de dados, a importância destes métodos apenas aumentará. A base conceitual sólida fornecida por este comparativo dos modelos fundamentais de painel linear constitui o alicerce sobre o qual técnicas mais avançadas podem ser construídas e aplicadas com confiança e rigor."
+  },
+  {
+    "objectID": "index.html#referências",
+    "href": "index.html#referências",
+    "title": "Avaliação de Política Públicas",
+    "section": "Referências",
+    "text": "Referências\n[1] Cameron, A. C., & Trivedi, P. K. (2005). Microeconometrics: Methods and Applications. Cambridge University Press.\n[2] Chamberlain, G. (1980). Analysis of covariance with qualitative data. The Review of Economic Studies, 47(1), 225-238.\n[3] Hausman, J. A. (1978). Specification tests in econometrics. Econometrica, 46(6), 1251-1271.\n[4] Hsiao, C. (2014). Analysis of Panel Data (3rd ed.). Cambridge University Press.\n[5] Wooldridge, J. M. (2010). Econometric Analysis of Cross Section and Panel Data (2nd ed.). MIT Press."
+  },
+  {
+    "objectID": "index.html#especificação",
+    "href": "index.html#especificação",
+    "title": "Avaliação de Política Públicas",
+    "section": "Especificação",
+    "text": "Especificação\n\\[y_{it} = \\alpha + \\mathbf{x}_{it}'\\boldsymbol{\\beta} + u_{it}\\]\nForma matricial: \\[\\mathbf{y} = \\mathbf{X}\\boldsymbol{\\beta} + \\mathbf{u}\\]\nonde \\(\\mathbf{X}\\) inclui coluna de 1’s para o intercepto."
+  },
+  {
+    "objectID": "index.html#hipóteses-fundamentais",
+    "href": "index.html#hipóteses-fundamentais",
+    "title": "Avaliação de Política Públicas",
+    "section": "Hipóteses Fundamentais",
+    "text": "Hipóteses Fundamentais\nH1. Exogeneidade Estrita: \\[E[u_{it}|\\mathbf{X}_i] = 0, \\quad \\forall i,t\\]\nH2. Homocedasticidade: \\[Var[u_{it}|\\mathbf{X}_i] = \\sigma^2, \\quad \\forall i,t\\]\nH3. Não Autocorrelação: \\[Cov[u_{it}, u_{is}|\\mathbf{X}_i] = 0, \\quad \\forall t \\neq s\\]\nMatriz de Variância-Covariância: \\[\\boldsymbol{\\Omega} = E[\\mathbf{u}\\mathbf{u}'|\\mathbf{X}] = \\sigma^2 \\mathbf{I}_{NT}\\]"
+  },
+  {
+    "objectID": "index.html#estimador",
+    "href": "index.html#estimador",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estimador",
+    "text": "Estimador\n\\[\\hat{\\boldsymbol{\\beta}}_{POLS} = (\\mathbf{X}'\\mathbf{X})^{-1}\\mathbf{X}'\\mathbf{y}\\]\nPropriedades: Consistente e eficiente sob H1-H3."
+  },
+  {
+    "objectID": "index.html#especificação-1",
+    "href": "index.html#especificação-1",
+    "title": "Avaliação de Política Públicas",
+    "section": "Especificação",
+    "text": "Especificação\n\\[y_{it} = \\alpha + \\mathbf{x}_{it}'\\boldsymbol{\\beta} + (\\alpha_i + \\varepsilon_{it})\\]\nonde: - \\(\\alpha_i \\sim iid(0, \\sigma_\\alpha^2)\\): efeito aleatório individual - \\(\\varepsilon_{it} \\sim iid(0, \\sigma_\\varepsilon^2)\\): erro idiossincrático - \\(u_{it} = \\alpha_i + \\varepsilon_{it}\\): erro composto"
+  },
+  {
+    "objectID": "index.html#hipóteses-fundamentais-1",
+    "href": "index.html#hipóteses-fundamentais-1",
+    "title": "Avaliação de Política Públicas",
+    "section": "Hipóteses Fundamentais",
+    "text": "Hipóteses Fundamentais\nH1. Exogeneidade dos Efeitos Aleatórios: \\[E[\\alpha_i|\\mathbf{X}_i] = 0\\]\nH2. Exogeneidade Estrita: \\[E[\\varepsilon_{it}|\\alpha_i, \\mathbf{X}_i] = 0\\]\nH3. Independência: \\[Cov[\\alpha_i, \\varepsilon_{it}] = 0, \\quad \\forall i,t\\]"
+  },
+  {
+    "objectID": "index.html#estrutura-de-correlação",
+    "href": "index.html#estrutura-de-correlação",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estrutura de Correlação",
+    "text": "Estrutura de Correlação\nVariância: \\[Var[u_{it}] = \\sigma_\\alpha^2 + \\sigma_\\varepsilon^2\\]\nCovariância: \\[Cov[u_{it}, u_{is}] = \\sigma_\\alpha^2, \\quad t \\neq s\\]\nCorrelação Intraclasse: \\[\\rho = \\frac{\\sigma_\\alpha^2}{\\sigma_\\alpha^2 + \\sigma_\\varepsilon^2}\\]"
+  },
+  {
+    "objectID": "index.html#matriz-de-variância-covariância",
+    "href": "index.html#matriz-de-variância-covariância",
+    "title": "Avaliação de Política Públicas",
+    "section": "Matriz de Variância-Covariância",
+    "text": "Matriz de Variância-Covariância\nPara cada indivíduo \\(i\\): \\[\\boldsymbol{\\Omega}_i = E[\\mathbf{u}_i\\mathbf{u}_i'] = \\sigma_\\varepsilon^2 \\mathbf{I}_T + \\sigma_\\alpha^2 \\mathbf{J}_T\\]\nonde \\(\\mathbf{J}_T = \\mathbf{e}_T\\mathbf{e}_T'\\) (matriz de 1’s).\nForma completa: \\[\\boldsymbol{\\Omega} = \\text{diag}(\\boldsymbol{\\Omega}_1, ..., \\boldsymbol{\\Omega}_N)\\]"
+  },
+  {
+    "objectID": "index.html#transformação-gls",
+    "href": "index.html#transformação-gls",
+    "title": "Avaliação de Política Públicas",
+    "section": "Transformação GLS",
+    "text": "Transformação GLS\nParâmetro de transformação: \\[\\theta = 1 - \\sqrt{\\frac{\\sigma_\\varepsilon^2}{\\sigma_\\varepsilon^2 + T\\sigma_\\alpha^2}}\\]\nDados transformados: \\[y_{it}^* = y_{it} - \\theta\\bar{y}_i, \\quad \\mathbf{x}_{it}^* = \\mathbf{x}_{it} - \\theta\\bar{\\mathbf{x}}_i\\]\nEstimador GLS: \\[\\hat{\\boldsymbol{\\beta}}_{RE} = (\\mathbf{X}^{*'}\\mathbf{X}^*)^{-1}\\mathbf{X}^{*'}\\mathbf{y}^*\\]"
+  },
+  {
+    "objectID": "index.html#especificação-2",
+    "href": "index.html#especificação-2",
+    "title": "Avaliação de Política Públicas",
+    "section": "Especificação",
+    "text": "Especificação\n\\[y_{it} = \\alpha_i + \\mathbf{x}_{it}'\\boldsymbol{\\beta} + \\varepsilon_{it}\\]\nonde \\(\\alpha_i\\) são parâmetros fixos específicos para cada indivíduo."
+  },
+  {
+    "objectID": "index.html#hipóteses-fundamentais-2",
+    "href": "index.html#hipóteses-fundamentais-2",
+    "title": "Avaliação de Política Públicas",
+    "section": "Hipóteses Fundamentais",
+    "text": "Hipóteses Fundamentais\nH1. Exogeneidade Estrita: \\[E[\\varepsilon_{it}|\\alpha_i, \\mathbf{X}_i] = 0\\]\nH2. Homocedasticidade: \\[Var[\\varepsilon_{it}|\\alpha_i, \\mathbf{X}_i] = \\sigma^2\\]\nH3. Não Autocorrelação: \\[Cov[\\varepsilon_{it}, \\varepsilon_{is}|\\alpha_i, \\mathbf{X}_i] = 0, \\quad t \\neq s\\]\nObservação Crucial: Permite \\(Cov[\\alpha_i, \\mathbf{x}_{it}] \\neq 0\\)"
+  },
+  {
+    "objectID": "index.html#representação-matricial-com-dummies",
+    "href": "index.html#representação-matricial-com-dummies",
+    "title": "Avaliação de Política Públicas",
+    "section": "Representação Matricial com Dummies",
+    "text": "Representação Matricial com Dummies\n\\[\\mathbf{y} = \\mathbf{D}\\boldsymbol{\\alpha} + \\mathbf{X}\\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\\]\nonde \\(\\mathbf{D}\\) é matriz \\(NT \\times N\\) de dummies individuais: \\[\\mathbf{D} = \\begin{pmatrix} \\mathbf{e}_T & \\mathbf{0} & \\cdots & \\mathbf{0} \\\\ \\mathbf{0} & \\mathbf{e}_T & \\cdots & \\mathbf{0} \\\\ \\vdots & \\vdots & \\ddots & \\vdots \\\\ \\mathbf{0} & \\mathbf{0} & \\cdots & \\mathbf{e}_T \\end{pmatrix}\\]"
+  },
+  {
+    "objectID": "index.html#transformação-within",
+    "href": "index.html#transformação-within",
+    "title": "Avaliação de Política Públicas",
+    "section": "Transformação Within",
+    "text": "Transformação Within\nMatriz de transformação within: \\[\\mathbf{Q} = \\mathbf{I}_{NT} - \\mathbf{D}(\\mathbf{D}'\\mathbf{D})^{-1}\\mathbf{D}'\\]\nPropriedade: \\(\\mathbf{Q}\\mathbf{D} = \\mathbf{0}\\) (elimina efeitos fixos)\nDados transformados: \\[\\ddot{\\mathbf{y}} = \\mathbf{Q}\\mathbf{y}, \\quad \\ddot{\\mathbf{X}} = \\mathbf{Q}\\mathbf{X}\\]\nInterpretação: \\(\\ddot{y}_{it} = y_{it} - \\bar{y}_i\\), \\(\\ddot{\\mathbf{x}}_{it} = \\mathbf{x}_{it} - \\bar{\\mathbf{x}}_i\\)"
+  },
+  {
+    "objectID": "index.html#estimador-within",
+    "href": "index.html#estimador-within",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estimador Within",
+    "text": "Estimador Within\n\\[\\hat{\\boldsymbol{\\beta}}_{FE} = (\\ddot{\\mathbf{X}}'\\ddot{\\mathbf{X}})^{-1}\\ddot{\\mathbf{X}}'\\ddot{\\mathbf{y}}\\]\nForma alternativa: \\[\\hat{\\boldsymbol{\\beta}}_{FE} = \\left(\\sum_{i=1}^N \\sum_{t=1}^T \\ddot{\\mathbf{x}}_{it}\\ddot{\\mathbf{x}}_{it}'\\right)^{-1} \\sum_{i=1}^N \\sum_{t=1}^T \\ddot{\\mathbf{x}}_{it}\\ddot{y}_{it}\\]"
+  },
+  {
+    "objectID": "index.html#tabela-de-consistência",
+    "href": "index.html#tabela-de-consistência",
+    "title": "Avaliação de Política Públicas",
+    "section": "Tabela de Consistência",
+    "text": "Tabela de Consistência\n\n\n\nModelo Verdadeiro\nPooled OLS\nRandom Effects\nFixed Effects\n\n\n\n\nPooled\n✓\n✓\n✓\n\n\nRandom Effects\n✓\n✓\n✓\n\n\nFixed Effects\n✗\n✗\n✓"
+  },
+  {
+    "objectID": "index.html#condições-de-identificação",
+    "href": "index.html#condições-de-identificação",
+    "title": "Avaliação de Política Públicas",
+    "section": "Condições de Identificação",
+    "text": "Condições de Identificação\nPooled OLS: Requer \\(E[u_{it}|\\mathbf{x}_{it}] = 0\\)\nRandom Effects: Requer \\(E[\\alpha_i|\\mathbf{X}_i] = 0\\)\nFixed Effects: Apenas requer \\(E[\\varepsilon_{it}|\\alpha_i, \\mathbf{X}_i] = 0\\)"
+  },
+  {
+    "objectID": "index.html#variáveis-identificadas",
+    "href": "index.html#variáveis-identificadas",
+    "title": "Avaliação de Política Públicas",
+    "section": "Variáveis Identificadas",
+    "text": "Variáveis Identificadas\n\nPooled/RE: Todas as variáveis (incluindo invariantes no tempo)\nFE: Apenas variáveis que variam no tempo"
+  },
+  {
+    "objectID": "index.html#estruturas-matriciais-chave",
+    "href": "index.html#estruturas-matriciais-chave",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estruturas Matriciais Chave",
+    "text": "Estruturas Matriciais Chave\nBetween transformation: \\[\\mathbf{P} = \\mathbf{D}(\\mathbf{D}'\\mathbf{D})^{-1}\\mathbf{D}' = \\mathbf{I}_N \\otimes \\frac{1}{T}\\mathbf{J}_T\\]\nWithin transformation: \\[\\mathbf{Q} = \\mathbf{I}_{NT} - \\mathbf{P}\\]\nPropriedades: - \\(\\mathbf{P} + \\mathbf{Q} = \\mathbf{I}_{NT}\\) - \\(\\mathbf{P}\\mathbf{Q} = \\mathbf{Q}\\mathbf{P} = \\mathbf{0}\\) - \\(\\mathbf{P}^2 = \\mathbf{P}\\), \\(\\mathbf{Q}^2 = \\mathbf{Q}\\) (idempotentes)"
+  },
+  {
+    "objectID": "index.html#decomposição-da-variação",
+    "href": "index.html#decomposição-da-variação",
+    "title": "Avaliação de Política Públicas",
+    "section": "Decomposição da Variação",
+    "text": "Decomposição da Variação\n\\[\\mathbf{X}'\\mathbf{X} = \\mathbf{X}'\\mathbf{P}\\mathbf{X} + \\mathbf{X}'\\mathbf{Q}\\mathbf{X}\\]\n\n\\(\\mathbf{X}'\\mathbf{P}\\mathbf{X}\\): variação between\n\\(\\mathbf{X}'\\mathbf{Q}\\mathbf{X}\\): variação within"
+  },
+  {
+    "objectID": "index.html#estimadores-em-termos-das-transformações",
+    "href": "index.html#estimadores-em-termos-das-transformações",
+    "title": "Avaliação de Política Públicas",
+    "section": "Estimadores em Termos das Transformações",
+    "text": "Estimadores em Termos das Transformações\nBetween estimator: \\[\\hat{\\boldsymbol{\\beta}}_B = (\\mathbf{X}'\\mathbf{P}\\mathbf{X})^{-1}\\mathbf{X}'\\mathbf{P}\\mathbf{y}\\]\nWithin estimator: \\[\\hat{\\boldsymbol{\\beta}}_W = (\\mathbf{X}'\\mathbf{Q}\\mathbf{X})^{-1}\\mathbf{X}'\\mathbf{Q}\\mathbf{y}\\]\nRandom Effects (combinação ponderada): \\[\\hat{\\boldsymbol{\\beta}}_{RE} = \\mathbf{W}_B\\hat{\\boldsymbol{\\beta}}_B + \\mathbf{W}_W\\hat{\\boldsymbol{\\beta}}_W\\]\nonde os pesos \\(\\mathbf{W}_B\\) e \\(\\mathbf{W}_W\\) dependem de \\(\\sigma_\\alpha^2\\) e \\(\\sigma_\\varepsilon^2\\).\n\nPróximos passos: Derivação detalhada de cada estimador, propriedades assintóticas e testes de especificação."
+  }
+]
