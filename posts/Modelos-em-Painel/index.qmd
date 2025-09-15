@@ -1,26 +1,391 @@
 ---
-title: "Modelo Clássico de Regressão MCRL"
+title: "Modelo de dados em painel"
 author: "Caio Lopes"
 date: "2025-04-19"
 categories: [Ensino]
+#image: "image.jpg"
 ---
 
-**Hipóteses do Modelo Clássico de Regressão Linear Múltipla (MCRLM)**
+# Configuração Geral dos Dados de Painel
 
-**Equação do Modelo**: O modelo é definido como $y_i = f(x_{i1}, x_{i2}, ..., x_{ik}) + \epsilon_i$, que pode ser expresso de forma linear como $y_i = \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_k x_{ik} + \epsilon_i$, para $i = 1, ..., n$.
+## Notação Básica
 
-**Representação Matricial**: O modelo também pode ser representado em forma matricial como $y = X\beta + \epsilon$, onde:
-$y = \begin{pmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{pmatrix}$ é o vetor das variáveis dependentes (n x 1).
-$X = \begin{pmatrix} 1 & x_{12} & \cdots & x_{1k} \\ 1 & x_{22} & \cdots & x_{2k} \\ \vdots & \vdots & \ddots & \vdots \\ 1 & x_{n2} & \cdots & x_{nk} \end{pmatrix}$ é a matriz das variáveis independentes (n x k+1), assumindo $x_{i1} = 1$ para o intercepto.
-$\beta = \begin{pmatrix} \beta_1 \\ \beta_2 \\ \vdots \\ \beta_k \end{pmatrix}$ é o vetor dos parâmetros (k+1 x 1).
-$\epsilon = \begin{pmatrix} \epsilon_1 \\ \epsilon_2 \\ \vdots \\ \epsilon_n \end{pmatrix}$ é o vetor dos erros (n x 1).
+Dados de painel: $\{y_{it}, x_{it}: i = 1, ..., N; t = 1, ..., T\}$
 
-**Hipóteses**: O modelo clássico de regressão linear múltipla se baseia nas seguintes hipóteses:
-**H1) Linearidade**: A relação entre a variável dependente e as variáveis independentes é linear nos parâmetros.
-**H2) Identificação (posto completo)**: A matriz das variáveis independentes $X$ tem posto completo, ou seja, $posto(X) = K$ (onde $K = k+1$). Isso garante que as colunas de $X$ são linearmente independentes, permitindo a identificação única dos parâmetros.
-**H3) Valor esperado dos erros é nulo**: O valor esperado do vetor de erros é zero, $E[\epsilon] = \begin{pmatrix} E[\epsilon_1] \\ \vdots \\ E[\epsilon_n] \end{pmatrix} = \begin{pmatrix} 0 \\ \vdots \\ 0 \end{pmatrix}$.
+-   $i$: índice de indivíduos (cross-section)
+-   $t$: índice temporal\
+-   $N$: número de indivíduos
+-   $T$: número de períodos
 
-**Implicações da H3 (Valor Esperado dos Erros é Nulo)**:
-    1.  Se a média condicional do erro dado $X$ é zero ($E[\epsilon|X] = 0$), então a média não condicional do erro também é zero ($E[\epsilon] = E[E[\epsilon|X]] = E = 0$).
-    2.  A hipótese $E[\epsilon|X] = 0$ implica que $E[y|X] = E[X\beta + \epsilon|X] = E[X\beta|X] + E[\epsilon|X] = X\beta + 0 = X\beta$. Portanto, $E[y|X] - X\beta = 0$, o que implica $E[y - X\beta|X] = E[\epsilon|X] = 0$.
-    3.  Além disso, se $\epsilon$ e $X$ são independentes, então $E[X'\epsilon] = E[X']E[\epsilon] = E[X'] \cdot 0 = 0$. Consequentemente, a covariância entre $X$ e $\epsilon$ é $Cov(X, \epsilon) = E[X\epsilon'] - E[X]E[\epsilon'] = E[X\epsilon'] - E[X] \cdot 0 = E[X\epsilon'] = (E[X'\epsilon])' = 0' = 0$.
+## Representação Matricial
+
+Para cada indivíduo $i$:
+
+$$\mathbf{y}_i = \begin{pmatrix} y_{i1} \\ y_{i2} \\ \vdots \\ y_{iT} \end{pmatrix}, \quad \mathbf{X}_i = \begin{pmatrix} x_{i1}' \\ x_{i2}' \\ \vdots \\ x_{iT}' \end{pmatrix}, \quad \boldsymbol{\varepsilon}_i = \begin{pmatrix} \varepsilon_{i1} \\ \varepsilon_{i2} \\ \vdots \\ \varepsilon_{iT} \end{pmatrix}$$
+
+Dados empilhados (pooled):
+
+$$\mathbf{y} = \begin{pmatrix} \mathbf{y}_1 \\ \mathbf{y}_2 \\ \vdots \\ \mathbf{y}_N \end{pmatrix}_{NT \times 1}, \quad \mathbf{X} = \begin{pmatrix} \mathbf{X}_1 \\ \mathbf{X}_2 \\ \vdots \\ \mathbf{X}_N \end{pmatrix}_{NT \times K}$$
+
+# Modelo 1: Pooled OLS
+
+## Especificação
+
+$$y_{it} = \alpha + \mathbf{x}_{it}'\boldsymbol{\beta} + u_{it}$$
+
+**Forma matricial:** $$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{u}$$
+
+onde $\mathbf{X}$ inclui coluna de 1's para o intercepto.
+
+## Hipóteses Fundamentais
+
+**H1. Exogeneidade Estrita:** $$E[u_{it}|\mathbf{X}_i] = 0, \quad \forall i,t$$
+
+**H2. Homocedasticidade:** $$Var[u_{it}|\mathbf{X}_i] = \sigma^2, \quad \forall i,t$$
+
+**H3. Não Autocorrelação:** $$Cov[u_{it}, u_{is}|\mathbf{X}_i] = 0, \quad \forall t \neq s$$
+
+**Matriz de Variância-Covariância:** $$\boldsymbol{\Omega} = E[\mathbf{u}\mathbf{u}'|\mathbf{X}] = \sigma^2 \mathbf{I}_{NT}$$
+
+## Estimador
+
+$$\hat{\boldsymbol{\beta}}_{POLS} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}$$
+
+**Propriedades:** Consistente e eficiente sob H1-H3.
+
+## Relação com os estimadores within e between
+
+O pooled MQO pode ser visto como uma combinação do estimador within e between
+
+[Visualizar exemplo em excel](painel_exemplo1.xlsx){target="_blank"}
+
+```{r}
+#| echo: true
+#| results: hide
+#| message: false
+#| warning: false
+library(readxl)
+library(plm)
+```
+
+```{r}
+painel_exemplo <- read_excel("painel_exemplo1.xlsx")
+
+summary(plm(y ~ x1+x2, 
+        data=painel_exemplo, 
+        model="between",
+        index=c("ID","t")))
+
+```
+
+```{r}
+summary(plm(y ~ x1+x2, 
+        data=painel_exemplo, 
+        model="within",
+        index=c("ID","t")))
+```
+
+```{r}
+summary(plm(y ~ x1+x2, 
+        data=painel_exemplo, 
+        model="pooling",
+        index=c("ID","t")))
+```
+
+# Modelo 2: Efeitos Aleatórios (Random Effects)
+
+## Especificação
+
+$$y_{it} = \alpha + \mathbf{x}_{it}'\boldsymbol{\beta} + (\alpha_i + \varepsilon_{it})$$
+
+onde: - $\alpha_i \sim iid(0, \sigma_\alpha^2)$: efeito aleatório individual - $\varepsilon_{it} \sim iid(0, \sigma_\varepsilon^2)$: erro idiossincrático - $u_{it} = \alpha_i + \varepsilon_{it}$: erro composto
+
+## Hipóteses Fundamentais
+
+**H1. Exogeneidade dos Efeitos Aleatórios:** $$E[\alpha_i|\mathbf{X}_i] = 0$$
+
+**H2. Exogeneidade Estrita:** $$E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0$$
+
+**H3. Independência:** $$Cov[\alpha_i, \varepsilon_{it}] = 0, \quad \forall i,t$$
+
+## Estrutura de Correlação
+
+**Variância:** $$Var[u_{it}] = \sigma_\alpha^2 + \sigma_\varepsilon^2$$
+
+**Covariância:** $$Cov[u_{it}, u_{is}] = \sigma_\alpha^2, \quad t \neq s$$
+
+**Correlação interindividual:** $$\rho = \frac{\sigma_\alpha^2}{\sigma_\alpha^2 + \sigma_\varepsilon^2}$$
+
+## Matriz de Variância-Covariância
+
+Para cada indivíduo $i$: $$\boldsymbol{\Omega}_i = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma_\varepsilon^2 \mathbf{I}_T + \sigma_\alpha^2 \mathbf{J}_T$$
+
+onde $\mathbf{J}_T = \mathbf{e}_T\mathbf{e}_T'$ (matriz de 1's).
+
+**Forma completa:** $$\boldsymbol{\Omega} = \text{diag}(\boldsymbol{\Omega}_1, ..., \boldsymbol{\Omega}_N)$$
+
+## Transformação GLS
+
+**Parâmetro de transformação:** $$\theta = 1 - \sqrt{\frac{\sigma_\varepsilon^2}{\sigma_\varepsilon^2 + T\sigma_\alpha^2}}$$
+
+**Dados transformados:** $$y_{it}^* = y_{it} - \theta\bar{y}_i, \quad \mathbf{x}_{it}^* = \mathbf{x}_{it} - \theta\bar{\mathbf{x}}_i$$
+
+**Estimador GLS:** $$\hat{\boldsymbol{\beta}}_{RE} = (\mathbf{X}^{*'}\mathbf{X}^*)^{-1}\mathbf{X}^{*'}\mathbf{y}^*$$
+
+## Matriz de Variância-Covariância: Pooled x Aleatório
+
+### Estrutura das Matrizes de Variância-Covariância
+
+#### Matriz Individual $\boldsymbol{\Omega}_i$ (Pooled)
+
+Para cada indivíduo $i$ com $T$ períodos:
+
+$$\boldsymbol{\Omega}_i^{Pooled} = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma^2 \mathbf{I}_T$$
+
+**Forma explícita para** $T = 4$:
+
+$$\boldsymbol{\Omega}_i^{Pooled} = \begin{pmatrix}
+\sigma^2 & 0 & 0 & 0 \\
+0 & \sigma^2 & 0 & 0 \\
+0 & 0 & \sigma^2 & 0 \\
+0 & 0 & 0 & \sigma^2
+\end{pmatrix}$$
+
+##### Matriz Completa $\boldsymbol{\Omega}$ (Pooled)
+
+Para $N = 3$ indivíduos e $T = 4$ períodos:
+
+$$\boldsymbol{\Omega}^{Pooled} = \sigma^2 \mathbf{I}_{NT} = \sigma^2 \mathbf{I}_{12}$$
+
+**Estrutura em blocos:**
+
+$$\boldsymbol{\Omega}^{Pooled} = \begin{pmatrix}
+\boldsymbol{\Omega}_1^{Pooled} & \mathbf{0} & \mathbf{0} \\
+\mathbf{0} & \boldsymbol{\Omega}_2^{Pooled} & \mathbf{0} \\
+\mathbf{0} & \mathbf{0} & \boldsymbol{\Omega}_3^{Pooled}
+\end{pmatrix}$$
+
+**Forma completa** $12 \times 12$:
+
+$$\boldsymbol{\Omega}^{Pooled} = \sigma^2 \begin{pmatrix}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+\end{pmatrix}$$
+
+#### Caso 2: Modelo de Efeitos Aleatórios
+
+##### Cálculo da Estrutura da Matriz
+
+**Variância:** $$Var[u_{it}] = Var[\alpha_i + \varepsilon_{it}] = \sigma_\alpha^2 + \sigma_\varepsilon^2$$
+
+**Covariância (mesmo indivíduo, períodos diferentes):** $$Cov[u_{it}, u_{is}] = Cov[\alpha_i + \varepsilon_{it}, \alpha_i + \varepsilon_{is}] = \sigma_\alpha^2, \quad t \neq s$$
+
+**Covariância (indivíduos diferentes):** $$Cov[u_{it}, u_{js}] = 0, \quad i \neq j$$
+
+##### Matriz Individual $\boldsymbol{\Omega}_i$ (Efeitos Aleatórios)
+
+$$\boldsymbol{\Omega}_i^{RE} = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma_\varepsilon^2 \mathbf{I}_T + \sigma_\alpha^2 \mathbf{J}_T$$
+
+onde $\mathbf{J}_T = \mathbf{e}_T\mathbf{e}_T'$ é a matriz $T \times T$ de 1's.
+
+**Decomposição:** - $\mathbf{I}_T$: matriz identidade $T \times T$ - $\mathbf{J}_T$: matriz de 1's $T \times T$
+
+$$\mathbf{J}_T = \begin{pmatrix}
+1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1
+\end{pmatrix}$$
+
+**Forma explícita para** $T = 4$:
+
+$$\boldsymbol{\Omega}_i^{RE} = \sigma_\varepsilon^2 \begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{pmatrix} + \sigma_\alpha^2 \begin{pmatrix}
+1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1 \\
+1 & 1 & 1 & 1
+\end{pmatrix}$$
+
+$$\boldsymbol{\Omega}_i^{RE} = \begin{pmatrix}
+\sigma_\varepsilon^2 + \sigma_\alpha^2 & \sigma_\alpha^2 & \sigma_\alpha^2 & \sigma_\alpha^2 \\
+\sigma_\alpha^2 & \sigma_\varepsilon^2 + \sigma_\alpha^2 & \sigma_\alpha^2 & \sigma_\alpha^2 \\
+\sigma_\alpha^2 & \sigma_\alpha^2 & \sigma_\varepsilon^2 + \sigma_\alpha^2 & \sigma_\alpha^2 \\
+\sigma_\alpha^2 & \sigma_\alpha^2 & \sigma_\alpha^2 & \sigma_\varepsilon^2 + \sigma_\alpha^2
+\end{pmatrix}$$
+
+##### Matriz Completa $\boldsymbol{\Omega}$ (Efeitos Aleatórios)
+
+$$\boldsymbol{\Omega}^{RE} = \text{diag}(\boldsymbol{\Omega}_1^{RE}, \boldsymbol{\Omega}_2^{RE}, \boldsymbol{\Omega}_3^{RE})$$
+
+**Estrutura em blocos para** $N = 3, T = 4$:
+
+$$\boldsymbol{\Omega}^{RE} = \begin{pmatrix}
+\boldsymbol{\Omega}_1^{RE} & \mathbf{0} & \mathbf{0} \\
+\mathbf{0} & \boldsymbol{\Omega}_2^{RE} & \mathbf{0} \\
+\mathbf{0} & \mathbf{0} & \boldsymbol{\Omega}_3^{RE}
+\end{pmatrix}$$
+
+**Forma completa** $12 \times 12$ (usando $\sigma_1^2 = \sigma_\varepsilon^2 + \sigma_\alpha^2$ e $\sigma_0^2 = \sigma_\alpha^2$):
+
+$$\boldsymbol{\Omega}^{RE} = \begin{pmatrix}
+\sigma_1^2 & \sigma_0^2 & \sigma_0^2 & \sigma_0^2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\sigma_0^2 & \sigma_1^2 & \sigma_0^2 & \sigma_0^2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\sigma_0^2 & \sigma_0^2 & \sigma_1^2 & \sigma_0^2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\sigma_0^2 & \sigma_0^2 & \sigma_0^2 & \sigma_1^2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \sigma_1^2 & \sigma_0^2 & \sigma_0^2 & \sigma_0^2 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \sigma_0^2 & \sigma_1^2 & \sigma_0^2 & \sigma_0^2 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \sigma_0^2 & \sigma_0^2 & \sigma_1^2 & \sigma_0^2 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & \sigma_0^2 & \sigma_0^2 & \sigma_0^2 & \sigma_1^2 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \sigma_1^2 & \sigma_0^2 & \sigma_0^2 & \sigma_0^2 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \sigma_0^2 & \sigma_1^2 & \sigma_0^2 & \sigma_0^2 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \sigma_0^2 & \sigma_0^2 & \sigma_1^2 & \sigma_0^2 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \sigma_0^2 & \sigma_0^2 & \sigma_0^2 & \sigma_1^2
+\end{pmatrix}$$
+
+# Modelo 3: Efeitos Fixos (Fixed Effects)
+
+## Especificação
+
+$$y_{it} = \alpha_i + \mathbf{x}_{it}'\boldsymbol{\beta} + \varepsilon_{it}$$
+
+onde $\alpha_i$ são parâmetros fixos específicos para cada indivíduo.
+
+## Hipóteses Fundamentais
+
+**H1. Exogeneidade Estrita:** $$E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0$$
+
+**H2. Homocedasticidade:** $$Var[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = \sigma^2$$
+
+**H3. Não Autocorrelação:** $$Cov[\varepsilon_{it}, \varepsilon_{is}|\alpha_i, \mathbf{X}_i] = 0, \quad t \neq s$$
+
+**Observação Crucial:** Permite $Cov[\alpha_i, \mathbf{x}_{it}] \neq 0$
+
+## Representação Matricial com Dummies
+
+$$\mathbf{y} = \mathbf{D}\boldsymbol{\alpha} + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$$
+
+onde $\mathbf{D}$ é matriz $NT \times N$ de dummies individuais: $$\mathbf{D} = \begin{pmatrix} \mathbf{e}_T & \mathbf{0} & \cdots & \mathbf{0} \\ \mathbf{0} & \mathbf{e}_T & \cdots & \mathbf{0} \\ \vdots & \vdots & \ddots & \vdots \\ \mathbf{0} & \mathbf{0} & \cdots & \mathbf{e}_T \end{pmatrix}$$
+
+```{r}
+summary(plm(y ~ x1+x2, 
+        data=painel_exemplo, 
+        model="within",
+        index=c("ID","t")))
+
+summary(lm(y ~ -1+x1+x2+factor(ID), 
+        data=painel_exemplo,))
+```
+
+## Transformação Within
+
+**Matriz de transformação within:** $$\mathbf{Q} = \mathbf{I}_{NT} - \mathbf{D}(\mathbf{D}'\mathbf{D})^{-1}\mathbf{D}'$$
+
+**Propriedade:** $\mathbf{Q}\mathbf{D} = \mathbf{0}$ (elimina efeitos fixos)
+
+**Dados transformados:** $$\ddot{\mathbf{y}} = \mathbf{Q}\mathbf{y}, \quad \ddot{\mathbf{X}} = \mathbf{Q}\mathbf{X}$$
+
+**Interpretação:** $\ddot{y}_{it} = y_{it} - \bar{y}_i$, $\ddot{\mathbf{x}}_{it} = \mathbf{x}_{it} - \bar{\mathbf{x}}_i$
+
+## Estimador Within
+
+$$\hat{\boldsymbol{\beta}}_{FE} = (\ddot{\mathbf{X}}'\ddot{\mathbf{X}})^{-1}\ddot{\mathbf{X}}'\ddot{\mathbf{y}}$$
+
+**Forma alternativa:** $$\hat{\boldsymbol{\beta}}_{FE} = \left(\sum_{i=1}^N \sum_{t=1}^T \ddot{\mathbf{x}}_{it}\ddot{\mathbf{x}}_{it}'\right)^{-1} \sum_{i=1}^N \sum_{t=1}^T \ddot{\mathbf{x}}_{it}\ddot{y}_{it}$$
+
+# Comparação dos Estimadores
+
+## Tabela de Consistência
+
+| Modelo Verdadeiro | Pooled OLS | Random Effects | Fixed Effects |
+|-------------------|------------|----------------|---------------|
+| Pooled            | ✓          | ✓              | ✓             |
+| Random Effects    | ✓          | ✓              | ✓             |
+| Fixed Effects     | ✗          | ✗              | ✓             |
+
+## Condições de Identificação
+
+**Pooled OLS:** Requer $E[u_{it}|\mathbf{x}_{it}] = 0$
+
+**Random Effects:** Requer $E[\alpha_i|\mathbf{X}_i] = 0$
+
+**Fixed Effects:** Apenas requer $E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0$
+
+## Variáveis Identificadas
+
+-   **Pooled/RE:** Todas as variáveis (incluindo invariantes no tempo)
+-   **FE:** Apenas variáveis que variam no tempo
+
+# Preparação para Derivação dos Estimadores
+
+## Estruturas Matriciais Chave
+
+**Between transformation:** $$\mathbf{P} = \mathbf{D}(\mathbf{D}'\mathbf{D})^{-1}\mathbf{D}' = \mathbf{I}_N \otimes \frac{1}{T}\mathbf{J}_T$$
+
+**Within transformation:** $$\mathbf{Q} = \mathbf{I}_{NT} - \mathbf{P}$$
+
+**Propriedades:** - $\mathbf{P} + \mathbf{Q} = \mathbf{I}_{NT}$ - $\mathbf{P}\mathbf{Q} = \mathbf{Q}\mathbf{P} = \mathbf{0}$ - $\mathbf{P}^2 = \mathbf{P}$, $\mathbf{Q}^2 = \mathbf{Q}$ (idempotentes)
+
+## Decomposição da Variação
+
+$$\mathbf{X}'\mathbf{X} = \mathbf{X}'\mathbf{P}\mathbf{X} + \mathbf{X}'\mathbf{Q}\mathbf{X}$$
+
+-   $\mathbf{X}'\mathbf{P}\mathbf{X}$: variação between
+-   $\mathbf{X}'\mathbf{Q}\mathbf{X}$: variação within
+
+## Estimadores em Termos das Transformações
+
+**Between estimator:** $$\hat{\boldsymbol{\beta}}_B = (\mathbf{X}'\mathbf{P}\mathbf{X})^{-1}\mathbf{X}'\mathbf{P}\mathbf{y}$$
+
+**Within estimator:** $$\hat{\boldsymbol{\beta}}_W = (\mathbf{X}'\mathbf{Q}\mathbf{X})^{-1}\mathbf{X}'\mathbf{Q}\mathbf{y}$$
+
+**Random Effects (combinação ponderada):** $$\hat{\boldsymbol{\beta}}_{RE} = \mathbf{W}_B\hat{\boldsymbol{\beta}}_B + \mathbf{W}_W\hat{\boldsymbol{\beta}}_W$$
+
+onde os pesos $\mathbf{W}_B$ e $\mathbf{W}_W$ dependem de $\sigma_\alpha^2$ e $\sigma_\varepsilon^2$.
+
+------------------------------------------------------------------------
+
+## Teste de Hausman: FE vs RE
+
+**Ideia.** Sob $H_0$ (sem correlação entre os efeitos individuais $\alpha_i$ e as regressores $\mathbf X_i$, o estimador **RE** é consistente e eficiente e o **FE** também é consistente. Sob $H_1$, **RE** torna-se inconsistente e **FE** permanece consistente. Assim, a distância entre $\hat\beta_{RE}$ e $\hat\beta_{FE}$ serve para decidir entre os modelos.
+
+**Hipóteses.** - $$H_0:\ \mathbb{E}[\alpha_i\mid \ \mathbf X_i]=0$$ - $$H_1:\ \mathbb{E}[\alpha_i\mid \ \mathbf X_i]\neq 0$$
+
+**Estatística (forma clássica).** $$
+H=(\hat\beta_{RE}-\hat\beta_{FE})'
+\big[\mathrm{Var}(\hat\beta_{FE})-\mathrm{Var}(\hat\beta_{RE})\big]^{-1}
+(\hat\beta_{RE}-\hat\beta_{FE})
+\ \sim\ \chi^2_{K},
+$$ com $K$ = número de regressoras (sem a constante).
+
+**Interpretação:** p-valor pequeno $\Rightarrow$ rejeita $H_0$ $\Rightarrow$ **usar FE**; p-valor alto $\Rightarrow$ **usar RE**.
+
+```{r}
+library(readxl)
+library(plm)
+
+# Base do exemplo (ajuste o caminho se necessário)
+painel_exemplo <- read_excel("painel_exemplo1.xlsx")
+pdata <- pdata.frame(painel_exemplo, index = c("ID","t"))
+
+# Estimadores FE e RE
+fe <- plm(y ~ x1 + x2, data = pdata, model = "within")
+re <- plm(y ~ x1 + x2, data = pdata, model = "random")
+
+# Teste de Hausman clássico
+phtest(fe, re)
+```

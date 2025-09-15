@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Caio Lopes">
+<meta name="dcterms.date" content="2025-04-19">
+
+<title>APP - Modelo de dados em painel</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APP</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Modelo de dados em painel</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Ensino</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Caio Lopes </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 19, 2025</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="configuração-geral-dos-dados-de-painel" class="level1">
+<h1>Configuração Geral dos Dados de Painel</h1>
+<section id="notação-básica" class="level2">
+<h2 class="anchored" data-anchor-id="notação-básica">Notação Básica</h2>
+<p>Dados de painel: <span class="math inline">\(\{y_{it}, x_{it}: i = 1, ..., N; t = 1, ..., T\}\)</span></p>
+<ul>
+<li><span class="math inline">\(i\)</span>: índice de indivíduos (cross-section)</li>
+<li><span class="math inline">\(t\)</span>: índice temporal<br>
+</li>
+<li><span class="math inline">\(N\)</span>: número de indivíduos</li>
+<li><span class="math inline">\(T\)</span>: número de períodos</li>
+</ul>
+</section>
+<section id="representação-matricial" class="level2">
+<h2 class="anchored" data-anchor-id="representação-matricial">Representação Matricial</h2>
+<p>Para cada indivíduo <span class="math inline">\(i\)</span>:</p>
+<p><span class="math display">\[\mathbf{y}_i = \begin{pmatrix} y_{i1} \\ y_{i2} \\ \vdots \\ y_{iT} \end{pmatrix}, \quad \mathbf{X}_i = \begin{pmatrix} x_{i1}' \\ x_{i2}' \\ \vdots \\ x_{iT}' \end{pmatrix}, \quad \boldsymbol{\varepsilon}_i = \begin{pmatrix} \varepsilon_{i1} \\ \varepsilon_{i2} \\ \vdots \\ \varepsilon_{iT} \end{pmatrix}\]</span></p>
+<p>Dados empilhados (pooled):</p>
+<p><span class="math display">\[\mathbf{y} = \begin{pmatrix} \mathbf{y}_1 \\ \mathbf{y}_2 \\ \vdots \\ \mathbf{y}_N \end{pmatrix}_{NT \times 1}, \quad \mathbf{X} = \begin{pmatrix} \mathbf{X}_1 \\ \mathbf{X}_2 \\ \vdots \\ \mathbf{X}_N \end{pmatrix}_{NT \times K}\]</span></p>
+</section>
+</section>
+<section id="modelo-1-pooled-ols" class="level1">
+<h1>Modelo 1: Pooled OLS</h1>
+<section id="especificação" class="level2">
+<h2 class="anchored" data-anchor-id="especificação">Especificação</h2>
+<p><span class="math display">\[y_{it} = \alpha + \mathbf{x}_{it}'\boldsymbol{\beta} + u_{it}\]</span></p>
+<p><strong>Forma matricial:</strong> <span class="math display">\[\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{u}\]</span></p>
+<p>onde <span class="math inline">\(\mathbf{X}\)</span> inclui coluna de 1’s para o intercepto.</p>
+</section>
+<section id="hipóteses-fundamentais" class="level2">
+<h2 class="anchored" data-anchor-id="hipóteses-fundamentais">Hipóteses Fundamentais</h2>
+<p><strong>H1. Exogeneidade Estrita:</strong> <span class="math display">\[E[u_{it}|\mathbf{X}_i] = 0, \quad \forall i,t\]</span></p>
+<p><strong>H2. Homocedasticidade:</strong> <span class="math display">\[Var[u_{it}|\mathbf{X}_i] = \sigma^2, \quad \forall i,t\]</span></p>
+<p><strong>H3. Não Autocorrelação:</strong> <span class="math display">\[Cov[u_{it}, u_{is}|\mathbf{X}_i] = 0, \quad \forall t \neq s\]</span></p>
+<p><strong>Matriz de Variância-Covariância:</strong> <span class="math display">\[\boldsymbol{\Omega} = E[\mathbf{u}\mathbf{u}'|\mathbf{X}] = \sigma^2 \mathbf{I}_{NT}\]</span></p>
+</section>
+<section id="estimador" class="level2">
+<h2 class="anchored" data-anchor-id="estimador">Estimador</h2>
+<p><span class="math display">\[\hat{\boldsymbol{\beta}}_{POLS} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}\]</span></p>
+<p><strong>Propriedades:</strong> Consistente e eficiente sob H1-H3.</p>
+</section>
+<section id="relação-com-os-estimadores-within-e-between" class="level2">
+<h2 class="anchored" data-anchor-id="relação-com-os-estimadores-within-e-between">Relação com os estimadores within e between</h2>
+<p>O pooled MQO pode ser visto como uma combinação do estimador within e between</p>
+<p><a href="painel_exemplo1.xlsx" target="_blank">Visualizar exemplo em excel</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>painel_exemplo <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"painel_exemplo1.xlsx"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">plm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span>painel_exemplo, </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">model=</span><span class="st">"between"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">index=</span><span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"t"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Oneway (individual) effect Between Model
+
+Call:
+plm(formula = y ~ x1 + x2, data = painel_exemplo, model = "between", 
+    index = c("ID", "t"))
+
+Balanced Panel: n = 5, T = 3, N = 15
+Observations used in estimation: 5
+
+Residuals:
+        1         2         3         4         5 
+ 1.568503 -0.970257 -0.922984  0.254599  0.070138 
+
+Coefficients:
+            Estimate Std. Error t-value Pr(&gt;|t|)  
+(Intercept)  1.92170    2.21558  0.8674  0.47718  
+x1           1.66948    0.46653  3.5785  0.06999 .
+x2          -0.68763    0.51234 -1.3421  0.31162  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Total Sum of Squares:    44.8
+Residual Sum of Squares: 4.3232
+R-Squared:      0.9035
+Adj. R-Squared: 0.807
+F-statistic: 9.3626 on 2 and 2 DF, p-value: 0.096501</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">plm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2, </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span>painel_exemplo, </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">model=</span><span class="st">"within"</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">index=</span><span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"t"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Oneway (individual) effect Within Model
+
+Call:
+plm(formula = y ~ x1 + x2, data = painel_exemplo, model = "within", 
+    index = c("ID", "t"))
+
+Balanced Panel: n = 5, T = 3, N = 15
+
+Residuals:
+    Min.  1st Qu.   Median  3rd Qu.     Max. 
+-2.99457 -1.39904  0.12801  1.53272  2.58529 
+
+Coefficients:
+   Estimate Std. Error t-value  Pr(&gt;|t|)    
+x1  1.45299    0.17932  8.1027 3.983e-05 ***
+x2 -0.56217    0.14402 -3.9034  0.004523 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Total Sum of Squares:    513.33
+Residual Sum of Squares: 47.588
+R-Squared:      0.9073
+Adj. R-Squared: 0.83777
+F-statistic: 39.148 on 2 and 8 DF, p-value: 7.3858e-05</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">plm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2, </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span>painel_exemplo, </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">model=</span><span class="st">"pooling"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">index=</span><span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"t"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Pooling Model
+
+Call:
+plm(formula = y ~ x1 + x2, data = painel_exemplo, model = "pooling", 
+    index = c("ID", "t"))
+
+Balanced Panel: n = 5, T = 3, N = 15
+
+Residuals:
+   Min. 1st Qu.  Median 3rd Qu.    Max. 
+-3.2151 -1.9570  0.9529  1.5686  3.0181 
+
+Coefficients:
+            Estimate Std. Error t-value  Pr(&gt;|t|)    
+(Intercept)  1.80451    1.03936  1.7362 0.1081093    
+x1           1.48969    0.14296 10.4206 2.291e-07 ***
+x2          -0.55747    0.12379 -4.5034 0.0007223 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Total Sum of Squares:    647.73
+Residual Sum of Squares: 61.825
+R-Squared:      0.90455
+Adj. R-Squared: 0.88864
+F-statistic: 56.8612 on 2 and 12 DF, p-value: 7.5616e-07</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="modelo-2-efeitos-aleatórios-random-effects" class="level1">
+<h1>Modelo 2: Efeitos Aleatórios (Random Effects)</h1>
+<section id="especificação-1" class="level2">
+<h2 class="anchored" data-anchor-id="especificação-1">Especificação</h2>
+<p><span class="math display">\[y_{it} = \alpha + \mathbf{x}_{it}'\boldsymbol{\beta} + (\alpha_i + \varepsilon_{it})\]</span></p>
+<p>onde: - <span class="math inline">\(\alpha_i \sim iid(0, \sigma_\alpha^2)\)</span>: efeito aleatório individual - <span class="math inline">\(\varepsilon_{it} \sim iid(0, \sigma_\varepsilon^2)\)</span>: erro idiossincrático - <span class="math inline">\(u_{it} = \alpha_i + \varepsilon_{it}\)</span>: erro composto</p>
+</section>
+<section id="hipóteses-fundamentais-1" class="level2">
+<h2 class="anchored" data-anchor-id="hipóteses-fundamentais-1">Hipóteses Fundamentais</h2>
+<p><strong>H1. Exogeneidade dos Efeitos Aleatórios:</strong> <span class="math display">\[E[\alpha_i|\mathbf{X}_i] = 0\]</span></p>
+<p><strong>H2. Exogeneidade Estrita:</strong> <span class="math display">\[E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0\]</span></p>
+<p><strong>H3. Independência:</strong> <span class="math display">\[Cov[\alpha_i, \varepsilon_{it}] = 0, \quad \forall i,t\]</span></p>
+</section>
+<section id="estrutura-de-correlação" class="level2">
+<h2 class="anchored" data-anchor-id="estrutura-de-correlação">Estrutura de Correlação</h2>
+<p><strong>Variância:</strong> <span class="math display">\[Var[u_{it}] = \sigma_\alpha^2 + \sigma_\varepsilon^2\]</span></p>
+<p><strong>Covariância:</strong> <span class="math display">\[Cov[u_{it}, u_{is}] = \sigma_\alpha^2, \quad t \neq s\]</span></p>
+<p><strong>Correlação interindividual:</strong> <span class="math display">\[\rho = \frac{\sigma_\alpha^2}{\sigma_\alpha^2 + \sigma_\varepsilon^2}\]</span></p>
+</section>
+<section id="matriz-de-variância-covariância" class="level2">
+<h2 class="anchored" data-anchor-id="matriz-de-variância-covariância">Matriz de Variância-Covariância</h2>
+<p>Para cada indivíduo <span class="math inline">\(i\)</span>: <span class="math display">\[\boldsymbol{\Omega}_i = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma_\varepsilon^2 \mathbf{I}_T + \sigma_\alpha^2 \mathbf{J}_T\]</span></p>
+<p>onde <span class="math inline">\(\mathbf{J}_T = \mathbf{e}_T\mathbf{e}_T'\)</span> (matriz de 1’s).</p>
+<p><strong>Forma completa:</strong> <span class="math display">\[\boldsymbol{\Omega} = \text{diag}(\boldsymbol{\Omega}_1, ..., \boldsymbol{\Omega}_N)\]</span></p>
+</section>
+<section id="transformação-gls" class="level2">
+<h2 class="anchored" data-anchor-id="transformação-gls">Transformação GLS</h2>
+<p><strong>Parâmetro de transformação:</strong> <span class="math display">\[\theta = 1 - \sqrt{\frac{\sigma_\varepsilon^2}{\sigma_\varepsilon^2 + T\sigma_\alpha^2}}\]</span></p>
+<p><strong>Dados transformados:</strong> <span class="math display">\[y_{it}^* = y_{it} - \theta\bar{y}_i, \quad \mathbf{x}_{it}^* = \mathbf{x}_{it} - \theta\bar{\mathbf{x}}_i\]</span></p>
+<p><strong>Estimador GLS:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_{RE} = (\mathbf{X}^{*'}\mathbf{X}^*)^{-1}\mathbf{X}^{*'}\mathbf{y}^*\]</span></p>
+</section>
+<section id="matriz-de-variância-covariância-pooled-x-aleatório" class="level2">
+<h2 class="anchored" data-anchor-id="matriz-de-variância-covariância-pooled-x-aleatório">Matriz de Variância-Covariância: Pooled x Aleatório</h2>
+<section id="estrutura-das-matrizes-de-variância-covariância" class="level3">
+<h3 class="anchored" data-anchor-id="estrutura-das-matrizes-de-variância-covariância">Estrutura das Matrizes de Variância-Covariância</h3>
+<section id="matriz-individual-boldsymbolomega_i-pooled" class="level4">
+<h4 class="anchored" data-anchor-id="matriz-individual-boldsymbolomega_i-pooled">Matriz Individual <span class="math inline">\(\boldsymbol{\Omega}_i\)</span> (Pooled)</h4>
+<p>Para cada indivíduo <span class="math inline">\(i\)</span> com <span class="math inline">\(T\)</span> períodos:</p>
+<p><span class="math display">\[\boldsymbol{\Omega}_i^{Pooled} = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma^2 \mathbf{I}_T\]</span></p>
+<p><strong>Forma explícita para <span class="math inline">\(T = 4\)</span>:</strong></p>
+<p><span class="math display">\[\boldsymbol{\Omega}_i^{Pooled} = \begin{pmatrix}
+\sigma^2 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; \sigma^2 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; \sigma^2 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; \sigma^2
+\end{pmatrix}\]</span></p>
+<section id="matriz-completa-boldsymbolomega-pooled" class="level5">
+<h5 class="anchored" data-anchor-id="matriz-completa-boldsymbolomega-pooled">Matriz Completa <span class="math inline">\(\boldsymbol{\Omega}\)</span> (Pooled)</h5>
+<p>Para <span class="math inline">\(N = 3\)</span> indivíduos e <span class="math inline">\(T = 4\)</span> períodos:</p>
+<p><span class="math display">\[\boldsymbol{\Omega}^{Pooled} = \sigma^2 \mathbf{I}_{NT} = \sigma^2 \mathbf{I}_{12}\]</span></p>
+<p><strong>Estrutura em blocos:</strong></p>
+<p><span class="math display">\[\boldsymbol{\Omega}^{Pooled} = \begin{pmatrix}
+\boldsymbol{\Omega}_1^{Pooled} &amp; \mathbf{0} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \boldsymbol{\Omega}_2^{Pooled} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \mathbf{0} &amp; \boldsymbol{\Omega}_3^{Pooled}
+\end{pmatrix}\]</span></p>
+<p><strong>Forma completa <span class="math inline">\(12 \times 12\)</span>:</strong></p>
+<p><span class="math display">\[\boldsymbol{\Omega}^{Pooled} = \sigma^2 \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix}\]</span></p>
+</section>
+</section>
+<section id="caso-2-modelo-de-efeitos-aleatórios" class="level4">
+<h4 class="anchored" data-anchor-id="caso-2-modelo-de-efeitos-aleatórios">Caso 2: Modelo de Efeitos Aleatórios</h4>
+<section id="cálculo-da-estrutura-da-matriz" class="level5">
+<h5 class="anchored" data-anchor-id="cálculo-da-estrutura-da-matriz">Cálculo da Estrutura da Matriz</h5>
+<p><strong>Variância:</strong> <span class="math display">\[Var[u_{it}] = Var[\alpha_i + \varepsilon_{it}] = \sigma_\alpha^2 + \sigma_\varepsilon^2\]</span></p>
+<p><strong>Covariância (mesmo indivíduo, períodos diferentes):</strong> <span class="math display">\[Cov[u_{it}, u_{is}] = Cov[\alpha_i + \varepsilon_{it}, \alpha_i + \varepsilon_{is}] = \sigma_\alpha^2, \quad t \neq s\]</span></p>
+<p><strong>Covariância (indivíduos diferentes):</strong> <span class="math display">\[Cov[u_{it}, u_{js}] = 0, \quad i \neq j\]</span></p>
+</section>
+<section id="matriz-individual-boldsymbolomega_i-efeitos-aleatórios" class="level5">
+<h5 class="anchored" data-anchor-id="matriz-individual-boldsymbolomega_i-efeitos-aleatórios">Matriz Individual <span class="math inline">\(\boldsymbol{\Omega}_i\)</span> (Efeitos Aleatórios)</h5>
+<p><span class="math display">\[\boldsymbol{\Omega}_i^{RE} = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma_\varepsilon^2 \mathbf{I}_T + \sigma_\alpha^2 \mathbf{J}_T\]</span></p>
+<p>onde <span class="math inline">\(\mathbf{J}_T = \mathbf{e}_T\mathbf{e}_T'\)</span> é a matriz <span class="math inline">\(T \times T\)</span> de 1’s.</p>
+<p><strong>Decomposição:</strong> - <span class="math inline">\(\mathbf{I}_T\)</span>: matriz identidade <span class="math inline">\(T \times T\)</span> - <span class="math inline">\(\mathbf{J}_T\)</span>: matriz de 1’s <span class="math inline">\(T \times T\)</span></p>
+<p><span class="math display">\[\mathbf{J}_T = \begin{pmatrix}
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix}\]</span></p>
+<p><strong>Forma explícita para <span class="math inline">\(T = 4\)</span>:</strong></p>
+<p><span class="math display">\[\boldsymbol{\Omega}_i^{RE} = \sigma_\varepsilon^2 \begin{pmatrix}
+1 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 1
+\end{pmatrix} + \sigma_\alpha^2 \begin{pmatrix}
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; 1 &amp; 1 &amp; 1
+\end{pmatrix}\]</span></p>
+<p><span class="math display">\[\boldsymbol{\Omega}_i^{RE} = \begin{pmatrix}
+\sigma_\varepsilon^2 + \sigma_\alpha^2 &amp; \sigma_\alpha^2 &amp; \sigma_\alpha^2 &amp; \sigma_\alpha^2 \\
+\sigma_\alpha^2 &amp; \sigma_\varepsilon^2 + \sigma_\alpha^2 &amp; \sigma_\alpha^2 &amp; \sigma_\alpha^2 \\
+\sigma_\alpha^2 &amp; \sigma_\alpha^2 &amp; \sigma_\varepsilon^2 + \sigma_\alpha^2 &amp; \sigma_\alpha^2 \\
+\sigma_\alpha^2 &amp; \sigma_\alpha^2 &amp; \sigma_\alpha^2 &amp; \sigma_\varepsilon^2 + \sigma_\alpha^2
+\end{pmatrix}\]</span></p>
+</section>
+<section id="matriz-completa-boldsymbolomega-efeitos-aleatórios" class="level5">
+<h5 class="anchored" data-anchor-id="matriz-completa-boldsymbolomega-efeitos-aleatórios">Matriz Completa <span class="math inline">\(\boldsymbol{\Omega}\)</span> (Efeitos Aleatórios)</h5>
+<p><span class="math display">\[\boldsymbol{\Omega}^{RE} = \text{diag}(\boldsymbol{\Omega}_1^{RE}, \boldsymbol{\Omega}_2^{RE}, \boldsymbol{\Omega}_3^{RE})\]</span></p>
+<p><strong>Estrutura em blocos para <span class="math inline">\(N = 3, T = 4\)</span>:</strong></p>
+<p><span class="math display">\[\boldsymbol{\Omega}^{RE} = \begin{pmatrix}
+\boldsymbol{\Omega}_1^{RE} &amp; \mathbf{0} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \boldsymbol{\Omega}_2^{RE} &amp; \mathbf{0} \\
+\mathbf{0} &amp; \mathbf{0} &amp; \boldsymbol{\Omega}_3^{RE}
+\end{pmatrix}\]</span></p>
+<p><strong>Forma completa <span class="math inline">\(12 \times 12\)</span> (usando <span class="math inline">\(\sigma_1^2 = \sigma_\varepsilon^2 + \sigma_\alpha^2\)</span> e <span class="math inline">\(\sigma_0^2 = \sigma_\alpha^2\)</span>):</strong></p>
+<p><span class="math display">\[\boldsymbol{\Omega}^{RE} = \begin{pmatrix}
+\sigma_1^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+\sigma_0^2 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+\sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+\sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_0^2 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; \sigma_0^2 &amp; \sigma_0^2 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_1^2 &amp; \sigma_0^2 \\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_0^2 &amp; \sigma_1^2
+\end{pmatrix}\]</span></p>
+</section>
+</section>
+</section>
+</section>
+</section>
+<section id="modelo-3-efeitos-fixos-fixed-effects" class="level1">
+<h1>Modelo 3: Efeitos Fixos (Fixed Effects)</h1>
+<section id="especificação-2" class="level2">
+<h2 class="anchored" data-anchor-id="especificação-2">Especificação</h2>
+<p><span class="math display">\[y_{it} = \alpha_i + \mathbf{x}_{it}'\boldsymbol{\beta} + \varepsilon_{it}\]</span></p>
+<p>onde <span class="math inline">\(\alpha_i\)</span> são parâmetros fixos específicos para cada indivíduo.</p>
+</section>
+<section id="hipóteses-fundamentais-2" class="level2">
+<h2 class="anchored" data-anchor-id="hipóteses-fundamentais-2">Hipóteses Fundamentais</h2>
+<p><strong>H1. Exogeneidade Estrita:</strong> <span class="math display">\[E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0\]</span></p>
+<p><strong>H2. Homocedasticidade:</strong> <span class="math display">\[Var[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = \sigma^2\]</span></p>
+<p><strong>H3. Não Autocorrelação:</strong> <span class="math display">\[Cov[\varepsilon_{it}, \varepsilon_{is}|\alpha_i, \mathbf{X}_i] = 0, \quad t \neq s\]</span></p>
+<p><strong>Observação Crucial:</strong> Permite <span class="math inline">\(Cov[\alpha_i, \mathbf{x}_{it}] \neq 0\)</span></p>
+</section>
+<section id="representação-matricial-com-dummies" class="level2">
+<h2 class="anchored" data-anchor-id="representação-matricial-com-dummies">Representação Matricial com Dummies</h2>
+<p><span class="math display">\[\mathbf{y} = \mathbf{D}\boldsymbol{\alpha} + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span></p>
+<p>onde <span class="math inline">\(\mathbf{D}\)</span> é matriz <span class="math inline">\(NT \times N\)</span> de dummies individuais: <span class="math display">\[\mathbf{D} = \begin{pmatrix} \mathbf{e}_T &amp; \mathbf{0} &amp; \cdots &amp; \mathbf{0} \\ \mathbf{0} &amp; \mathbf{e}_T &amp; \cdots &amp; \mathbf{0} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \mathbf{0} &amp; \mathbf{0} &amp; \cdots &amp; \mathbf{e}_T \end{pmatrix}\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">plm</span>(y <span class="sc">~</span> x1<span class="sc">+</span>x2, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span>painel_exemplo, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">model=</span><span class="st">"within"</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">index=</span><span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"t"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Oneway (individual) effect Within Model
+
+Call:
+plm(formula = y ~ x1 + x2, data = painel_exemplo, model = "within", 
+    index = c("ID", "t"))
+
+Balanced Panel: n = 5, T = 3, N = 15
+
+Residuals:
+    Min.  1st Qu.   Median  3rd Qu.     Max. 
+-2.99457 -1.39904  0.12801  1.53272  2.58529 
+
+Coefficients:
+   Estimate Std. Error t-value  Pr(&gt;|t|)    
+x1  1.45299    0.17932  8.1027 3.983e-05 ***
+x2 -0.56217    0.14402 -3.9034  0.004523 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Total Sum of Squares:    513.33
+Residual Sum of Squares: 47.588
+R-Squared:      0.9073
+Adj. R-Squared: 0.83777
+F-statistic: 39.148 on 2 and 8 DF, p-value: 7.3858e-05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">+</span>x1<span class="sc">+</span>x2<span class="sc">+</span><span class="fu">factor</span>(ID), </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span>painel_exemplo,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ -1 + x1 + x2 + factor(ID), data = painel_exemplo)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.995 -1.399  0.128  1.533  2.585 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+x1            1.4530     0.1793   8.103 3.98e-05 ***
+x2           -0.5622     0.1440  -3.903  0.00452 ** 
+factor(ID)1   3.8158     2.1436   1.780  0.11293    
+factor(ID)2   0.9769     2.1143   0.462  0.65636    
+factor(ID)3   1.4727     1.9199   0.767  0.46507    
+factor(ID)4   2.1189     1.5133   1.400  0.19903    
+factor(ID)5   1.5088     1.5837   0.953  0.36863    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.439 on 8 degrees of freedom
+Multiple R-squared:  0.9474,    Adjusted R-squared:  0.9013 
+F-statistic: 20.57 on 7 and 8 DF,  p-value: 0.0001618</code></pre>
+</div>
+</div>
+</section>
+<section id="transformação-within" class="level2">
+<h2 class="anchored" data-anchor-id="transformação-within">Transformação Within</h2>
+<p><strong>Matriz de transformação within:</strong> <span class="math display">\[\mathbf{Q} = \mathbf{I}_{NT} - \mathbf{D}(\mathbf{D}'\mathbf{D})^{-1}\mathbf{D}'\]</span></p>
+<p><strong>Propriedade:</strong> <span class="math inline">\(\mathbf{Q}\mathbf{D} = \mathbf{0}\)</span> (elimina efeitos fixos)</p>
+<p><strong>Dados transformados:</strong> <span class="math display">\[\ddot{\mathbf{y}} = \mathbf{Q}\mathbf{y}, \quad \ddot{\mathbf{X}} = \mathbf{Q}\mathbf{X}\]</span></p>
+<p><strong>Interpretação:</strong> <span class="math inline">\(\ddot{y}_{it} = y_{it} - \bar{y}_i\)</span>, <span class="math inline">\(\ddot{\mathbf{x}}_{it} = \mathbf{x}_{it} - \bar{\mathbf{x}}_i\)</span></p>
+</section>
+<section id="estimador-within" class="level2">
+<h2 class="anchored" data-anchor-id="estimador-within">Estimador Within</h2>
+<p><span class="math display">\[\hat{\boldsymbol{\beta}}_{FE} = (\ddot{\mathbf{X}}'\ddot{\mathbf{X}})^{-1}\ddot{\mathbf{X}}'\ddot{\mathbf{y}}\]</span></p>
+<p><strong>Forma alternativa:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_{FE} = \left(\sum_{i=1}^N \sum_{t=1}^T \ddot{\mathbf{x}}_{it}\ddot{\mathbf{x}}_{it}'\right)^{-1} \sum_{i=1}^N \sum_{t=1}^T \ddot{\mathbf{x}}_{it}\ddot{y}_{it}\]</span></p>
+</section>
+</section>
+<section id="comparação-dos-estimadores" class="level1">
+<h1>Comparação dos Estimadores</h1>
+<section id="tabela-de-consistência" class="level2">
+<h2 class="anchored" data-anchor-id="tabela-de-consistência">Tabela de Consistência</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Modelo Verdadeiro</th>
+<th>Pooled OLS</th>
+<th>Random Effects</th>
+<th>Fixed Effects</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pooled</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr class="even">
+<td>Random Effects</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr class="odd">
+<td>Fixed Effects</td>
+<td>✗</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="condições-de-identificação" class="level2">
+<h2 class="anchored" data-anchor-id="condições-de-identificação">Condições de Identificação</h2>
+<p><strong>Pooled OLS:</strong> Requer <span class="math inline">\(E[u_{it}|\mathbf{x}_{it}] = 0\)</span></p>
+<p><strong>Random Effects:</strong> Requer <span class="math inline">\(E[\alpha_i|\mathbf{X}_i] = 0\)</span></p>
+<p><strong>Fixed Effects:</strong> Apenas requer <span class="math inline">\(E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0\)</span></p>
+</section>
+<section id="variáveis-identificadas" class="level2">
+<h2 class="anchored" data-anchor-id="variáveis-identificadas">Variáveis Identificadas</h2>
+<ul>
+<li><strong>Pooled/RE:</strong> Todas as variáveis (incluindo invariantes no tempo)</li>
+<li><strong>FE:</strong> Apenas variáveis que variam no tempo</li>
+</ul>
+</section>
+</section>
+<section id="preparação-para-derivação-dos-estimadores" class="level1">
+<h1>Preparação para Derivação dos Estimadores</h1>
+<section id="estruturas-matriciais-chave" class="level2">
+<h2 class="anchored" data-anchor-id="estruturas-matriciais-chave">Estruturas Matriciais Chave</h2>
+<p><strong>Between transformation:</strong> <span class="math display">\[\mathbf{P} = \mathbf{D}(\mathbf{D}'\mathbf{D})^{-1}\mathbf{D}' = \mathbf{I}_N \otimes \frac{1}{T}\mathbf{J}_T\]</span></p>
+<p><strong>Within transformation:</strong> <span class="math display">\[\mathbf{Q} = \mathbf{I}_{NT} - \mathbf{P}\]</span></p>
+<p><strong>Propriedades:</strong> - <span class="math inline">\(\mathbf{P} + \mathbf{Q} = \mathbf{I}_{NT}\)</span> - <span class="math inline">\(\mathbf{P}\mathbf{Q} = \mathbf{Q}\mathbf{P} = \mathbf{0}\)</span> - <span class="math inline">\(\mathbf{P}^2 = \mathbf{P}\)</span>, <span class="math inline">\(\mathbf{Q}^2 = \mathbf{Q}\)</span> (idempotentes)</p>
+</section>
+<section id="decomposição-da-variação" class="level2">
+<h2 class="anchored" data-anchor-id="decomposição-da-variação">Decomposição da Variação</h2>
+<p><span class="math display">\[\mathbf{X}'\mathbf{X} = \mathbf{X}'\mathbf{P}\mathbf{X} + \mathbf{X}'\mathbf{Q}\mathbf{X}\]</span></p>
+<ul>
+<li><span class="math inline">\(\mathbf{X}'\mathbf{P}\mathbf{X}\)</span>: variação between</li>
+<li><span class="math inline">\(\mathbf{X}'\mathbf{Q}\mathbf{X}\)</span>: variação within</li>
+</ul>
+</section>
+<section id="estimadores-em-termos-das-transformações" class="level2">
+<h2 class="anchored" data-anchor-id="estimadores-em-termos-das-transformações">Estimadores em Termos das Transformações</h2>
+<p><strong>Between estimator:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_B = (\mathbf{X}'\mathbf{P}\mathbf{X})^{-1}\mathbf{X}'\mathbf{P}\mathbf{y}\]</span></p>
+<p><strong>Within estimator:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_W = (\mathbf{X}'\mathbf{Q}\mathbf{X})^{-1}\mathbf{X}'\mathbf{Q}\mathbf{y}\]</span></p>
+<p><strong>Random Effects (combinação ponderada):</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_{RE} = \mathbf{W}_B\hat{\boldsymbol{\beta}}_B + \mathbf{W}_W\hat{\boldsymbol{\beta}}_W\]</span></p>
+<p>onde os pesos <span class="math inline">\(\mathbf{W}_B\)</span> e <span class="math inline">\(\mathbf{W}_W\)</span> dependem de <span class="math inline">\(\sigma_\alpha^2\)</span> e <span class="math inline">\(\sigma_\varepsilon^2\)</span>.</p>
+<hr>
+</section>
+<section id="teste-de-hausman-fe-vs-re" class="level2">
+<h2 class="anchored" data-anchor-id="teste-de-hausman-fe-vs-re">Teste de Hausman: FE vs RE</h2>
+<p><strong>Ideia.</strong> Sob <span class="math inline">\(H_0\)</span> (sem correlação entre os efeitos individuais <span class="math inline">\(\alpha_i\)</span> e as regressores <span class="math inline">\(\mathbf X_i\)</span>, o estimador <strong>RE</strong> é consistente e eficiente e o <strong>FE</strong> também é consistente. Sob <span class="math inline">\(H_1\)</span>, <strong>RE</strong> torna-se inconsistente e <strong>FE</strong> permanece consistente. Assim, a distância entre <span class="math inline">\(\hat\beta_{RE}\)</span> e <span class="math inline">\(\hat\beta_{FE}\)</span> serve para decidir entre os modelos.</p>
+<p><strong>Hipóteses.</strong> - <span class="math display">\[H_0:\ \mathbb{E}[\alpha_i\mid \ \mathbf X_i]=0\]</span> - <span class="math display">\[H_1:\ \mathbb{E}[\alpha_i\mid \ \mathbf X_i]\neq 0\]</span></p>
+<p><strong>Estatística (forma clássica).</strong> <span class="math display">\[
+H=(\hat\beta_{RE}-\hat\beta_{FE})'
+\big[\mathrm{Var}(\hat\beta_{FE})-\mathrm{Var}(\hat\beta_{RE})\big]^{-1}
+(\hat\beta_{RE}-\hat\beta_{FE})
+\ \sim\ \chi^2_{K},
+\]</span> com <span class="math inline">\(K\)</span> = número de regressoras (sem a constante).</p>
+<p><strong>Interpretação:</strong> p-valor pequeno <span class="math inline">\(\Rightarrow\)</span> rejeita <span class="math inline">\(H_0\)</span> <span class="math inline">\(\Rightarrow\)</span> <strong>usar FE</strong>; p-valor alto <span class="math inline">\(\Rightarrow\)</span> <strong>usar RE</strong>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plm)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Base do exemplo (ajuste o caminho se necessário)</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>painel_exemplo <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"painel_exemplo1.xlsx"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>pdata <span class="ot">&lt;-</span> <span class="fu">pdata.frame</span>(painel_exemplo, <span class="at">index =</span> <span class="fu">c</span>(<span class="st">"ID"</span>,<span class="st">"t"</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimadores FE e RE</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>fe <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> pdata, <span class="at">model =</span> <span class="st">"within"</span>)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>re <span class="ot">&lt;-</span> <span class="fu">plm</span>(y <span class="sc">~</span> x1 <span class="sc">+</span> x2, <span class="at">data =</span> pdata, <span class="at">model =</span> <span class="st">"random"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Teste de Hausman clássico</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="fu">phtest</span>(fe, re)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Hausman Test
+
+data:  y ~ x1 + x2
+chisq = 0.10349, df = 2, p-value = 0.9496
+alternative hypothesis: one model is inconsistent</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

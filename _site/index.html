@@ -151,205 +151,56 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ensino">Ensino <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Ensino">Ensino <span class="quarto-category-count">(2)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
 
-<section id="configuração-geral-dos-dados-de-painel" class="level1">
-<h1>Configuração Geral dos Dados de Painel</h1>
-<section id="notação-básica" class="level2">
-<h2 class="anchored" data-anchor-id="notação-básica">Notação Básica</h2>
-<p>Dados de painel: <span class="math inline">\(\{y_{it}, x_{it}: i = 1, ..., N; t = 1, ..., T\}\)</span></p>
-<ul>
-<li><span class="math inline">\(i\)</span>: índice de indivíduos (cross-section)</li>
-<li><span class="math inline">\(t\)</span>: índice temporal<br>
-</li>
-<li><span class="math inline">\(N\)</span>: número de indivíduos</li>
-<li><span class="math inline">\(T\)</span>: número de períodos</li>
-</ul>
-</section>
-<section id="representação-matricial" class="level2">
-<h2 class="anchored" data-anchor-id="representação-matricial">Representação Matricial</h2>
-<p>Para cada indivíduo <span class="math inline">\(i\)</span>:</p>
-<p><span class="math display">\[\mathbf{y}_i = \begin{pmatrix} y_{i1} \\ y_{i2} \\ \vdots \\ y_{iT} \end{pmatrix}, \quad \mathbf{X}_i = \begin{pmatrix} x_{i1}' \\ x_{i2}' \\ \vdots \\ x_{iT}' \end{pmatrix}, \quad \boldsymbol{\varepsilon}_i = \begin{pmatrix} \varepsilon_{i1} \\ \varepsilon_{i2} \\ \vdots \\ \varepsilon_{iT} \end{pmatrix}\]</span></p>
-<p>Dados empilhados (stacked):</p>
-<p><span class="math display">\[\mathbf{y} = \begin{pmatrix} \mathbf{y}_1 \\ \mathbf{y}_2 \\ \vdots \\ \mathbf{y}_N \end{pmatrix}_{NT \times 1}, \quad \mathbf{X} = \begin{pmatrix} \mathbf{X}_1 \\ \mathbf{X}_2 \\ \vdots \\ \mathbf{X}_N \end{pmatrix}_{NT \times K}\]</span></p>
-</section>
-</section>
-<section id="modelo-1-pooled-ols" class="level1">
-<h1>Modelo 1: Pooled OLS</h1>
-<section id="especificação" class="level2">
-<h2 class="anchored" data-anchor-id="especificação">Especificação</h2>
-<p><span class="math display">\[y_{it} = \alpha + \mathbf{x}_{it}'\boldsymbol{\beta} + u_{it}\]</span></p>
-<p><strong>Forma matricial:</strong> <span class="math display">\[\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \mathbf{u}\]</span></p>
-<p>onde <span class="math inline">\(\mathbf{X}\)</span> inclui coluna de 1’s para o intercepto.</p>
-</section>
-<section id="hipóteses-fundamentais" class="level2">
-<h2 class="anchored" data-anchor-id="hipóteses-fundamentais">Hipóteses Fundamentais</h2>
-<p><strong>H1. Exogeneidade Estrita:</strong> <span class="math display">\[E[u_{it}|\mathbf{X}_i] = 0, \quad \forall i,t\]</span></p>
-<p><strong>H2. Homocedasticidade:</strong> <span class="math display">\[Var[u_{it}|\mathbf{X}_i] = \sigma^2, \quad \forall i,t\]</span></p>
-<p><strong>H3. Não Autocorrelação:</strong> <span class="math display">\[Cov[u_{it}, u_{is}|\mathbf{X}_i] = 0, \quad \forall t \neq s\]</span></p>
-<p><strong>Matriz de Variância-Covariância:</strong> <span class="math display">\[\boldsymbol{\Omega} = E[\mathbf{u}\mathbf{u}'|\mathbf{X}] = \sigma^2 \mathbf{I}_{NT}\]</span></p>
-</section>
-<section id="estimador" class="level2">
-<h2 class="anchored" data-anchor-id="estimador">Estimador</h2>
-<p><span class="math display">\[\hat{\boldsymbol{\beta}}_{POLS} = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{y}\]</span></p>
-<p><strong>Propriedades:</strong> Consistente e eficiente sob H1-H3.</p>
-</section>
-</section>
-<section id="modelo-2-efeitos-aleatórios-random-effects" class="level1">
-<h1>Modelo 2: Efeitos Aleatórios (Random Effects)</h1>
-<section id="especificação-1" class="level2">
-<h2 class="anchored" data-anchor-id="especificação-1">Especificação</h2>
-<p><span class="math display">\[y_{it} = \alpha + \mathbf{x}_{it}'\boldsymbol{\beta} + (\alpha_i + \varepsilon_{it})\]</span></p>
-<p>onde: - <span class="math inline">\(\alpha_i \sim iid(0, \sigma_\alpha^2)\)</span>: efeito aleatório individual - <span class="math inline">\(\varepsilon_{it} \sim iid(0, \sigma_\varepsilon^2)\)</span>: erro idiossincrático - <span class="math inline">\(u_{it} = \alpha_i + \varepsilon_{it}\)</span>: erro composto</p>
-</section>
-<section id="hipóteses-fundamentais-1" class="level2">
-<h2 class="anchored" data-anchor-id="hipóteses-fundamentais-1">Hipóteses Fundamentais</h2>
-<p><strong>H1. Exogeneidade dos Efeitos Aleatórios:</strong> <span class="math display">\[E[\alpha_i|\mathbf{X}_i] = 0\]</span></p>
-<p><strong>H2. Exogeneidade Estrita:</strong> <span class="math display">\[E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0\]</span></p>
-<p><strong>H3. Independência:</strong> <span class="math display">\[Cov[\alpha_i, \varepsilon_{it}] = 0, \quad \forall i,t\]</span></p>
-</section>
-<section id="estrutura-de-correlação" class="level2">
-<h2 class="anchored" data-anchor-id="estrutura-de-correlação">Estrutura de Correlação</h2>
-<p><strong>Variância:</strong> <span class="math display">\[Var[u_{it}] = \sigma_\alpha^2 + \sigma_\varepsilon^2\]</span></p>
-<p><strong>Covariância:</strong> <span class="math display">\[Cov[u_{it}, u_{is}] = \sigma_\alpha^2, \quad t \neq s\]</span></p>
-<p><strong>Correlação Intraclasse:</strong> <span class="math display">\[\rho = \frac{\sigma_\alpha^2}{\sigma_\alpha^2 + \sigma_\varepsilon^2}\]</span></p>
-</section>
-<section id="matriz-de-variância-covariância" class="level2">
-<h2 class="anchored" data-anchor-id="matriz-de-variância-covariância">Matriz de Variância-Covariância</h2>
-<p>Para cada indivíduo <span class="math inline">\(i\)</span>: <span class="math display">\[\boldsymbol{\Omega}_i = E[\mathbf{u}_i\mathbf{u}_i'] = \sigma_\varepsilon^2 \mathbf{I}_T + \sigma_\alpha^2 \mathbf{J}_T\]</span></p>
-<p>onde <span class="math inline">\(\mathbf{J}_T = \mathbf{e}_T\mathbf{e}_T'\)</span> (matriz de 1’s).</p>
-<p><strong>Forma completa:</strong> <span class="math display">\[\boldsymbol{\Omega} = \text{diag}(\boldsymbol{\Omega}_1, ..., \boldsymbol{\Omega}_N)\]</span></p>
-</section>
-<section id="transformação-gls" class="level2">
-<h2 class="anchored" data-anchor-id="transformação-gls">Transformação GLS</h2>
-<p><strong>Parâmetro de transformação:</strong> <span class="math display">\[\theta = 1 - \sqrt{\frac{\sigma_\varepsilon^2}{\sigma_\varepsilon^2 + T\sigma_\alpha^2}}\]</span></p>
-<p><strong>Dados transformados:</strong> <span class="math display">\[y_{it}^* = y_{it} - \theta\bar{y}_i, \quad \mathbf{x}_{it}^* = \mathbf{x}_{it} - \theta\bar{\mathbf{x}}_i\]</span></p>
-<p><strong>Estimador GLS:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_{RE} = (\mathbf{X}^{*'}\mathbf{X}^*)^{-1}\mathbf{X}^{*'}\mathbf{y}^*\]</span></p>
-</section>
-</section>
-<section id="modelo-3-efeitos-fixos-fixed-effects" class="level1">
-<h1>Modelo 3: Efeitos Fixos (Fixed Effects)</h1>
-<section id="especificação-2" class="level2">
-<h2 class="anchored" data-anchor-id="especificação-2">Especificação</h2>
-<p><span class="math display">\[y_{it} = \alpha_i + \mathbf{x}_{it}'\boldsymbol{\beta} + \varepsilon_{it}\]</span></p>
-<p>onde <span class="math inline">\(\alpha_i\)</span> são parâmetros fixos específicos para cada indivíduo.</p>
-</section>
-<section id="hipóteses-fundamentais-2" class="level2">
-<h2 class="anchored" data-anchor-id="hipóteses-fundamentais-2">Hipóteses Fundamentais</h2>
-<p><strong>H1. Exogeneidade Estrita:</strong> <span class="math display">\[E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0\]</span></p>
-<p><strong>H2. Homocedasticidade:</strong> <span class="math display">\[Var[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = \sigma^2\]</span></p>
-<p><strong>H3. Não Autocorrelação:</strong> <span class="math display">\[Cov[\varepsilon_{it}, \varepsilon_{is}|\alpha_i, \mathbf{X}_i] = 0, \quad t \neq s\]</span></p>
-<p><strong>Observação Crucial:</strong> Permite <span class="math inline">\(Cov[\alpha_i, \mathbf{x}_{it}] \neq 0\)</span></p>
-</section>
-<section id="representação-matricial-com-dummies" class="level2">
-<h2 class="anchored" data-anchor-id="representação-matricial-com-dummies">Representação Matricial com Dummies</h2>
-<p><span class="math display">\[\mathbf{y} = \mathbf{D}\boldsymbol{\alpha} + \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span></p>
-<p>onde <span class="math inline">\(\mathbf{D}\)</span> é matriz <span class="math inline">\(NT \times N\)</span> de dummies individuais: <span class="math display">\[\mathbf{D} = \begin{pmatrix} \mathbf{e}_T &amp; \mathbf{0} &amp; \cdots &amp; \mathbf{0} \\ \mathbf{0} &amp; \mathbf{e}_T &amp; \cdots &amp; \mathbf{0} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \mathbf{0} &amp; \mathbf{0} &amp; \cdots &amp; \mathbf{e}_T \end{pmatrix}\]</span></p>
-</section>
-<section id="transformação-within" class="level2">
-<h2 class="anchored" data-anchor-id="transformação-within">Transformação Within</h2>
-<p><strong>Matriz de transformação within:</strong> <span class="math display">\[\mathbf{Q} = \mathbf{I}_{NT} - \mathbf{D}(\mathbf{D}'\mathbf{D})^{-1}\mathbf{D}'\]</span></p>
-<p><strong>Propriedade:</strong> <span class="math inline">\(\mathbf{Q}\mathbf{D} = \mathbf{0}\)</span> (elimina efeitos fixos)</p>
-<p><strong>Dados transformados:</strong> <span class="math display">\[\ddot{\mathbf{y}} = \mathbf{Q}\mathbf{y}, \quad \ddot{\mathbf{X}} = \mathbf{Q}\mathbf{X}\]</span></p>
-<p><strong>Interpretação:</strong> <span class="math inline">\(\ddot{y}_{it} = y_{it} - \bar{y}_i\)</span>, <span class="math inline">\(\ddot{\mathbf{x}}_{it} = \mathbf{x}_{it} - \bar{\mathbf{x}}_i\)</span></p>
-</section>
-<section id="estimador-within" class="level2">
-<h2 class="anchored" data-anchor-id="estimador-within">Estimador Within</h2>
-<p><span class="math display">\[\hat{\boldsymbol{\beta}}_{FE} = (\ddot{\mathbf{X}}'\ddot{\mathbf{X}})^{-1}\ddot{\mathbf{X}}'\ddot{\mathbf{y}}\]</span></p>
-<p><strong>Forma alternativa:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_{FE} = \left(\sum_{i=1}^N \sum_{t=1}^T \ddot{\mathbf{x}}_{it}\ddot{\mathbf{x}}_{it}'\right)^{-1} \sum_{i=1}^N \sum_{t=1}^T \ddot{\mathbf{x}}_{it}\ddot{y}_{it}\]</span></p>
-</section>
-</section>
-<section id="comparação-dos-estimadores" class="level1">
-<h1>Comparação dos Estimadores</h1>
-<section id="tabela-de-consistência" class="level2">
-<h2 class="anchored" data-anchor-id="tabela-de-consistência">Tabela de Consistência</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Modelo Verdadeiro</th>
-<th>Pooled OLS</th>
-<th>Random Effects</th>
-<th>Fixed Effects</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Pooled</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
-</tr>
-<tr class="even">
-<td>Random Effects</td>
-<td>✓</td>
-<td>✓</td>
-<td>✓</td>
-</tr>
-<tr class="odd">
-<td>Fixed Effects</td>
-<td>✗</td>
-<td>✗</td>
-<td>✓</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="condições-de-identificação" class="level2">
-<h2 class="anchored" data-anchor-id="condições-de-identificação">Condições de Identificação</h2>
-<p><strong>Pooled OLS:</strong> Requer <span class="math inline">\(E[u_{it}|\mathbf{x}_{it}] = 0\)</span></p>
-<p><strong>Random Effects:</strong> Requer <span class="math inline">\(E[\alpha_i|\mathbf{X}_i] = 0\)</span></p>
-<p><strong>Fixed Effects:</strong> Apenas requer <span class="math inline">\(E[\varepsilon_{it}|\alpha_i, \mathbf{X}_i] = 0\)</span></p>
-</section>
-<section id="variáveis-identificadas" class="level2">
-<h2 class="anchored" data-anchor-id="variáveis-identificadas">Variáveis Identificadas</h2>
-<ul>
-<li><strong>Pooled/RE:</strong> Todas as variáveis (incluindo invariantes no tempo)</li>
-<li><strong>FE:</strong> Apenas variáveis que variam no tempo</li>
-</ul>
-</section>
-</section>
-<section id="preparação-para-derivação-dos-estimadores" class="level1">
-<h1>Preparação para Derivação dos Estimadores</h1>
-<section id="estruturas-matriciais-chave" class="level2">
-<h2 class="anchored" data-anchor-id="estruturas-matriciais-chave">Estruturas Matriciais Chave</h2>
-<p><strong>Between transformation:</strong> <span class="math display">\[\mathbf{P} = \mathbf{D}(\mathbf{D}'\mathbf{D})^{-1}\mathbf{D}' = \mathbf{I}_N \otimes \frac{1}{T}\mathbf{J}_T\]</span></p>
-<p><strong>Within transformation:</strong> <span class="math display">\[\mathbf{Q} = \mathbf{I}_{NT} - \mathbf{P}\]</span></p>
-<p><strong>Propriedades:</strong> - <span class="math inline">\(\mathbf{P} + \mathbf{Q} = \mathbf{I}_{NT}\)</span> - <span class="math inline">\(\mathbf{P}\mathbf{Q} = \mathbf{Q}\mathbf{P} = \mathbf{0}\)</span> - <span class="math inline">\(\mathbf{P}^2 = \mathbf{P}\)</span>, <span class="math inline">\(\mathbf{Q}^2 = \mathbf{Q}\)</span> (idempotentes)</p>
-</section>
-<section id="decomposição-da-variação" class="level2">
-<h2 class="anchored" data-anchor-id="decomposição-da-variação">Decomposição da Variação</h2>
-<p><span class="math display">\[\mathbf{X}'\mathbf{X} = \mathbf{X}'\mathbf{P}\mathbf{X} + \mathbf{X}'\mathbf{Q}\mathbf{X}\]</span></p>
-<ul>
-<li><span class="math inline">\(\mathbf{X}'\mathbf{P}\mathbf{X}\)</span>: variação between</li>
-<li><span class="math inline">\(\mathbf{X}'\mathbf{Q}\mathbf{X}\)</span>: variação within</li>
-</ul>
-</section>
-<section id="estimadores-em-termos-das-transformações" class="level2">
-<h2 class="anchored" data-anchor-id="estimadores-em-termos-das-transformações">Estimadores em Termos das Transformações</h2>
-<p><strong>Between estimator:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_B = (\mathbf{X}'\mathbf{P}\mathbf{X})^{-1}\mathbf{X}'\mathbf{P}\mathbf{y}\]</span></p>
-<p><strong>Within estimator:</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_W = (\mathbf{X}'\mathbf{Q}\mathbf{X})^{-1}\mathbf{X}'\mathbf{Q}\mathbf{y}\]</span></p>
-<p><strong>Random Effects (combinação ponderada):</strong> <span class="math display">\[\hat{\boldsymbol{\beta}}_{RE} = \mathbf{W}_B\hat{\boldsymbol{\beta}}_B + \mathbf{W}_W\hat{\boldsymbol{\beta}}_W\]</span></p>
-<p>onde os pesos <span class="math inline">\(\mathbf{W}_B\)</span> e <span class="math inline">\(\mathbf{W}_W\)</span> dependem de <span class="math inline">\(\sigma_\alpha^2\)</span> e <span class="math inline">\(\sigma_\varepsilon^2\)</span>.</p>
-<hr>
-<p><strong>Próximos passos:</strong> Derivação detalhada de cada estimador, propriedades assintóticas e testes de especificação.</p>
 
 
 
-</section>
-</section>
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Ensino" data-listing-date-sort="1745031600000" data-listing-file-modified-sort="1745065500527" data-listing-reading-time-sort="2.035">
+<div class="quarto-post image-right" data-index="0" data-categories="Ensino" data-listing-date-sort="1745031600000" data-listing-file-modified-sort="1757949797025" data-listing-reading-time-sort="13">
+<div class="body">
+<a href="./posts/Introducao-Avaliacao-Impacto/index.html">
+<h3 class="no-anchor listing-title">
+Introdução à avaliação de Impacto
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('Ensino'); return false;">
+Ensino
+</div>
+</div>
+<a href="./posts/Introducao-Avaliacao-Impacto/index.html">
+<div class="listing-description">
+Você já se perguntou qual o verdadeiro efeito de um novo programa educacional nas notas dos alunos? Ou se uma campanha de marketing realmente aumentou as vendas de um produto? A <strong>avaliação de impacto</strong> é a ferramenta que nos permite responder a essas perguntas de forma rigorosa. Ela busca medir a contribuição de uma intervenção ou programa para um resultado de interesse, comparando o que aconteceu com a intervenção com o que teria acontecido sem ela — o chamado <strong>contrafactual</strong>.
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/Introducao-Avaliacao-Impacto/index.html">
+<div class="listing-date">
+Apr 19, 2025
+</div>
+<div class="listing-author">
+Caio Lopes
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Ensino" data-listing-date-sort="1745031600000" data-listing-file-modified-sort="1756749651371" data-listing-reading-time-sort="9.915">
 <div class="body">
 <a href="./posts/Modelos-em-Painel/index.html">
 <h3 class="no-anchor listing-title">
-Modelo Clássico de Regressão MCRL
+Modelo de dados em painel
 </h3>
 <div class="listing-subtitle">
 
@@ -362,7 +213,7 @@ Ensino
 </div>
 <a href="./posts/Modelos-em-Painel/index.html">
 <div class="listing-description">
-
+Dados de painel: <span class="math inline">\(\{y_{it}, x_{it}: i = 1, ..., N; t = 1, ..., T\}\)</span>
 </div>
 </a>
 </div>
