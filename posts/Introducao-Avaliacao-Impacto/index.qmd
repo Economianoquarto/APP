@@ -55,7 +55,7 @@ Para que a causalidade de A para B seja plausível, a correlação é uma condi�
 
 
 
-_## O Modelo de Resultados Potenciais: Formalizando a Causalidade
+## O Modelo de Resultados Potenciais: Formalizando a Causalidade
 
 Para superar o desafio do contrafactual, o **Modelo de Resultados Potenciais** (Potential Outcomes), popularizado por Donald Rubin, oferece uma estrutura conceitual poderosa. A ideia é definir a causalidade em termos de resultados que *poderiam* ter acontecido.
 
