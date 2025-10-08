@@ -6,7 +6,6 @@ categories: [Ensino]
 #image: "image.jpg"
 ---
 
-
 ## Introdução: Desvendando o Impacto Real das Ações
 
 Você já se perguntou qual o verdadeiro efeito de um novo programa educacional nas notas dos alunos? Ou se uma campanha de marketing realmente aumentou as vendas de um produto? A **avaliação de impacto** é a ferramenta que nos permite responder a essas perguntas de forma rigorosa. Ela busca medir a contribuição de uma intervenção ou programa para um resultado de interesse, comparando o que aconteceu com a intervenção com o que teria acontecido sem ela — o chamado **contrafactual**.
@@ -15,30 +14,24 @@ O grande desafio é que nunca observamos essa realidade alternativa. Não podemo
 
 Neste guia, vamos explorar os conceitos e métodos que formam a base da avaliação de impacto e da inferência causal, desde a teoria dos resultados potenciais até as técnicas mais utilizadas no mercado e na academia.
 
-::: {.callout-note}
-
+::: callout-note
 ## O Problema Central
 
 O desafio da avaliação de impacto é estimar um contrafactual — o que teria acontecido na ausência do programa — para isolar o verdadeiro efeito da intervenção.
-
 :::
-
-
 
 ## Quando Avaliar: Ex-Ante vs. Ex-Post
 
 A decisão de quando realizar uma avaliação de impacto é crucial e depende dos objetivos. Existem dois momentos principais:
 
-- **Avaliação Ex-Ante:** Realizada *antes* da implementação do programa, ela projeta os possíveis impactos e custos. Seu principal objetivo é informar a decisão sobre a adoção do programa, comparar alternativas de desenho e justificar o investimento. Por natureza, baseia-se em modelos teóricos e simulações, pois ainda não existem dados de beneficiários.
+-   **Avaliação Ex-Ante:** Realizada *antes* da implementação do programa, ela projeta os possíveis impactos e custos. Seu principal objetivo é informar a decisão sobre a adoção do programa, comparar alternativas de desenho e justificar o investimento. Por natureza, baseia-se em modelos teóricos e simulações, pois ainda não existem dados de beneficiários.
 
-- **Avaliação Ex-Post:** Realizada *durante* ou *após* a execução do programa. Ela pode ser:
-    - **De percurso:** Acontece enquanto o programa está em andamento. É ideal para verificar se as previsões ex-ante estão se confirmando e para orientar ajustes, aperfeiçoando o desenho em tempo real. É comum em programas piloto ou contínuos.
-    - **De encerramento:** Feita após o término da intervenção, busca julgar a eficácia da alocação de recursos e capturar impactos de longo prazo, que podem demorar a se manifestar. Ajuda a consolidar o aprendizado e a informar o desenho de futuros programas.
+-   **Avaliação Ex-Post:** Realizada *durante* ou *após* a execução do programa. Ela pode ser:
+
+    -   **De percurso:** Acontece enquanto o programa está em andamento. É ideal para verificar se as previsões ex-ante estão se confirmando e para orientar ajustes, aperfeiçoando o desenho em tempo real. É comum em programas piloto ou contínuos.
+    -   **De encerramento:** Feita após o término da intervenção, busca julgar a eficácia da alocação de recursos e capturar impactos de longo prazo, que podem demorar a se manifestar. Ajuda a consolidar o aprendizado e a informar o desenho de futuros programas.
 
 Em resumo, a avaliação ex-ante foca no planejamento e na otimização do desenho, enquanto a ex-post se concentra em medir o impacto real e gerar aprendizados a partir da experiência.
-
-
-
 
 ## Correlação não Implica Causalidade
 
@@ -52,8 +45,6 @@ Um dos mantras mais repetidos em estatística e ciência de dados é: **correla�
 Por exemplo, o aumento nas vendas de sorvete pode estar correlacionado com o aumento no número de afogamentos. Seria um erro concluir que tomar sorvete causa afogamentos. O fator de confusão aqui é o **verão**: dias mais quentes (C) levam as pessoas a comprarem mais sorvete (A) e também a nadarem mais (B), aumentando o risco de afogamentos.
 
 Para que a causalidade de A para B seja plausível, a correlação é uma condição necessária (a menos que um outro fator C anule exatamente o efeito de A), mas definitivamente não é uma condição suficiente. A inferência causal busca justamente métodos para ir além da simples correlação e isolar o verdadeiro efeito causal.
-
-
 
 ## O Modelo de Resultados Potenciais: Formalizando a Causalidade
 
@@ -85,19 +76,19 @@ Onde $D_i$ é uma variável que indica se a unidade *i* recebeu o tratamento ($D
 Como não podemos estimar o efeito individual para todos, o foco da avaliação de impacto se volta para os **efeitos médios** em uma população:
 
 -   **ATE (Average Treatment Effect):** O efeito médio do tratamento para a população como um todo. É a média de todos os efeitos individuais.
-    
+
     $$
     ATE = E[\delta_i] = E[Y^1] - E[Y^0]
     $$
-    
+
 -   **ATT (Average Treatment Effect on the Treated):** O efeito médio do tratamento apenas para aqueles que efetivamente o receberam.
-    
+
     $$
     ATT = E[\delta_i | D=1] = E[Y^1 | D=1] - E[Y^0 | D=1]
     $$
-    
+
 -   **ATU (Average Treatment Effect on the Untreated):** O efeito médio do tratamento caso ele fosse aplicado naqueles que não o receberam.
-    
+
     $$
     ATU = E[\delta_i | D=0] = E[Y^1 | D=0] - E[Y^0 | D=0]
     $$
@@ -122,9 +113,7 @@ O segundo termo, $E[Y^0 | D=1] - E[Y^0 | D=0]$, é o **viés de seleção**. Ele
 
 > A moral da história é que as escolhas (auto-seleção para o tratamento) são geralmente **endógenas**, ou seja, correlacionadas com os resultados potenciais. Sem uma fonte de variação **exógena** (aleatória), a comparação bruta é quase sempre enviesada.
 
-
-
-## Decompondo o ATE
+### Decompondo o ATE
 
 Uma das relações mais importantes na inferência causal é como o **Average Treatment Effect (ATE)** pode ser decomposto em função do **Average Treatment Effect on the Treated (ATT)** e do **Average Treatment Effect on the Untreated (ATU)**. Esta decomposição é crucial para entender a heterogeneidade dos efeitos do tratamento, o viés de seleção e como generalizar resultados de um grupo para toda a população.
 
@@ -134,17 +123,26 @@ $$
 ATE = P(D=1) \times ATT + P(D=0) \times ATU
 $$
 
-Essa fórmula nos mostra que o efeito médio geral é uma combinação dos efeitos específicos em cada grupo. Se o efeito do tratamento for maior para aqueles que o escolheram (ATT > ATU), e esse grupo for grande, o ATE será mais próximo do ATT. A derivação matemática, baseada na lei da expectativa total, revela como essa relação emerge naturalmente das definições de cada parâmetro.
+Essa fórmula nos mostra que o efeito médio geral é uma combinação dos efeitos específicos em cada grupo. Se o efeito do tratamento for maior para aqueles que o escolheram (ATT \> ATU), e esse grupo for grande, o ATE será mais próximo do ATT. A derivação matemática, baseada na lei da expectativa total, revela como essa relação emerge naturalmente das definições de cada parâmetro.
 
+### Decompondo a diferença ingênua
 
+A diferença ingênua pode ser decomposta em ATE, viés de seleção e viés de heterogeneidade. Partindo da relação $E[Y | D=1] - E[Y | D=0] = ATT + (E[Y^0 | D=1] - E[Y^0 | D=0])$, somando e subtraindo o ATE do lado direito da equação
 
-_
+$$
+E[Y | D=1] - E[Y | D=0] = ATE + ATT + (E[Y^0 | D=1] - E[Y^0 | D=0]) - ATE
+$$ Usando o fato que $ATE = P(D=1) \times ATT + (1-P(D=1)) \times ATU$ temos que:
 
+$$
+\begin{align}
+E[Y | D=1] - E[Y | D=0] &= ATE + (1-P(D=1)) \times (ATT - ATU) + (E[Y^0 | D=1] - E[Y^0 | D=0]) \\
+&= ATE + \text{Viés de Heterogeneidade} + \text{Viés de Seleção}
+\end{align}
+$$
 
-### Exemplo Prático: Programa de Treinamento Profissional
+## Exemplo Prático: Programa de Treinamento Profissional
 
 Imagine um programa de treinamento profissional onde 40% dos trabalhadores elegíveis decidem participar. É razoável supor que aqueles que participam são diferentes daqueles que não participam (e.g., mais motivados), e que o efeito do treinamento pode ser diferente para esses dois grupos.
-
 
 ```{r}
 #| include: false
@@ -179,21 +177,40 @@ data <- tibble(
 ) %>%
   mutate(Y_obs = D * Y1 + (1 - D) * Y0)
 
-# Calculando os efeitos
+# Calculando os efeitos e a decomposição completa
 effects <- data %>%
   summarise(
     ATT = mean(Y1[D == 1]) - mean(Y0[D == 1]),
     ATU = mean(Y1[D == 0]) - mean(Y0[D == 0]),
     ATE_direct = mean(Y1) - mean(Y0),
-    prop_treated = mean(D)
+    prop_treated = mean(D),
+    # Diferença ingênua
+    naive_diff = mean(Y_obs[D == 1]) - mean(Y_obs[D == 0]),
+    # Viés de seleção
+    selection_bias = mean(Y0[D == 1]) - mean(Y0[D == 0]),
+    # Viés de heterogeneidade
+    heterogeneity_bias = (1 - mean(D)) * (ATT - ATU)
   ) %>%
-  mutate(ATE_decomposed = prop_treated * ATT + (1 - prop_treated) * ATU)
+  mutate(
+    ATE_decomposed = prop_treated * ATT + (1 - prop_treated) * ATU,
+    # Verificação da decomposição completa
+    naive_decomposed = ATE_direct + selection_bias + heterogeneity_bias
+  )
 
-# Exibindo resultados
-cat("ATT (efeito nos tratados): $", round(effects$ATT, 3), "\n")
-cat("ATU (efeito nos não-tratados): $", round(effects$ATU, 3), "\n")
-cat("ATE (cálculo direto): $", round(effects$ATE_direct, 3), "\n")
-cat("ATE (via decomposição): $", round(effects$ATE_decomposed, 3), "\n")
+# Exibindo resultados da decomposição completa
+cat("=== DECOMPOSIÇÃO DA DIFERENÇA INGÊNUA ===\n")
+cat("Diferença ingênua observada: $", round(effects$naive_diff, 0), "\n")
+cat("ATE (efeito causal verdadeiro): $", round(effects$ATE_direct, 0), "\n")
+cat("Viés de seleção: $", round(effects$selection_bias, 0), "\n")
+cat("Viés de heterogeneidade: $", round(effects$heterogeneity_bias, 0), "\n")
+cat("Soma dos componentes: $", round(effects$naive_decomposed, 0), "\n\n")
+
+cat("=== DECOMPOSIÇÃO DO ATE ===\n")
+cat("ATT (efeito nos tratados): $", round(effects$ATT, 0), "\n")
+cat("ATU (efeito nos não-tratados): $", round(effects$ATU, 0), "\n")
+cat("ATE (cálculo direto): $", round(effects$ATE_direct, 0), "\n")
+cat("ATE (via decomposição): $", round(effects$ATE_decomposed, 0), "\n")
+
 ```
 
 Este código simula uma população onde o grupo tratado tem um salário base maior e um efeito do tratamento mais elevado, refletindo um cenário de auto-seleção positiva. Os resultados do cálculo confirmam a decomposição do ATE e mostram como o ATE é uma média ponderada do ATT e do ATU.
@@ -214,13 +231,12 @@ Onde o viés de seleção é $E[Y^0 | D=1] - E[Y^0 | D=0]$, representando a dife
 
 **Implicações para Política Pública:** Considere dois cenários para o programa de treinamento:
 
-1. **Expansão Total:** Oferecer o programa para toda a população elegível
-2. **Manutenção:** Manter apenas para quem já participa
+1.  **Expansão Total:** Oferecer o programa para toda a população elegível
+2.  **Manutenção:** Manter apenas para quem já participa
 
 A análise custo-benefício deve considerar que o efeito médio para novos participantes (ATU) pode ser diferente do efeito para os participantes atuais (ATT). Se o ATU for significativamente menor que o ATT, a expansão pode não ser custo-efetiva, mesmo que o programa atual seja bem-sucedido.
 
 **Generalização de Resultados:** Quando extrapolamos resultados de um estudo para uma população diferente, precisamos considerar se a composição da nova população (proporção de "tipos" de indivíduos) é similar à do estudo original. Um programa que funciona bem em uma população com alta proporção de indivíduos motivados pode ter resultados diferentes em uma população com características distintas.
-
 
 Podemos também criar uma visualização para melhor compreender a distribuição dos efeitos:
 
@@ -270,9 +286,6 @@ ggplot(decomp_data, aes(x = Parametro, y = Valor, fill = Parametro)) +
   scale_fill_brewer(type = "qual", palette = "Set2")
 ```
 
-
-
-
 ## As Hipóteses-Chave para Identificação Causal
 
 Para que possamos estimar os efeitos causais de forma válida a partir de dados observacionais, precisamos de algumas hipóteses que tornem a nossa análise crível. As três mais importantes são:
@@ -306,14 +319,10 @@ A SUTVA é composta por duas sub-hipóteses:
 
 Sem as hipóteses de ignorabilidade e suporte comum, a identificação do efeito causal falha. Sem a SUTVA, os próprios resultados potenciais não estão bem definidos.
 
-
-
-
 ## Como Obter Variação Exógena? Os Desenhos Clássicos de Identificação
 
 O grande objetivo dos métodos de inferência causal é encontrar (ou simular) uma fonte de variação no tratamento que seja "tão boa quanto aleatória". Cada método se baseia em um conjunto diferente de hipóteses para alcançar a identificação.
 
 ### Experimentos Aleatórios Controlados (RCTs)
 
-Considerado o **padrão-ouro**, o RCT resolve o problema do viés de seleção ao aleatorizar a alocação do tratamento. A randomização garante, em média, que os grupos de tratamento e controle sejam idênticos em todas as características, observáveis e não observáveis. Assim, qualquer diferença nos resultados pode ser atribuída ao tratamento.
-
+Considerado o **padrão-ouro**, o RCT resolve o problema do viés de seleção ao aleatorizar a alocação do tratamento. A randomização garante, em média, que os grupos de tratamento e controle sejam idênticos em todas as características, observáveis e não observáveis. Assim, qualquer diferença nos resultados pode ser atribuída ao tratamento. Sob aleatorização, o coeficiente de uma regressão simples é uma boa estimativa do ATE

@@ -303,18 +303,31 @@ E[Y | D=1] - E[Y | D=0] = ATT + (E[Y^0 | D=1] - E[Y^0 | D=0])
 <p>A moral da história é que as escolhas (auto-seleção para o tratamento) são geralmente <strong>endógenas</strong>, ou seja, correlacionadas com os resultados potenciais. Sem uma fonte de variação <strong>exógena</strong> (aleatória), a comparação bruta é quase sempre enviesada.</p>
 </blockquote>
 </section>
-</section>
-<section id="decompondo-o-ate" class="level2">
-<h2 class="anchored" data-anchor-id="decompondo-o-ate">Decompondo o ATE</h2>
+<section id="decompondo-o-ate" class="level3">
+<h3 class="anchored" data-anchor-id="decompondo-o-ate">Decompondo o ATE</h3>
 <p>Uma das relações mais importantes na inferência causal é como o <strong>Average Treatment Effect (ATE)</strong> pode ser decomposto em função do <strong>Average Treatment Effect on the Treated (ATT)</strong> e do <strong>Average Treatment Effect on the Untreated (ATU)</strong>. Esta decomposição é crucial para entender a heterogeneidade dos efeitos do tratamento, o viés de seleção e como generalizar resultados de um grupo para toda a população.</p>
 <p>O ATE pode ser expresso como uma média ponderada do ATT e ATU, onde os pesos são as proporções de indivíduos tratados e não tratados na população:</p>
 <p><span class="math display">\[
 ATE = P(D=1) \times ATT + P(D=0) \times ATU
 \]</span></p>
 <p>Essa fórmula nos mostra que o efeito médio geral é uma combinação dos efeitos específicos em cada grupo. Se o efeito do tratamento for maior para aqueles que o escolheram (ATT &gt; ATU), e esse grupo for grande, o ATE será mais próximo do ATT. A derivação matemática, baseada na lei da expectativa total, revela como essa relação emerge naturalmente das definições de cada parâmetro.</p>
-<p>_</p>
-<section id="exemplo-prático-programa-de-treinamento-profissional" class="level3">
-<h3 class="anchored" data-anchor-id="exemplo-prático-programa-de-treinamento-profissional">Exemplo Prático: Programa de Treinamento Profissional</h3>
+</section>
+<section id="decompondo-a-diferença-ingênua" class="level3">
+<h3 class="anchored" data-anchor-id="decompondo-a-diferença-ingênua">Decompondo a diferença ingênua</h3>
+<p>A diferença ingênua pode ser decomposta em ATE, viés de seleção e viés de heterogeneidade. Partindo da relação <span class="math inline">\(E[Y | D=1] - E[Y | D=0] = ATT + (E[Y^0 | D=1] - E[Y^0 | D=0])\)</span>, somando e subtraindo o ATE do lado direito da equação</p>
+<p><span class="math display">\[
+E[Y | D=1] - E[Y | D=0] = ATE + ATT + (E[Y^0 | D=1] - E[Y^0 | D=0]) - ATE
+\]</span> Usando o fato que <span class="math inline">\(ATE = P(D=1) \times ATT + (1-P(D=1)) \times ATU\)</span> temos que:</p>
+<p><span class="math display">\[
+\begin{align}
+E[Y | D=1] - E[Y | D=0] &amp;= ATE + (1-P(D=1)) \times (ATT - ATU) + (E[Y^0 | D=1] - E[Y^0 | D=0]) \\
+&amp;= ATE + \text{Viés de Heterogeneidade} + \text{Viés de Seleção}
+\end{align}
+\]</span></p>
+</section>
+</section>
+<section id="exemplo-prático-programa-de-treinamento-profissional" class="level2">
+<h2 class="anchored" data-anchor-id="exemplo-prático-programa-de-treinamento-profissional">Exemplo Prático: Programa de Treinamento Profissional</h2>
 <p>Imagine um programa de treinamento profissional onde 40% dos trabalhadores elegíveis decidem participar. É razoável supor que aqueles que participam são diferentes daqueles que não participam (e.g., mais motivados), e que o efeito do treinamento pode ser diferente para esses dois grupos.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurando dados hipotéticos</span></span>
@@ -344,37 +357,74 @@ ATE = P(D=1) \times ATT + P(D=0) \times ATU
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Y_obs =</span> D <span class="sc">*</span> Y1 <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> D) <span class="sc">*</span> Y0)</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculando os efeitos</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculando os efeitos e a decomposição completa</span></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>effects <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATT =</span> <span class="fu">mean</span>(Y1[D <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y0[D <span class="sc">==</span> <span class="dv">1</span>]),</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATU =</span> <span class="fu">mean</span>(Y1[D <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y0[D <span class="sc">==</span> <span class="dv">0</span>]),</span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATE_direct =</span> <span class="fu">mean</span>(Y1) <span class="sc">-</span> <span class="fu">mean</span>(Y0),</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_treated =</span> <span class="fu">mean</span>(D)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ATE_decomposed =</span> prop_treated <span class="sc">*</span> ATT <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> prop_treated) <span class="sc">*</span> ATU)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibindo resultados</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATT (efeito nos tratados): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATT, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">prop_treated =</span> <span class="fu">mean</span>(D),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Diferença ingênua</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">naive_diff =</span> <span class="fu">mean</span>(Y_obs[D <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y_obs[D <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Viés de seleção</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">selection_bias =</span> <span class="fu">mean</span>(Y0[D <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">-</span> <span class="fu">mean</span>(Y0[D <span class="sc">==</span> <span class="dv">0</span>]),</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Viés de heterogeneidade</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">heterogeneity_bias =</span> (<span class="dv">1</span> <span class="sc">-</span> <span class="fu">mean</span>(D)) <span class="sc">*</span> (ATT <span class="sc">-</span> ATU)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">ATE_decomposed =</span> prop_treated <span class="sc">*</span> ATT <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">-</span> prop_treated) <span class="sc">*</span> ATU,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Verificação da decomposição completa</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">naive_decomposed =</span> ATE_direct <span class="sc">+</span> selection_bias <span class="sc">+</span> heterogeneity_bias</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibindo resultados da decomposição completa</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"=== DECOMPOSIÇÃO DA DIFERENÇA INGÊNUA ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>ATT (efeito nos tratados): $ 4907.124 </code></pre>
+<pre><code>=== DECOMPOSIÇÃO DA DIFERENÇA INGÊNUA ===</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATU (efeito nos não-tratados): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATU, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Diferença ingênua observada: $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>naive_diff, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>ATU (efeito nos não-tratados): $ 2017.598 </code></pre>
+<pre><code>Diferença ingênua observada: $ 9878 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATE (cálculo direto): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATE_direct, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATE (efeito causal verdadeiro): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATE_direct, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>ATE (cálculo direto): $ 3173.408 </code></pre>
+<pre><code>ATE (efeito causal verdadeiro): $ 3173 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATE (via decomposição): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATE_decomposed, <span class="dv">3</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Viés de seleção: $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>selection_bias, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>ATE (via decomposição): $ 3173.408 </code></pre>
+<pre><code>Viés de seleção: $ 4970 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Viés de heterogeneidade: $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>heterogeneity_bias, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Viés de heterogeneidade: $ 1734 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Soma dos componentes: $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>naive_decomposed, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Soma dos componentes: $ 9878 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"=== DECOMPOSIÇÃO DO ATE ===</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== DECOMPOSIÇÃO DO ATE ===</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATT (efeito nos tratados): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATT, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ATT (efeito nos tratados): $ 4907 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATU (efeito nos não-tratados): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATU, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ATU (efeito nos não-tratados): $ 2018 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATE (cálculo direto): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATE_direct, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ATE (cálculo direto): $ 3173 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"ATE (via decomposição): $"</span>, <span class="fu">round</span>(effects<span class="sc">$</span>ATE_decomposed, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ATE (via decomposição): $ 3173 </code></pre>
 </div>
 </div>
 <p>Este código simula uma população onde o grupo tratado tem um salário base maior e um efeito do tratamento mais elevado, refletindo um cenário de auto-seleção positiva. Os resultados do cálculo confirmam a decomposição do ATE e mostram como o ATE é uma média ponderada do ATT e do ATU.</p>
 <p><a href="ate_decomposicao.xlsx" target="_blank">Visualizar exemplo em excel</a></p>
-</section>
 <section id="por-que-esta-decomposição-importa" class="level3">
 <h3 class="anchored" data-anchor-id="por-que-esta-decomposição-importa">Por que Esta Decomposição Importa?</h3>
 <p>A decomposição do ATE em função do ATT e ATU tem implicações profundas para a interpretação de resultados e o desenho de políticas públicas.</p>
@@ -392,50 +442,50 @@ E[Y | D=1] - E[Y | D=0] = ATT + \text{Viés de Seleção}
 <p><strong>Generalização de Resultados:</strong> Quando extrapolamos resultados de um estudo para uma população diferente, precisamos considerar se a composição da nova população (proporção de “tipos” de indivíduos) é similar à do estudo original. Um programa que funciona bem em uma população com alta proporção de indivíduos motivados pode ter resultados diferentes em uma população com características distintas.</p>
 <p>Podemos também criar uma visualização para melhor compreender a distribuição dos efeitos:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando visualização dos efeitos individuais</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">individual_effect =</span> Y1 <span class="sc">-</span> Y0) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> individual_effect, <span class="at">fill =</span> <span class="fu">factor</span>(D))) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> effects<span class="sc">$</span>ATE_direct, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição dos Efeitos Individuais do Tratamento"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Efeito Individual ($)"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequência"</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Grupo"</span>,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Linha vermelha tracejada representa o ATE"</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Controle"</span>, <span class="st">"Tratamento"</span>)) <span class="sc">+</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando visualização dos efeitos individuais</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">individual_effect =</span> Y1 <span class="sc">-</span> Y0) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> individual_effect, <span class="at">fill =</span> <span class="fu">factor</span>(D))) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">bins =</span> <span class="dv">30</span>, <span class="at">position =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> effects<span class="sc">$</span>ATE_direct, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribuição dos Efeitos Individuais do Tratamento"</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Efeito Individual ($)"</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Frequência"</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Grupo"</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Linha vermelha tracejada representa o ATE"</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Controle"</span>, <span class="st">"Tratamento"</span>)) <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de barras mostrando a decomposição</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>decomp_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parametro =</span> <span class="fu">c</span>(<span class="st">"ATT"</span>, <span class="st">"ATU"</span>, <span class="st">"ATE"</span>),</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Valor =</span> <span class="fu">c</span>(effects<span class="sc">$</span>ATT, effects<span class="sc">$</span>ATU, effects<span class="sc">$</span>ATE_direct),</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Peso =</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">"Peso: "</span>, <span class="fu">round</span>(effects<span class="sc">$</span>prop_treated <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">paste0</span>(<span class="st">"Peso: "</span>, <span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> effects<span class="sc">$</span>prop_treated) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Média Ponderada"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(decomp_data, <span class="fu">aes</span>(<span class="at">x =</span> Parametro, <span class="at">y =</span> Valor, <span class="at">fill =</span> Parametro)) <span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">round</span>(Valor, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, Peso)), </span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Decomposição do ATE"</span>,</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Parâmetro"</span>,</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Efeito do Tratamento ($)"</span>,</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Parâmetro"</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">type =</span> <span class="st">"qual"</span>, <span class="at">palette =</span> <span class="st">"Set2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de barras mostrando a decomposição</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>decomp_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Parametro =</span> <span class="fu">c</span>(<span class="st">"ATT"</span>, <span class="st">"ATU"</span>, <span class="st">"ATE"</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Valor =</span> <span class="fu">c</span>(effects<span class="sc">$</span>ATT, effects<span class="sc">$</span>ATU, effects<span class="sc">$</span>ATE_direct),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Peso =</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">"Peso: "</span>, <span class="fu">round</span>(effects<span class="sc">$</span>prop_treated <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>           <span class="fu">paste0</span>(<span class="st">"Peso: "</span>, <span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> effects<span class="sc">$</span>prop_treated) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>           <span class="st">"Média Ponderada"</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(decomp_data, <span class="fu">aes</span>(<span class="at">x =</span> Parametro, <span class="at">y =</span> Valor, <span class="at">fill =</span> Parametro)) <span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="st">"$"</span>, <span class="fu">round</span>(Valor, <span class="dv">0</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, Peso)), </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Decomposição do ATE"</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Parâmetro"</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Efeito do Tratamento ($)"</span>,</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Parâmetro"</span></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">type =</span> <span class="st">"qual"</span>, <span class="at">palette =</span> <span class="st">"Set2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -476,7 +526,7 @@ E[Y | D=1] - E[Y | D=0] = ATT + \text{Viés de Seleção}
 <p>O grande objetivo dos métodos de inferência causal é encontrar (ou simular) uma fonte de variação no tratamento que seja “tão boa quanto aleatória”. Cada método se baseia em um conjunto diferente de hipóteses para alcançar a identificação.</p>
 <section id="experimentos-aleatórios-controlados-rcts" class="level3">
 <h3 class="anchored" data-anchor-id="experimentos-aleatórios-controlados-rcts">Experimentos Aleatórios Controlados (RCTs)</h3>
-<p>Considerado o <strong>padrão-ouro</strong>, o RCT resolve o problema do viés de seleção ao aleatorizar a alocação do tratamento. A randomização garante, em média, que os grupos de tratamento e controle sejam idênticos em todas as características, observáveis e não observáveis. Assim, qualquer diferença nos resultados pode ser atribuída ao tratamento.</p>
+<p>Considerado o <strong>padrão-ouro</strong>, o RCT resolve o problema do viés de seleção ao aleatorizar a alocação do tratamento. A randomização garante, em média, que os grupos de tratamento e controle sejam idênticos em todas as características, observáveis e não observáveis. Assim, qualquer diferença nos resultados pode ser atribuída ao tratamento. Sob aleatorização o coeficiente de ua regressão simples é uma boa estimativa do ATE</p>
 
 
 </section>

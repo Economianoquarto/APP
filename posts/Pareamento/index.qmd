@@ -1,0 +1,425 @@
+---
+title: "Pareamento"
+author: "Caio Lopes"
+date: "2025-04-19"
+categories: [Ensino]
+#image: "image.jpg"
+---
+
+# 1. O Problema dos Confounders
+
+## Motivação: Avaliação de Treinamento Corporativo
+
+**Pergunta de pesquisa**: Programas de treinamento corporativo aumentam a produtividade dos funcionários?
+
+**Variáveis**:
+- **Y**: Produtividade mensal (R\$ mil) 
+- **D**: Participação em treinamento (0/1) 
+- **X**: Experiência no cargo (anos)
+
+## Por que Experiência é um Confounder?
+
+**Definição**: Um confounder é uma variável que afeta tanto o tratamento quanto o resultado.
+
+No nosso exemplo: 
+
+1. **Experiência → Treinamento**: Funcionários inexperientes são mais enviados para treinamento 
+
+2. **Experiência → Produtividade**: Funcionários experientes são naturalmente mais produtivos
+
+**Conclusão**: não levar em conta o confounder (experiência) causa endogeneidade (viés de variável obtida). 
+
+
+## Simulação do Problema
+
+```{r}
+#| label: setup-dados
+#| echo: true
+#| warning: false
+
+library(tidyverse)
+library(MatchIt)
+library(Matching)
+library(knitr)
+library(kableExtra)
+
+set.seed(123)
+n <- 800
+
+# Gerar dados com confounding negativo
+dados <- tibble(
+  # Experiência (confounder)
+  experiencia = pmax(0, rgamma(n, shape = 2, rate = 0.4)),
+  
+  # Probabilidade de treinamento (maior para inexperientes)
+  prob_treinamento = plogis(1.5 - 0.3 * experiencia),
+  treinamento = rbinom(n, 1, prob_treinamento),
+  
+  # Produtividade (depende de experiência E treinamento)
+  # Efeito verdadeiro do treinamento: +15 mil
+  produtividade = 25 + 8 * experiencia + 15 * treinamento + rnorm(n, 0, 10)
+) %>%
+  mutate(produtividade = pmax(5, produtividade))
+
+# Estatísticas por grupo
+dados %>%
+  group_by(treinamento) %>%
+  summarise(
+    n = n(),
+    experiencia_media = round(mean(experiencia), 1),
+    produtividade_media = round(mean(produtividade), 1),
+    .groups = "drop"
+  ) %>%
+  mutate(grupo = c("Sem Treinamento", "Com Treinamento")) %>%
+  dplyr::select(grupo, everything(), -treinamento) %>%
+  kable()
+```
+
+## O Problema Revelado
+
+```{r}
+#| label: problema-confounding
+
+# Análise ingênua (INCORRETA)
+diferenca_ingenua <- dados %>%
+  group_by(treinamento) %>%
+  summarise(prod_media = mean(produtividade)) %>%
+  summarise(diferenca = diff(prod_media)) %>%
+  pull(diferenca)
+
+cat("Efeito aparente (sem controles):", round(diferenca_ingenua, 1), "mil reais \n")
+cat("Efeito verdadeiro (por construção): +15.0 mil reais \n")
+cat("Conclusão errônea: 'Treinamento não funciona!'")
+```
+
+**Visualização do problema**:
+
+```{r}
+#| label: viz-problema
+#| fig-width: 10
+#| fig-height: 5
+
+p1 <- dados %>%
+  ggplot(aes(x = factor(treinamento), y = experiencia)) +
+  geom_boxplot() +
+  labs(title = "Funcionários treinados têm menos experiência",
+       x = "Treinamento", y = "Experiência (anos)")
+
+p2 <- dados %>%
+  ggplot(aes(x = experiencia, y = produtividade, color = factor(treinamento))) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Experiência confunde a relação",
+       x = "Experiência (anos)", y = "Produtividade (R$ mil)",
+       color = "Treinamento")
+
+library(gridExtra)
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+# 2. Como o Pareamento Corrige o Problema
+
+## Intuição Básica
+
+**Ideia central**: Comparar funcionários similares que diferem apenas no tratamento.
+
+**Estratégia**: 
+
+* Encontrar funcionários com mesma experiência
+
+* Alguns receberam treinamento, outros não 
+
+* Calcular diferença na produtividade
+
+## Framework de Resultados Potenciais
+
+Para cada funcionário $i$:
+
+* $Y_i^1$: produtividade se recebe treinamento 
+
+* $Y_i^0$: produtividade se não recebe treinamento
+
+* $D_i$: indicador de treinamento 
+- $X_i$: experiência
+
+**Suposição de Independência Condicional (CIA)**: $$(Y_i^1, Y_i^0) \perp D_i | X_i$$
+
+**Interpretação**: Condicionalmente à experiência, a seleção para treinamento é "como se fosse" aleatória.
+
+## Demonstração: Subclassificação Manual
+
+A subclassificação consiste em estimar o efeito do tratamento pela soma da diferença ponderada entre tratados e controles. A ponderação permite lidar com o problema de "covariates imbalance" (diferença na distribuição dos X's entre os grupos).
+
+```{r}
+#| label: subclassificacao-manual
+
+# Criar 4 estratos de experiência (simplificado)
+dados <- dados %>%
+  mutate(estrato_exp = case_when(
+    experiencia < 2 ~ "Muito Inexperiente",
+    experiencia < 4 ~ "Inexperiente", 
+    experiencia < 7 ~ "Intermediário",
+    TRUE ~ "Experiente"
+  ))
+
+# Verificar distribuição dos estratos
+dados %>%
+  count(estrato_exp, treinamento) %>%
+  pivot_wider(names_from = treinamento, values_from = n, names_prefix = "treinamento_") %>%
+  kable(col.names = c("Estrato", "Sem Treinamento", "Com Treinamento"))
+
+# Calcular efeito dentro de cada estrato
+efeitos_por_estrato <- dados %>%
+  group_by(estrato_exp) %>%
+  summarise(
+    n = n(),
+    n_tratados = sum(treinamento),
+    n_controles = sum(1 - treinamento),
+    efeito = mean(produtividade[treinamento == 1]) - 
+             mean(produtividade[treinamento == 0]),
+    .groups = "drop"
+  )
+
+efeitos_por_estrato %>%
+  kable(digits = 2, col.names = c("Estrato", "N Total", "N Tratados", "N Controles", "Efeito (R$ mil)"))
+
+# Efeito médio ponderado
+ate_corrigido <- efeitos_por_estrato %>%
+  mutate(peso = n / sum(n)) %>%
+  summarise(ate = sum(efeito * peso)) %>%
+  pull(ate)
+
+cat("Efeito corrigido:", round(ate_corrigido, 2), "mil reais")
+cat("Agora recuperamos algo próximo do efeito verdadeiro")
+
+
+```
+
+
+
+Nesse caso estamos calculando o ATE a partir de 4 estratos da nossa amostra: 
+
+ - A: Inexperiente
+ - B: Experiente
+ - C: Intermediário 
+ - D: Muito Inexperiente
+ 
+O calculo do ATE foi baseado na soma ponderada de cada estrato da amostra:
+
+$$
+ATE = 
+\left ( \bar{Y}^{1,A} - \bar{Y}^{0,A} \right ) \frac{N^{A}}{N} +
+\left ( \bar{Y}^{1,B} - \bar{Y}^{0,B} \right ) \frac{N^{B}}{N} +
+\left ( \bar{Y}^{1,C} - \bar{Y}^{0,C} \right ) \frac{N^{C}}{N} +
+\left ( \bar{Y}^{1,D} - \bar{Y}^{0,D} \right ) \frac{N^{D}}{N}
+$$
+Imagine que exista outro confundidor: o regime de trabalho. Os trabalhadores CLT são mais engajados em participar do treinamento, mas tendem a ser menos produtivos. Já os trabalhadores PJ são menos engajados em participar do treinamento, mas tendem a ser mais produtivos.Nesse casos, considerando as classificações de experiencia e de regime de trabalho, temos 8 estratos: 
+
+ - A1: Inexperiente e CLT
+ - A2: Inexperiente e PJ
+ - B1: Experiente e CLT
+ - B2: Experiente e PJ
+ - C1: Intermediário e CLT
+ - C2: Intermediário e PJ
+ - D1: Muito Inexperiente e CLT
+ - D2: Muito Inexperiente e PJ
+
+A medida que as variáveis de controle aumentam, começamos a ter dificuldade em colocar cada unidade (tratada ou não) em uma "caixinha" do X's. Se a variável confundidora não for discreta (e.g. experiência em anos) a dificuldade aumenta.
+
+Nesses casos, estimar o ATT  pode ser mais fácil. Por exemplo, digamos que você não consegue colocar todas as unidades tratadas em um estrato, mas consegue colocar todas do grupo de controle. Logo, para cada estrato de unidade tratada você poderá construir um contrafactual (mas você não conseguirá um contrafactual par a grupo controle).
+
+$$
+ATT = \sum^{K}_{k=1}
+\left ( \bar{Y}^{1,k} - \bar{Y}^{0,k} \right ) \frac{N^{k}_{T}}{N_{T}}
+$$
+Este problema causado pela dimensionalidade é um problema de suporte comum. Alternativamente, se preenchêssemos o resultado potencial ausente para cada unidade de tratamento usando uma unidade do grupo de controle que fosse "mais próxima" da unidade do grupo de tratamento para algum
+fator de confusão, poderíamos simplesmente calcular a média das diferenças. Esse método é conhecido como pareamento.
+
+
+# 3. Principais Tipos de Pareamento
+
+## 3.1 Pareamento Exato
+
+**Definição**: Parear unidades com valores idênticos das covariáveis.
+
+**Vantagens**: - Transparente e fácil de entender - Balance perfeito por construção - Não requer suposições funcionais
+
+**Desvantagens**: - Maldição da dimensionalidade - Perda de observações - Só funciona com covariáveis categóricas
+
+## 3.2 Pareamento Aproximado
+
+**Motivação**: Quando pareamento exato não é viável, pois tenho covariadas contínuas ou um conjunto de covariadas. 
+
+**Estratégias**: - Nearest neighbor matching - Caliper matching
+
+O estimador do paraemento "1 para 1" é definido por:
+$$
+ATT = \frac{1}{N_{T}}\sum_{d_{i}=1}\left (Y_{i} - Y_{j(i)} \right ) 
+$$
+Em que a unidade $j$ é a unidade do grupo controle "mais próxima em termos de X" da unidade $i$ do grupo tratado. Este estimador computa o ATT, pois a média é condicional a $d_{i}=1$. 
+
+Se no grupo controle encontrarmos mais de uma unidade parecida com a unidade tratada em termos dos Xs, podemos usar a média.
+
+$$
+ATT = \frac{1}{N_{T}}\sum_{d_{i}=1}\left (Y_{i} - \left [\frac{1}{M} \sum^{M}_{m=1} Y_{j_{m}(i) } \right ] \right ) 
+$$
+```{r}
+#| label: pareamento
+
+dados$numeric_estrato_exp <- as.numeric(as.factor(dados$estrato_exp))
+
+M1_att <- Match(Y = dados$produtividade, 
+                Tr = dados$treinamento, 
+                X = dados$experiencia,
+                M = 1,
+                estimand='ATT')
+summary(M1_att) # The default estimate is ATT here
+
+
+pares_detalhado <- data.frame(
+  tratado_id    = M1_att$index.treated,
+  controle_id   = M1_att$index.control,
+  produtividade_tratado = dados$produtividade[M1_att$index.treated],
+  produtividade_controle = dados$produtividade[M1_att$index.control],
+  X_tratado = dados$experiencia[M1_att$index.treated],
+  X_controle = dados$experiencia[M1_att$index.control]
+)
+head(pares_detalhado)
+
+```
+Perceba que: o tratado 3 pareou com o controle 8, o tratado 4 com o controle 388, etc. Vamos definir um M=3.
+
+```{r}
+#| label: pareamento2
+
+M3_att <- Match(Y = dados$produtividade, 
+                Tr = dados$treinamento, 
+                X = dados$experiencia,
+                M = 3,
+                estimand='ATT')
+summary(M3_att) # The default estimate is ATT here
+
+
+pares_detalhado_M3 <- data.frame(
+  tratado_id    = M3_att$index.treated,
+  controle_id   = M3_att$index.control,
+  produtividade_tratado = dados$produtividade[M3_att$index.treated],
+  produtividade_controle = dados$produtividade[M3_att$index.control],
+  X_tratado = dados$experiencia[M3_att$index.treated],
+  X_controle = dados$experiencia[M3_att$index.control]
+)
+head(pares_detalhado_M3)
+
+```
+
+Perceba que: o tratado 3 pareou com o controle 8, 594 e 690; o tratado 4 com o controle 365, 388 e 425, etc. Vamos definir um M=3.
+
+É possível calcular o ATE usando o pareamento. O estimador é dado por: 
+$$
+ATE = \frac{1}{N}\sum_{i=1}^{N} (2D_{i}-1) \left (Y_{i} - \left [\frac{1}{M} \sum^{M}_{m=1} Y_{j_{m}(i) } \right ] \right ) 
+$$
+Quando $D_{i}=1$, então esse termo principal se torna  1. E quando $D_{i}=0$, então esse termo principal se torna -1, e os resultados invertem a ordem para que a observação do tratamento possa ser imputada.
+
+```{r}
+#| label: pareamento3
+
+M3_ate <- Match(Y = dados$produtividade, 
+                Tr = dados$treinamento, 
+                X = dados$experiencia,
+                M = 3,
+                estimand='ATE')
+summary(M3_ate) # The default estimate is ATT here
+
+```
+
+Quando temos muitas covariadas, podemos usar um criterio para medir a distancia entre elas e definir um caliper
+
+```{r}
+#| label: pareamento-aproximado
+
+Maha_att <- Match(Y = dados$produtividade, 
+                Tr = dados$treinamento, 
+                X = dados$experiencia,
+                caliper  = .25,
+                Weight = 2, #mahalanobis
+                estimand='ATT')
+summary(Maha_att) # The default estimate is ATT here
+
+
+```
+- Distância Euclidiana 
+
+**Conceito**: Distância "em linha reta" no espaço multidimensional.
+
+**Fórmula**: $d = \sqrt{\sum_{k=1}^p (x_{1k} - x_{2k})^2}$
+
+onde $k$ é o número de covariadas
+
+**Quando usar**: Poucas variáveis com escalas similares.
+
+- Distância Mahalanobis 
+
+**Conceito**: Distância que considera a estrutura de correlação dos dados.
+
+**Fórmula**: $d = \sqrt{(x_1 - x_2)^T S^{-1} (x_1 - x_2)}$
+
+onde $S$ é a matriz de covariância.
+
+**Quando usar**: Múltiplas covariáveis correlacionadas.
+
+O `caliper` define o **limite máximo de distância** para aceitar um pareamento. É como um "raio de busca" - só forma pares dentro desse raio.
+
+## 3.3 Propensity Score Matching
+
+
+**Ideia revolucionária** (Rosenbaum & Rubin, 1983): Reduzir dimensionalidade usando probabilidade de tratamento.
+
+**Propensity Score**: $e(X) = P(D = 1 | X)$
+
+**Teorema**: Se $(Y^1, Y^0) \perp D | X$, então $(Y^1, Y^0) \perp D | e(X)$
+
+### Passos do Propensity Score Matching:
+
+1.  **Estimar propensity score**
+2.  **Verificar overlap**
+3.  **Fazer pareamento**
+4.  **Verificar balance**
+5.  **Estimar efeito**
+
+- O que é Balance?
+*Balance significa que os grupos tratado e controle têm distribuições similares das covariáveis após o pareamento.
+
+* Objetivo: Se conseguimos balance perfeito, as únicas diferenças entre os grupos serão devido ao tratamento, não aos confounders.
+
+*|Diff.Adj| < 0.1: Excelente balance
+
+```{r}
+#| label: propensity-score
+
+# Passo 1: Estimar propensity score
+ps_model <- glm(treinamento ~ experiencia + I(experiencia^2), 
+                data = dados, family = binomial)
+
+X  <- ps_model$fitted
+Y  <- dados$produtividade
+Tr  <- dados$treinamento
+
+# Passo 2: Verificar overlap
+dados$pscore <- predict(ps_model, type = "response")
+
+dados %>%
+  ggplot(aes(x = pscore, fill = factor(treinamento))) +
+  geom_histogram(alpha = 0.7, position = "identity", bins = 25) +
+  labs(title = "Distribuição dos Propensity Scores",
+       x = "Propensity Score", y = "Frequência",
+       fill = "Treinamento") +
+  theme_minimal()
+
+# Passo 3: Fazer pareamento
+rr  <- Match(Y=Y, Tr=Tr, X=X, M=1);
+summary(rr)
+
+mb  <- MatchBalance(treinamento ~ experiencia + I(experiencia^2),  data=dados, match.out=rr, nboots=10)
+```
+
