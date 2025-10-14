@@ -1,0 +1,382 @@
+---
+title: "DID"
+author: "Caio Lopes"
+date: "2025-04-19"
+categories: [Ensino]
+#image: "image.jpg"
+---
+
+# Introdução
+
+Normalmente, o pesquisador não tem acesso a dados de experimentos controlados e randomizados. Mesmo assim o infêrencial  causal continua sendo de interesse. O método de diferenças em diferenças utiliza a dinamica temporal para dirimir a víes de seleção. A sua beleza reside na simplicidade com que, sob certas hipóteses, consegue isolar o efeito de um tratamento, controlando por fatores não observáveis que poderiam confundir a nossa análise.
+
+Neste post, vamos mergulhar na intuição por trás do DiD. Começaremos com a intuição do método. Em seguida, desvendaremos como o DiD elimina o viés de seleção, qual a sua hipótese fundamental -- as tendências paralelas -- e como podemos testá-la visualmente através de estudos de eventos. Por fim, abordaremos uma extensão robusta, as Triplas Diferenças (DDD), e ilustraremos todos esses conceitos com dados simulados, mostrando o poder do método na prática.
+
+# A desoneração da folha de pagamentos
+
+No início dos anos 2010, o governo brasileiro enfrentava preocupações sobre a competitividade da indústria nacional e o custo elevado da mão de obra. A contribuição previdenciária patronal de 20% sobre a folha de salários era vista como um entrave à geração de empregos, especialmente em setores intensivos em trabalho. Em resposta, o governo implementou a desoneração da folha através da Lei nº 12.546/2011, que entrou em vigor em 2012.
+
+A política permitiu que empresas de setores específicos optassem por pagar uma contribuição sobre a receita bruta (com alíquotas variando de 1% a 4,5%) em vez dos tradicionais 20% sobre a folha.
+
+Do ponto de vista da inferência causal, essa política criou uma situação quasi-experimental ideal para aplicação do DiD:
+
+1.  **Grupo de Tratamento**: Empresas em setores desonerados 
+2.  **Grupo de Controle**: Empresas em setores não desonerados
+3.  **Período Pré-Tratamento**: 2007-2011 (antes da implementação)
+4.  **Período Pós-Tratamento**: 2012-2015 (após a implementação)
+5.  **Outcome de Interesse**: Número de trabalhadores empregados
+
+
+## A Intuição do Método DiD
+
+### Por que Comparações Simples Falham?
+
+Imagine que queremos avaliar se a desoneração aumentou o emprego. Poderíamos ser tentados a fazer duas comparações simples:
+
+1.  **Comparação Cross-Sectional (2012-2017)**: Comparar o emprego médio nos setores desonerados com os não desonerados após a política. O problema? Os setores desonerados (como TI e construção civil) já eram naturalmente mais intensivos em mão de obra *antes* da política. Essa diferença estrutural entre os setores é o que chamamos de **viés de seleção** ou **efeito fixo de grupo**.
+
+2.  **Comparação Temporal (Setores Desonerados)**: Comparar o emprego nos setores desonerados antes e depois de 2012. O problema? Entre 2008 e 2017, a economia brasileira passou por ciclos de crescimento e recessão que afetaram todos os setores. Atribuir toda a mudança à desoneração ignoraria essas **tendências temporais comuns**.
+
+### O DiD
+O DiD combina ambas as abordagens de forma engenhosa. A primeira diferença (temporal) para cada grupo remove os efeitos fixos. A segunda diferença (entre grupos) remove as tendências temporais comuns. O que sobra é o efeito causal da política.
+
+Vamos decompor isso com um exemplo intuitivo usando símbolos:
+
+| **Grupo** | **Antes (2008-2011)** | **Depois (2012-2017)** | **Diferença Temporal** |
+|--------------------|------------------|------------------|------------------|
+| **Setores Desonerados** | D + S | D + S + T + E | T + E |
+| **Setores Não Desonerados** | S | S + T | T |
+| **Diferença entre Grupos** | D | D + E | **E** ← **DiD** |
+
+**Legenda dos Efeitos:** - **D**: Efeito fixo dos setores desonerados (ex: TI e construção são naturalmente mais intensivos em mão de obra) - **S**: Efeito fixo dos setores não desonerados (baseline comum)\
+- **T**: Tendência temporal comum (crescimento/recessão econômica que afeta todos os setores) - **E**: **Efeito causal da desoneração** (o que queremos estimar!)
+
+**Como o DiD Funciona:**
+
+1.  **Primeira diferença temporal** elimina os efeitos fixos (D e S desaparecem)
+2.  **Segunda diferença entre grupos** elimina a tendência temporal comum (T desaparece)\
+3.  **O que sobra é E**: o efeito causal puro da desoneração
+
+Formalmente, o estimador DiD é:
+
+$$
+DiD = [E[Y | D=1, Post] - E[Y | D=1, Pre]] - [E[Y | D=0, Post] - E[Y | D=0, Pre]]
+$$
+
+
+## Como o DiD Elimina o Viés de Seleção do ATT
+
+### O Problema Fundamental da Inferência Causal
+
+
+O que realmente queremos estimar é o **Efeito Médio do Tratamento sobre os Tratados (ATT)**:
+
+$$
+ATT = E[Y^{1} | D=1] - E[Y^{0} | D=1]
+$$
+
+Onde $Y^{1}$ é o emprego com desoneração e $Y^{0}$ é o emprego sem desoneração. O primeiro termo é observável (vemos o emprego nos setores desonerados após 2012). O problema é o segundo termo: o emprego **contrafactual** que teria ocorrido nos setores desonerados se a política não tivesse sido implementada. Esse contrafactual é, por definição, inobservável.
+
+Como agora acompanhamos as unidades no tempo, podemos reescrever nosso ATT como:
+
+$$
+ATT = E[Y^{1} | D=1, Post] - E[Y^{0} | D=1, Post]
+$$
+
+Uma vez que se $D=1$ estamos considerando o período pós tratamento.
+
+
+### A Hipótese de Tendências Paralelas
+
+O DiD resolve esse problema fazendo uma hipótese crucial: na ausência do tratamento, a trajetória do emprego nos setores desonerados teria sido a mesma que a trajetória observada nos setores não desonerados. Formalmente:
+
+$$
+E[Y^{0} | D=1, Post] - E[Y^{0} | D=1, Pre] = E[Y^{0} | D=0, Post] - E[Y^{0} | D=0, Pre=1]
+$$
+
+Em palavras: a mudança no emprego para os setores controle é um bom proxy para a mudança que *teria ocorrido* nos setores desonerados na ausência da política. Se essa hipótese for válida, o DiD identifica perfeitamente o ATT.
+
+### Decomposição do Estimador
+
+Podemos decompor o estimador DiD da seguinte forma:
+$$
+DiD = ATT + [E[Y^{0}|D=1,Post] - E[Y^{0}|D=1,Pre]] - [E[Y^{0} |D=0,Post] - E[Y^{0}|D=0,Pre]]
+$$
+O segundo termo é o viés de tendências não-paralelas. Se as tendências forem paralelas (segundo termo = 0), então **DiD = ATT**. O método usa a tendência do grupo controle para construir o contrafactual não observado do grupo tratado.
+
+Para entender como chegamos na decomposição acima, vamos rescrever o estimador DiD por meio dos resultados potenciais: 
+
+$$
+DiD = [E[Y^{1} | D=1, Post] - E[Y^{0} | D=1, Pre]] - [E[Y^{0} | D=0, Post] - E[Y^{0} | D=0, Pre]]
+$$
+Somando e subtraindo do lado direito da equação por $[E[Y^{0} | D=1, Post]$, temos: 
+
+$$
+DiD = [E[Y^{1} | D=1, Post] - E[Y^{0} | D=1, Pre]] - [E[Y^{0} | D=0, Post] - E[Y^{0} | D=0, Pre]] + ([E[Y^{0} | D=1, Post] - [E[Y^{0} | D=1, Post])
+$$
+Rearranjando as expressões temos: 
+
+$$
+DiD = [E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post] + [E[Y^{0} | D=1, Post] - E[Y^{0} | D=1, Pre]] - [E[Y^{0} | D=0, Post] - E[Y^{0} | D=0, Pre]]  
+$$
+Em que:
+
+* $[E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post]= ATT$
+* $[E[Y^{0} | D=1, Post] - E[Y^{0} | D=1, Pre]] - [E[Y^{0} | D=0, Post] - E[Y^{0} | D=0, Pre]]$ é o viés causado por tendencias não paralelas 
+
+### Outras Hipóteses Necessárias
+
+Além de tendências paralelas, o DiD requer:
+
+1.  **SUTVA (Stable Unit Treatment Value Assumption)**: O tratamento de uma empresa não afeta o resultado de outras
+2.  **Exogeneidade do Timing**: A implementação em 2012 não foi antecipada de forma a alterar comportamentos pré-tratamento
+3.  **Composição Estável**: A composição dos setores não muda drasticamente (ex: empresas não migram entre setores)
+
+## Do Cálculo Manual à Regressão OLS
+
+Até agora, estimamos o DiD calculando manualmente as diferenças de médias. Mas há uma forma mais elegante e flexível: **regressão por Mínimos Quadrados Ordinários (OLS)**. Surpreendentemente, uma regressão simples com uma interação recupera *exatamente* o mesmo estimador DiD.
+
+### A Especificação de Regressão
+
+Considere o seguinte modelo de regressão linear:
+
+$$Y_{it} = \beta_0 + \beta_1 \text{Desonerado}_i + \beta_2 \text{Post}_t + \beta_3 (\text{Desonerado}_i \times \text{Post}_t) + \varepsilon_{it}$$
+
+Onde:
+- $Y_{it}$ é o número de trabalhadores na empresa $i$ no período $t$
+- $\text{Desonerado}_i = 1$ se a empresa está em setor desonerado, 0 caso contrário
+- $\text{Post}_t = 1$ se o período é pós-2012, 0 caso contrário
+- $\text{Desonerado}_i \times \text{Post}_t$ é a **interação** entre tratamento e período
+
+**Interpretação dos Coeficientes:**
+- $\beta_0$: Emprego médio nos setores não desonerados antes de 2012 (grupo base)
+- $\beta_1$: Diferença fixa entre setores desonerados e não desonerados (efeito fixo de grupo)
+- $\beta_2$: Mudança temporal comum a todos os setores (tendência temporal)
+- $\beta_3$: **Efeito causal da desoneração (DiD/ATT)**
+
+### Demonstração Matemática: $\beta_3 = \text{DiD}$
+
+Vamos provar que $\beta_3$ é exatamente igual ao estimador DiD que calculamos manualmente.
+
+**Passo 1: Valores Esperados para Cada Grupo-Período**
+
+Usando a equação de regressão, podemos calcular o valor esperado de $Y$ para cada combinação de grupo e período:
+
+| Grupo | Período | Desonerado | Post | Interação | $E[Y]$ |
+|-------|---------|------------|------|-----------|--------|
+| Não Desonerado | Antes | 0 | 0 | 0 | $\beta_0$ |
+| Não Desonerado | Depois | 0 | 1 | 0 | $\beta_0 + \beta_2$ |
+| Desonerado | Antes | 1 | 0 | 0 | $\beta_0 + \beta_1$ |
+| Desonerado | Depois | 1 | 1 | 1 | $\beta_0 + \beta_1 + \beta_2 + \beta_3$ |
+
+**Passo 2: Primeira Diferença (Temporal) para Cada Grupo**
+
+*Setores Desonerados:*
+$$\Delta_{\text{Desonerado}} = (\beta_0 + \beta_1 + \beta_2 + \beta_3) - (\beta_0 + \beta_1) = \beta_2 + \beta_3$$
+
+*Setores Não Desonerados:*
+$$\Delta_{\text{Não Desonerado}} = (\beta_0 + \beta_2) - \beta_0 = \beta_2$$
+
+**Passo 3: Segunda Diferença (DiD)**
+
+$$\text{DiD} = \Delta_{\text{Desonerado}} - \Delta_{\text{Não Desonerado}} = (\beta_2 + \beta_3) - \beta_2 = \beta_3$$
+
+**Conclusão:** O coeficiente da interação $\beta_3$ é **exatamente** o estimador DiD! ∎
+
+### Visualização da Decomposição
+
+Podemos reorganizar a tabela acima para ver claramente como cada componente contribui:
+
+| Grupo | Período | Valor Esperado | Decomposição |
+|-------|---------|----------------|--------------|
+| Não Desonerado | Antes | $\beta_0$ | Baseline |
+| Não Desonerado | Depois | $\beta_0 + \beta_2$ | Baseline + Tendência |
+| Desonerado | Antes | $\beta_0 + \beta_1$ | Baseline + Efeito Fixo |
+| Desonerado | Depois | $\beta_0 + \beta_1 + \beta_2 + \beta_3$ | Baseline + Efeito Fixo + Tendência + **DiD** |
+
+Note que:
+- $\beta_0$ cancela em todas as diferenças
+- $\beta_1$ cancela na diferença temporal
+- $\beta_2$ cancela na diferença entre grupos
+- **$\beta_3$ sobrevive como o único termo não cancelado**
+
+## Aplicação Prática com Dados Simulados (N=100)
+
+Para tornar os conceitos mais concretos, vamos simular dados de painel com 100 empresas (50 em setores desonerados, 50 em setores controle) ao longo de 9 anos (2007-2015). A desoneração é implementada em 2012 e tem um efeito verdadeiro de **+25 trabalhadores**.
+
+```{r}
+#| label: simulacao-dados
+#| code-fold: false
+
+# Configurar seed para reprodutibilidade
+set.seed(42)
+
+# Parâmetros da simulação
+n_empresas <- 100
+n_anos <- 9  # 2007-2015
+ano_inicio <- 2007
+ano_desoneracao <- 2012
+
+# Metade das empresas em setores desonerados
+n_desonerado <- n_empresas / 2
+
+# Criar data frame vazio
+dados <- data.frame()
+
+for (i in 1:n_empresas) {
+  # Determinar se empresa está em setor desonerado
+  desonerado <- ifelse(i <= n_desonerado, 1, 0)
+  
+  # Efeito fixo da empresa
+  # Setores desonerados têm baseline maior (mais intensivos em mão de obra)
+  efeito_fixo <- 100 + (30 * desonerado) + rnorm(1, mean = 0, sd = 10)
+  
+  for (t in 0:(n_anos - 1)) {
+    ano <- ano_inicio + t
+    
+    # Tendência temporal comum (crescimento econômico)
+    tendencia_temporal <- 5 * t
+    
+    # Efeito da desoneração (apenas após 2012 para setores desonerados)
+    efeito_desoneracao <- ifelse(desonerado == 1 & ano >= ano_desoneracao, 25, 0)
+    
+    # Ruído aleatório
+    erro <- rnorm(1, mean = 0, sd = 5)
+    
+    # Número de trabalhadores
+    n_trabalhadores <- efeito_fixo + tendencia_temporal + efeito_desoneracao + erro
+    
+    # Criar variável post
+    post <- ifelse(ano >= ano_desoneracao, 1, 0)
+    
+    # Criar variável de interação
+    desoneracao <- desonerado * post
+    
+    # Adicionar linha ao data frame
+    dados <- rbind(dados, data.frame(
+      empresa_id = i,
+      ano = ano,
+      tempo = t,
+      desonerado = desonerado,
+      post = post,
+      desoneracao = desoneracao,
+      n_trabalhadores = n_trabalhadores
+    ))
+  }
+}
+
+```
+
+###Regressão OLS
+
+```{r}
+#| label: regressao-ols
+#| code-fold: false
+
+# Estimar modelo: Y = β0 + β1*Desonerado + β2*Post + β3*(Desonerado×Post) + ε
+modelo <- lm(n_trabalhadores ~ desonerado + post + desoneracao, data = dados)
+
+# Mostrar sumário da regressão
+summary(modelo)
+```
+
+#### Interpretação dos Coeficientes
+
+```{r}
+#| label: interpretacao-coefs
+#| code-fold: false
+
+# Extrair coeficientes
+beta_0 <- coef(modelo)["(Intercept)"]
+beta_1 <- coef(modelo)["desonerado"]
+beta_2 <- coef(modelo)["post"]
+beta_3 <- coef(modelo)["desoneracao"]
+
+cat("\n=== INTERPRETAÇÃO DOS COEFICIENTES ===\n\n")
+cat(sprintf("β₀ (Intercepto):         %.4f\n", beta_0))
+cat("   → Emprego médio nos setores não desonerados antes de 2012\n\n")
+cat(sprintf("β₁ (Desonerado):         %.4f\n", beta_1))
+cat("   → Diferença fixa entre setores (efeito fixo de grupo)\n\n")
+cat(sprintf("β₂ (Post):               %.4f\n", beta_2))
+cat("   → Tendência temporal comum (crescimento econômico)\n\n")
+cat(sprintf("β₃ (Desonerado × Post):  %.4f ***\n", beta_3))
+cat("   → EFEITO CAUSAL DA DESONERAÇÃO (DiD/ATT)\n")
+```
+
+### Visualização: Tendências Paralelas
+
+```{r}
+#| label: grafico-tendencias
+#| fig-cap: "Tendências paralelas em dados simulados da desoneração da folha. As trajetórias são similares antes de 2012 e divergem após a implementação da política."
+#| fig-width: 10
+#| fig-height: 6
+
+# Calcular médias por ano e grupo
+medias_ano <- aggregate(n_trabalhadores ~ ano + desonerado, data = dados, FUN = mean)
+
+# Criar gráfico
+par(mar = c(5, 5, 4, 2))
+
+# Plotar setores não desonerados
+plot(medias_ano$ano[medias_ano$desonerado == 0], 
+     medias_ano$n_trabalhadores[medias_ano$desonerado == 0],
+     type = "b", pch = 15, col = "#e74c3c", lwd = 3, cex = 1.5,
+     xlab = "Ano", ylab = "Número de Trabalhadores",
+     main = "Impacto da Desoneração da Folha no Emprego\nTendências Paralelas",
+     ylim = range(medias_ano$n_trabalhadores),
+     cex.lab = 1.3, cex.main = 1.4, cex.axis = 1.2)
+
+# Adicionar setores desonerados
+lines(medias_ano$ano[medias_ano$desonerado == 1], 
+      medias_ano$n_trabalhadores[medias_ano$desonerado == 1],
+      type = "b", pch = 16, col = "#27ae60", lwd = 3, cex = 1.5)
+
+# Linha vertical no ano da desoneração
+abline(v = ano_desoneracao - 0.5, col = "gray", lty = 2, lwd = 2.5)
+
+# Legenda
+legend("topleft", 
+       legend = c("Setores Desonerados", "Setores Não Desonerados"),
+       col = c("#27ae60", "#e74c3c"), 
+       pch = c(16, 15), 
+       lwd = 3, 
+       cex = 1.2,
+       bty = "n")
+
+# Anotação
+text(ano_desoneracao - 0.5, max(medias_ano$n_trabalhadores) * 0.95, 
+     "Lei 12.546/2011\nDesoneração (2012)", 
+     pos = 4, cex = 1.1, font = 2)
+
+# Grid
+grid(col = "gray", lty = "dotted")
+```
+
+
+```{r}
+#| label: regressao-ols
+#| code-fold: false
+
+# Estimar modelo: Y = β0 + β1*Desonerado + β2*Post + β3*(Desonerado×Post) + ε
+modeloTWFE <- lm(n_trabalhadores ~ as.factor(empresa_id) + as.factor(tempo)  + desoneracao -1, data = dados)
+
+# Mostrar sumário da regressão
+summary(modeloTWFE)
+```
+### Resultados
+
+O gráfico acima visualiza as tendências paralelas. Note como:
+
+1. **Antes de 2012**: As linhas dos dois grupos são aproximadamente paralelas, validando visualmente nossa hipótese identificadora
+2. **Após 2012**: A linha dos setores desonerados se afasta para cima, capturando o efeito positivo da política
+3. **Magnitude**: O gap vertical entre as linhas após 2012 representa o efeito DiD de aproximadamente **+25 trabalhadores**
+
+**Tabela Resumo dos Resultados:**
+
+| Método | Estimativa | Erro Padrão | Estatística t | p-valor |
+|--------|------------|-------------|---------------|---------|
+| DiD Manual | +25.25 | - | - | - |
+| Regressão OLS (β₃) | +25.25 | 1.69 | 14.96 | < 0.001 |
+
+**Conclusão:** A desoneração da folha aumentou o emprego em aproximadamente **25 trabalhadores** nas empresas beneficiadas, controlando por tendências temporais comuns e diferenças fixas entre setores. O efeito é altamente significativo estatisticamente.
+
