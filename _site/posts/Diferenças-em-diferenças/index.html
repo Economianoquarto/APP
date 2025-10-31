@@ -238,7 +238,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Vamos decompor isso com um exemplo intuitivo usando símbolos:</p>
 <table class="table">
 <colgroup>
-<col style="width: 27%">
+<col style="width: 26%">
 <col style="width: 24%">
 <col style="width: 24%">
 <col style="width: 24%">
@@ -272,23 +272,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
-<p><strong>Legenda dos Efeitos:</strong> - <strong>D</strong>: Efeito fixo dos setores desonerados (ex: TI e construção são naturalmente mais intensivos em mão de obra) - <strong>S</strong>: Efeito fixo dos setores não desonerados (baseline comum)<br>
-- <strong>T</strong>: Tendência temporal comum (crescimento/recessão econômica que afeta todos os setores) - <strong>E</strong>: <strong>Efeito causal da desoneração</strong> (o que queremos estimar!)</p>
+<p><strong>Legenda dos Efeitos:</strong></p>
+<ul>
+<li><p><strong>D</strong>: Efeito fixo dos setores desonerados (ex: TI e construção são naturalmente mais intensivos em mão de obra)</p></li>
+<li><p><strong>S</strong>: Efeito fixo dos setores não desonerados (baseline comum)</p></li>
+<li><p><strong>T</strong>: Tendência temporal comum (crescimento/recessão econômica que afeta todos os setores)</p></li>
+<li><p><strong>E</strong>: <strong>Efeito causal da desoneração</strong> (o que queremos estimar)</p></li>
+</ul>
 <p><strong>Como o DiD Funciona:</strong></p>
 <ol type="1">
 <li><strong>Primeira diferença temporal</strong> elimina os efeitos fixos (D e S desaparecem)</li>
-<li><strong>Segunda diferença entre grupos</strong> elimina a tendência temporal comum (T desaparece)<br>
-</li>
+<li><strong>Segunda diferença entre grupos</strong> elimina a tendência temporal comum (T desaparece)</li>
 <li><strong>O que sobra é E</strong>: o efeito causal puro da desoneração</li>
 </ol>
 <p>Formalmente, o estimador DiD é:</p>
 <p><span class="math display">\[
 DiD = [E[Y | D=1, Post] - E[Y | D=1, Pre]] - [E[Y | D=0, Post] - E[Y | D=0, Pre]]
-\]</span></p>
+\]</span> ## Como o DiD Elimina o Viés de Seleção do ATT</p>
 </section>
-</section>
-<section id="como-o-did-elimina-o-viés-de-seleção-do-att" class="level2">
-<h2 class="anchored" data-anchor-id="como-o-did-elimina-o-viés-de-seleção-do-att">Como o DiD Elimina o Viés de Seleção do ATT</h2>
 <section id="o-problema-fundamental-da-inferência-causal" class="level3">
 <h3 class="anchored" data-anchor-id="o-problema-fundamental-da-inferência-causal">O Problema Fundamental da Inferência Causal</h3>
 <p>O que realmente queremos estimar é o <strong>Efeito Médio do Tratamento sobre os Tratados (ATT)</strong>:</p>
@@ -357,12 +358,12 @@ DiD = [E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post] + [E[Y^{0} | D=1, Post] - E[
 <p>Usando a equação de regressão, podemos calcular o valor esperado de <span class="math inline">\(Y\)</span> para cada combinação de grupo e período:</p>
 <table class="table">
 <colgroup>
-<col style="width: 13%">
 <col style="width: 16%">
-<col style="width: 22%">
-<col style="width: 11%">
-<col style="width: 20%">
-<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -414,17 +415,17 @@ DiD = [E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post] + [E[Y^{0} | D=1, Post] - E[
 <p><em>Setores Não Desonerados:</em> <span class="math display">\[\Delta_{\text{Não Desonerado}} = (\beta_0 + \beta_2) - \beta_0 = \beta_2\]</span></p>
 <p><strong>Passo 3: Segunda Diferença (DiD)</strong></p>
 <p><span class="math display">\[\text{DiD} = \Delta_{\text{Desonerado}} - \Delta_{\text{Não Desonerado}} = (\beta_2 + \beta_3) - \beta_2 = \beta_3\]</span></p>
-<p><strong>Conclusão:</strong> O coeficiente da interação <span class="math inline">\(\beta_3\)</span> é <strong>exatamente</strong> o estimador DiD! ∎</p>
+<p><strong>Conclusão:</strong> O coeficiente da interação <span class="math inline">\(\beta_3\)</span> é <strong>exatamente</strong> o estimador DiD!</p>
 </section>
 <section id="visualização-da-decomposição" class="level3">
 <h3 class="anchored" data-anchor-id="visualização-da-decomposição">Visualização da Decomposição</h3>
 <p>Podemos reorganizar a tabela acima para ver claramente como cada componente contribui:</p>
 <table class="table">
 <colgroup>
-<col style="width: 15%">
-<col style="width: 19%">
-<col style="width: 34%">
-<col style="width: 30%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -461,11 +462,11 @@ DiD = [E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post] + [E[Y^{0} | D=1, Post] - E[
 </tr>
 </tbody>
 </table>
-<p>Note que: - <span class="math inline">\(\beta_0\)</span> cancela em todas as diferenças - <span class="math inline">\(\beta_1\)</span> cancela na diferença temporal - <span class="math inline">\(\beta_2\)</span> cancela na diferença entre grupos - <strong><span class="math inline">\(\beta_3\)</span> sobrevive como o único termo não cancelado</strong></p>
+<p>Note que: - <span class="math inline">\(\beta_0\)</span> cancela em todas as diferenças - <span class="math inline">\(\beta_1\)</span> cancela na diferença temporal - <span class="math inline">\(\beta_2\)</span> cancela na diferença entre grupos - <span class="math inline">\(\beta_3\)</span> sobrevive como o único termo não cancelado</p>
 </section>
 </section>
-<section id="aplicação-prática-com-dados-simulados-n100" class="level2">
-<h2 class="anchored" data-anchor-id="aplicação-prática-com-dados-simulados-n100">Aplicação Prática com Dados Simulados (N=100)</h2>
+<section id="aplicação-prática-com-dados-simulados" class="level2">
+<h2 class="anchored" data-anchor-id="aplicação-prática-com-dados-simulados">Aplicação Prática com Dados Simulados</h2>
 <p>Para tornar os conceitos mais concretos, vamos simular dados de painel com 100 empresas (50 em setores desonerados, 50 em setores controle) ao longo de 9 anos (2007-2015). A desoneração é implementada em 2012 e tem um efeito verdadeiro de <strong>+25 trabalhadores</strong>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar seed para reprodutibilidade</span></span>
@@ -528,77 +529,51 @@ DiD = [E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post] + [E[Y^{0} | D=1, Post] - E[
 <p>###Regressão OLS</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimar modelo: Y = β0 + β1*Desonerado + β2*Post + β3*(Desonerado×Post) + ε</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(n_trabalhadores <span class="sc">~</span> desonerado <span class="sc">+</span> post <span class="sc">+</span> desoneracao, <span class="at">data =</span> dados)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar sumário da regressão</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = n_trabalhadores ~ desonerado + post + desoneracao, 
-    data = dados)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--38.276  -8.393   0.250   8.211  36.977 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 110.1420     0.7956  138.43   &lt;2e-16 ***
-desonerado   31.5908     1.1252   28.07   &lt;2e-16 ***
-post         22.1818     1.1935   18.59   &lt;2e-16 ***
-desoneracao  25.2538     1.6878   14.96   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 12.58 on 896 degrees of freedom
-Multiple R-squared:  0.8349,    Adjusted R-squared:  0.8344 
-F-statistic:  1510 on 3 and 896 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>modelo <span class="ot">&lt;-</span> <span class="fu">lm</span>(n_trabalhadores <span class="sc">~</span> desonerado <span class="sc">+</span> post <span class="sc">+</span> desoneracao, <span class="at">data =</span> dados)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="interpretação-dos-coeficientes" class="level4">
 <h4 class="anchored" data-anchor-id="interpretação-dos-coeficientes">Interpretação dos Coeficientes</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extrair coeficientes</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>beta_0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"(Intercept)"</span>]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>beta_1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"desonerado"</span>]</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>beta_2 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"post"</span>]</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>beta_3 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"desoneracao"</span>]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== INTERPRETAÇÃO DOS COEFICIENTES ===</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extrair coeficientes</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>beta_0 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>beta_1 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"desonerado"</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>beta_2 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"post"</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>beta_3 <span class="ot">&lt;-</span> <span class="fu">coef</span>(modelo)[<span class="st">"desoneracao"</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">=== INTERPRETAÇÃO DOS COEFICIENTES ===</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 === INTERPRETAÇÃO DOS COEFICIENTES ===</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₀ (Intercepto):         %.4f</span><span class="sc">\n</span><span class="st">"</span>, beta_0))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₀ (Intercepto):         %.4f</span><span class="sc">\n</span><span class="st">"</span>, beta_0))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>β₀ (Intercepto):         110.1420</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → Emprego médio nos setores não desonerados antes de 2012</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → Emprego médio nos setores não desonerados antes de 2012</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   → Emprego médio nos setores não desonerados antes de 2012</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₁ (Desonerado):         %.4f</span><span class="sc">\n</span><span class="st">"</span>, beta_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₁ (Desonerado):         %.4f</span><span class="sc">\n</span><span class="st">"</span>, beta_1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>β₁ (Desonerado):         31.5908</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → Diferença fixa entre setores (efeito fixo de grupo)</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → Diferença fixa entre setores (efeito fixo de grupo)</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   → Diferença fixa entre setores (efeito fixo de grupo)</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₂ (Post):               %.4f</span><span class="sc">\n</span><span class="st">"</span>, beta_2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₂ (Post):               %.4f</span><span class="sc">\n</span><span class="st">"</span>, beta_2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>β₂ (Post):               22.1818</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → Tendência temporal comum (crescimento econômico)</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → Tendência temporal comum (crescimento econômico)</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   → Tendência temporal comum (crescimento econômico)</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₃ (Desonerado × Post):  %.4f ***</span><span class="sc">\n</span><span class="st">"</span>, beta_3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"β₃ (Desonerado × Post):  %.4f ***</span><span class="sc">\n</span><span class="st">"</span>, beta_3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>β₃ (Desonerado × Post):  25.2538 ***</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → EFEITO CAUSAL DA DESONERAÇÃO (DiD/ATT)</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"   → EFEITO CAUSAL DA DESONERAÇÃO (DiD/ATT)</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   → EFEITO CAUSAL DA DESONERAÇÃO (DiD/ATT)</code></pre>
 </div>
@@ -607,45 +582,45 @@ F-statistic:  1510 on 3 and 896 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="visualização-tendências-paralelas" class="level3">
 <h3 class="anchored" data-anchor-id="visualização-tendências-paralelas">Visualização: Tendências Paralelas</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular médias por ano e grupo</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>medias_ano <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(n_trabalhadores <span class="sc">~</span> ano <span class="sc">+</span> desonerado, <span class="at">data =</span> dados, <span class="at">FUN =</span> mean)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar gráfico</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>))</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotar setores não desonerados</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medias_ano<span class="sc">$</span>ano[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">0</span>], </span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>     medias_ano<span class="sc">$</span>n_trabalhadores[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">0</span>],</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="st">"#e74c3c"</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">1.5</span>,</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Ano"</span>, <span class="at">ylab =</span> <span class="st">"Número de Trabalhadores"</span>,</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Impacto da Desoneração da Folha no Emprego</span><span class="sc">\n</span><span class="st">Tendências Paralelas"</span>,</span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">range</span>(medias_ano<span class="sc">$</span>n_trabalhadores),</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>, <span class="at">cex.axis =</span> <span class="fl">1.2</span>)</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionar setores desonerados</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(medias_ano<span class="sc">$</span>ano[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">1</span>], </span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>      medias_ano<span class="sc">$</span>n_trabalhadores[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">1</span>],</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"#27ae60"</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Linha vertical no ano da desoneração</span></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ano_desoneracao <span class="sc">-</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="st">"gray"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="fl">2.5</span>)</span>
-<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Legenda</span></span>
-<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, </span>
-<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Setores Desonerados"</span>, <span class="st">"Setores Não Desonerados"</span>),</span>
-<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#27ae60"</span>, <span class="st">"#e74c3c"</span>), </span>
-<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">15</span>), </span>
-<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="dv">3</span>, </span>
-<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">1.2</span>,</span>
-<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty =</span> <span class="st">"n"</span>)</span>
-<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Anotação</span></span>
-<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(ano_desoneracao <span class="sc">-</span> <span class="fl">0.5</span>, <span class="fu">max</span>(medias_ano<span class="sc">$</span>n_trabalhadores) <span class="sc">*</span> <span class="fl">0.95</span>, </span>
-<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Lei 12.546/2011</span><span class="sc">\n</span><span class="st">Desoneração (2012)"</span>, </span>
-<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>     <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">cex =</span> <span class="fl">1.1</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
-<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid</span></span>
-<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>(<span class="at">col =</span> <span class="st">"gray"</span>, <span class="at">lty =</span> <span class="st">"dotted"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular médias por ano e grupo</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>medias_ano <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(n_trabalhadores <span class="sc">~</span> ano <span class="sc">+</span> desonerado, <span class="at">data =</span> dados, <span class="at">FUN =</span> mean)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar gráfico</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">2</span>))</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotar setores não desonerados</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(medias_ano<span class="sc">$</span>ano[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">0</span>], </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>     medias_ano<span class="sc">$</span>n_trabalhadores[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">0</span>],</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="st">"#e74c3c"</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">1.5</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Ano"</span>, <span class="at">ylab =</span> <span class="st">"Número de Trabalhadores"</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Impacto da Desoneração da Folha no Emprego</span><span class="sc">\n</span><span class="st">Tendências Paralelas"</span>,</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">range</span>(medias_ano<span class="sc">$</span>n_trabalhadores),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">cex.lab =</span> <span class="fl">1.3</span>, <span class="at">cex.main =</span> <span class="fl">1.4</span>, <span class="at">cex.axis =</span> <span class="fl">1.2</span>)</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionar setores desonerados</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(medias_ano<span class="sc">$</span>ano[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">1</span>], </span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>      medias_ano<span class="sc">$</span>n_trabalhadores[medias_ano<span class="sc">$</span>desonerado <span class="sc">==</span> <span class="dv">1</span>],</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">col =</span> <span class="st">"#27ae60"</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">1.5</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Linha vertical no ano da desoneração</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> ano_desoneracao <span class="sc">-</span> <span class="fl">0.5</span>, <span class="at">col =</span> <span class="st">"gray"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="fl">2.5</span>)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Legenda</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, </span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Setores Desonerados"</span>, <span class="st">"Setores Não Desonerados"</span>),</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"#27ae60"</span>, <span class="st">"#e74c3c"</span>), </span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">16</span>, <span class="dv">15</span>), </span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="dv">3</span>, </span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">cex =</span> <span class="fl">1.2</span>,</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Anotação</span></span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(ano_desoneracao <span class="sc">-</span> <span class="fl">0.5</span>, <span class="fu">max</span>(medias_ano<span class="sc">$</span>n_trabalhadores) <span class="sc">*</span> <span class="fl">0.95</span>, </span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Lei 12.546/2011</span><span class="sc">\n</span><span class="st">Desoneração (2012)"</span>, </span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>     <span class="at">pos =</span> <span class="dv">4</span>, <span class="at">cex =</span> <span class="fl">1.1</span>, <span class="at">font =</span> <span class="dv">2</span>)</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Grid</span></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>(<span class="at">col =</span> <span class="st">"gray"</span>, <span class="at">lty =</span> <span class="st">"dotted"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -666,6 +641,13 @@ F-statistic:  1510 on 3 and 896 DF,  p-value: &lt; 2.2e-16</code></pre>
 </ol>
 <p><strong>Tabela Resumo dos Resultados:</strong></p>
 <table class="table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 17%">
+<col style="width: 18%">
+<col style="width: 21%">
+<col style="width: 14%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Método</th>
@@ -693,9 +675,948 @@ F-statistic:  1510 on 3 and 896 DF,  p-value: &lt; 2.2e-16</code></pre>
 </tbody>
 </table>
 <p><strong>Conclusão:</strong> A desoneração da folha aumentou o emprego em aproximadamente <strong>25 trabalhadores</strong> nas empresas beneficiadas, controlando por tendências temporais comuns e diferenças fixas entre setores. O efeito é altamente significativo estatisticamente.</p>
-
-
 </section>
+</section>
+<section id="two-way-fixed-effects-twfe" class="level2">
+<h2 class="anchored" data-anchor-id="two-way-fixed-effects-twfe">Two-Way Fixed Effects (TWFE)</h2>
+<p>Até agora, trabalhamos com o caso mais simples do DiD: dois grupos (tratado e controle) e dois períodos (antes e depois). Mas o que acontece quando temos <strong>múltiplos grupos tratados em diferentes momentos</strong>? Por exemplo, se alguns setores foram desonerados em 2012, outros em 2013, e outros nunca foram desonerados?</p>
+<p>Nesse cenário mais realista, é comum usar o estimador <strong>Two-Way Fixed Effects (TWFE)</strong>, que é simplesmente uma regressão com efeitos fixos de unidade e tempo:</p>
+<p><span class="math display">\[
+Y_{it} = \alpha_i + \lambda_t + \beta \cdot D_{it} + \varepsilon_{it}
+\]</span></p>
+<p>Onde <span class="math inline">\(\alpha_i\)</span> são efeitos fixos de unidade, <span class="math inline">\(\lambda_t\)</span> são efeitos fixos de tempo, e <span class="math inline">\(D_{it}\)</span> é o indicador de tratamento.</p>
+<p><strong>A grande questão:</strong> O que exatamente o coeficiente <span class="math inline">\(\beta\)</span> do TWFE está estimando quando há heterogeneidade no timing do tratamento?</p>
+<p>Goodman-Bacon (2021) provou um resultado matemático elegante e surpreendente:</p>
+<blockquote class="blockquote">
+<p><strong>O estimador TWFE é uma média ponderada de todos os possíveis estimadores DD 2×2 que podem ser construídos com os dados.</strong></p>
+</blockquote>
+<p>Formalmente:</p>
+<p><span class="math display">\[
+\hat{\beta}^{DD} = \sum_{k\neq U} s_{kU} \hat{\beta}_{kU}^{2\times2} + \sum_{k\neq U} \sum_{\ell &gt; k} \left[ s_{k\ell}^k \hat{\beta}_{k\ell}^{2\times2,k} + s_{k\ell}^\ell \hat{\beta}_{k\ell}^{2\times2,\ell} \right]
+\]</span></p>
+<p>Onde:</p>
+<ul>
+<li><span class="math inline">\(\hat{\beta}_{kU}^{2\times2}\)</span>: comparação entre grupo tratado (<span class="math inline">\(k\)</span>) vs.&nbsp;nunca tratado (<span class="math inline">\(U\)</span>)</li>
+<li><span class="math inline">\(\hat{\beta}_{k\ell}^{2\times2,k}\)</span>: comparação usando grupo <span class="math inline">\(k\)</span> (tratado precocemente) como tratamento e grupo <span class="math inline">\(\ell\)</span> (tratado tardiamente) como controle</li>
+<li><span class="math inline">\(\hat{\beta}_{k\ell}^{2\times2,\ell}\)</span>: comparação usando grupo <span class="math inline">\(\ell\)</span> (tratado tardiamente) como tratamento e grupo <span class="math inline">\(k\)</span> (já tratado) como controle</li>
+<li><span class="math inline">\(s_{kU}, s_{k\ell}^k, s_{k\ell}^\ell\)</span>: pesos que somam 1</li>
+</ul>
+<p><strong>Interpretação:</strong> A decomposição tem três tipos de comparações:</p>
+<ol type="1">
+<li><strong>Tratados vs.&nbsp;Nunca tratados</strong> (<span class="math inline">\(\hat{\beta}_{kU}\)</span>): Cada grupo tratado comparado com o grupo nunca tratado</li>
+<li><strong>Tratados precoces vs.&nbsp;Tratados tardios</strong> (<span class="math inline">\(\hat{\beta}_{k\ell}^{k}\)</span>): Grupos tratados precocemente usando grupos ainda não tratados como controles</li>
+<li><strong>Tratados tardios vs.&nbsp;Tratados precoces</strong> (<span class="math inline">\(\hat{\beta}_{k\ell}^{\ell}\)</span>): Grupos tratados tardiamente usando grupos <strong>já tratados</strong> como controles</li>
+</ol>
+</section>
+<section id="exemplo-numérico-três-grupos-seis-períodos" class="level2">
+<h2 class="anchored" data-anchor-id="exemplo-numérico-três-grupos-seis-períodos">Exemplo Numérico: Três Grupos, Seis Períodos</h2>
+<p><a href="exemplo_twfe.xlsx" target="_blank">Visualizar exemplo em excel</a></p>
+<p><strong>Nota sobre a fórmula:</strong> No caso geral do artigo de Goodman-Bacon, pode haver múltiplos grupos tratados em diferentes momentos. A fórmula completa tem somatórios duplos para capturar todas as comparações possíveis entre pares de grupos. No nosso exemplo específico, temos apenas:</p>
+<ul>
+<li>1 grupo nunca tratado (U)</li>
+<li>2 grupos tratados (K em t=3, L em t=5)</li>
+</ul>
+<p>Portanto, a decomposição se simplifica para:</p>
+<p><span class="math display">\[
+\hat{\beta}^{DD} = s_{kU} \hat{\beta}_{kU}^{2\times2} + s_{\ell U} \hat{\beta}_{\ell U}^{2\times2} + s_{k\ell}^k \hat{\beta}_{k\ell}^{2\times2,k} + s_{k\ell}^\ell \hat{\beta}_{k\ell}^{2\times2,\ell}
+\]</span></p>
+<p>Vamos ilustrar com dados concretos. Considere:</p>
+<ul>
+<li><strong>Grupo U</strong>: Nunca tratado (2 unidades: U1, U2)</li>
+<li><strong>Grupo K</strong>: Tratado em <span class="math inline">\(t=3\)</span> (2 unidades: K1, K2)</li>
+<li><strong>Grupo L</strong>: Tratado em <span class="math inline">\(t=5\)</span> (2 unidades: L1, L2)</li>
+</ul>
+<section id="estrutura-dos-dados" class="level3">
+<h3 class="anchored" data-anchor-id="estrutura-dos-dados">Estrutura dos Dados</h3>
+<p><strong>Médias de</strong> <span class="math inline">\(Y_{it}\)</span> por grupo e tempo:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Grupo</th>
+<th>t=1</th>
+<th>t=2</th>
+<th>t=3</th>
+<th>t=4</th>
+<th>t=5</th>
+<th>t=6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>U (Nunca)</td>
+<td>12.0</td>
+<td>14.0</td>
+<td>15.0</td>
+<td>19.0</td>
+<td>20.0</td>
+<td>23.0</td>
+</tr>
+<tr class="even">
+<td>K (Trat t=3)</td>
+<td>11.5</td>
+<td>14.0</td>
+<td>21.0</td>
+<td>23.0</td>
+<td>25.0</td>
+<td>27.0</td>
+</tr>
+<tr class="odd">
+<td>L (Trat t=5)</td>
+<td>11.5</td>
+<td>14.0</td>
+<td>16.0</td>
+<td>18.0</td>
+<td>28.0</td>
+<td>30.0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indicador de Tratamento</strong> <span class="math inline">\(D_{it}\)</span>:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Grupo</th>
+<th>t=1</th>
+<th>t=2</th>
+<th>t=3</th>
+<th>t=4</th>
+<th>t=5</th>
+<th>t=6</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>U</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>K</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>L</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="passo-1-calcular-os-estimadores-dd-22" class="level2">
+<h2 class="anchored" data-anchor-id="passo-1-calcular-os-estimadores-dd-22">Passo 1: Calcular os Estimadores DD 2×2</h2>
+<section id="grupo-k-vs.-grupo-u" class="level3">
+<h3 class="anchored" data-anchor-id="grupo-k-vs.-grupo-u">1.1. Grupo K vs.&nbsp;Grupo U</h3>
+<p><strong>Períodos:</strong> PRE = <span class="math inline">\(\{1,2\}\)</span>, POST = <span class="math inline">\(\{3,4,5,6\}\)</span></p>
+<p><strong>Médias:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar{Y}_{K,PRE} &amp;= \frac{11.5 + 14.0}{2} = 12.75 \\
+\bar{Y}_{K,POST} &amp;= \frac{21.0 + 23.0 + 25.0 + 27.0}{4} = 24.0 \\
+\bar{Y}_{U,PRE} &amp;= \frac{12.0 + 14.0}{2} = 13.0 \\
+\bar{Y}_{U,POST} &amp;= \frac{15.0 + 19.0 + 20.0 + 23.0}{4} = 19.25
+\end{aligned}
+\]</span></p>
+<p><strong>Diferenças temporais:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\Delta_K &amp;= \bar{Y}_{K,POST} - \bar{Y}_{K,PRE} = 24.0 - 12.75 = 11.25 \\
+\Delta_U &amp;= \bar{Y}_{U,POST} - \bar{Y}_{U,PRE} = 19.25 - 13.0 = 6.25
+\end{aligned}
+\]</span></p>
+<p><strong>Estimador DD 2×2:</strong></p>
+<p><span class="math display">\[
+\hat{\beta}_{kU}^{2\times2} = \Delta_K - \Delta_U = 11.25 - 6.25 = 5.0
+\]</span></p>
+</section>
+<section id="grupo-l-vs.-grupo-u" class="level3">
+<h3 class="anchored" data-anchor-id="grupo-l-vs.-grupo-u">1.2. Grupo L vs.&nbsp;Grupo U</h3>
+<p><strong>Períodos:</strong> PRE = <span class="math inline">\(\{1,2,3,4\}\)</span>, POST = <span class="math inline">\(\{5,6\}\)</span></p>
+<p><strong>Médias:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar{Y}_{L,PRE} &amp;= \frac{11.5 + 14.0 + 16.0 + 18.0}{4} = 14.875 \\
+\bar{Y}_{L,POST} &amp;= \frac{28.0 + 30.0}{2} = 29.0 \\
+\bar{Y}_{U,PRE} &amp;= \frac{12.0 + 14.0 + 15.0 + 19.0}{4} = 15.0 \\
+\bar{Y}_{U,POST} &amp;= \frac{20.0 + 23.0}{2} = 21.5
+\end{aligned}
+\]</span></p>
+<p><strong>Estimador DD 2×2:</strong></p>
+<p><span class="math display">\[
+\hat{\beta}_{\ell U}^{2\times2} = (29.0 - 14.875) - (21.5 - 15.0) = 14.125 - 6.5 = 7.625
+\]</span></p>
+</section>
+<section id="grupo-k-vs.-grupo-l-k-como-tratamento" class="level3">
+<h3 class="anchored" data-anchor-id="grupo-k-vs.-grupo-l-k-como-tratamento">1.3. Grupo K vs.&nbsp;Grupo L (K como tratamento)</h3>
+<p><strong>Períodos:</strong> PRE = <span class="math inline">\(\{1,2\}\)</span>, MID = <span class="math inline">\(\{3,4\}\)</span></p>
+<p>Nesta comparação, usamos o Grupo L (ainda não tratado) como controle para o Grupo K.</p>
+<p><strong>Médias:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar{Y}_{K,PRE} &amp;= 12.75, \quad \bar{Y}_{K,MID} = \frac{21.0 + 23.0}{2} = 22.0 \\
+\bar{Y}_{L,PRE} &amp;= 12.75, \quad \bar{Y}_{L,MID} = \frac{16.0 + 18.0}{2} = 17.0
+\end{aligned}
+\]</span></p>
+<p><strong>Estimador DD 2×2:</strong></p>
+<p><span class="math display">\[
+\hat{\beta}_{k\ell}^{k} = (22.0 - 12.75) - (17.0 - 12.75) = 9.25 - 4.25 = 5.0
+\]</span></p>
+</section>
+<section id="grupo-l-vs.-grupo-k-l-como-tratamento" class="level3">
+<h3 class="anchored" data-anchor-id="grupo-l-vs.-grupo-k-l-como-tratamento">1.4. Grupo L vs.&nbsp;Grupo K (L como tratamento)</h3>
+<p><strong>Períodos:</strong> MID = <span class="math inline">\(\{3,4\}\)</span>, POST = <span class="math inline">\(\{5,6\}\)</span></p>
+<p><strong>ATENÇÃO:</strong> Nesta comparação, usamos o Grupo K <strong>já tratado</strong> como controle para o Grupo L. Isso pode ser problemático se o efeito do tratamento em K estiver evoluindo ao longo do tempo.</p>
+<p><strong>Médias:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar{Y}_{L,MID} &amp;= 17.0, \quad \bar{Y}_{L,POST} = 29.0 \\
+\bar{Y}_{K,MID} &amp;= 22.0, \quad \bar{Y}_{K,POST} = \frac{25.0 + 27.0}{2} = 26.0
+\end{aligned}
+\]</span></p>
+<p><strong>Estimador DD 2×2:</strong></p>
+<p><span class="math display">\[
+\hat{\beta}_{k\ell}^{\ell} = (29.0 - 17.0) - (26.0 - 22.0) = 12.0 - 4.0 = 8.0
+\]</span></p>
+</section>
+<section id="resumo-dos-estimadores-22" class="level3">
+<h3 class="anchored" data-anchor-id="resumo-dos-estimadores-22">Resumo dos Estimadores 2×2</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Comparação</th>
+<th>Estimador</th>
+<th>Interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\hat{\beta}_{kU}\)</span></td>
+<td>5.0</td>
+<td>K vs.&nbsp;Nunca tratado</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\hat{\beta}_{\ell U}\)</span></td>
+<td>7.625</td>
+<td>L vs.&nbsp;Nunca tratado</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\hat{\beta}_{k\ell}^k\)</span></td>
+<td>5.0</td>
+<td>K vs.&nbsp;L (L como controle)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\hat{\beta}_{k\ell}^\ell\)</span></td>
+<td>8.0</td>
+<td>L vs.&nbsp;K (K como controle)</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="passo-2-calcular-os-pesos" class="level2">
+<h2 class="anchored" data-anchor-id="passo-2-calcular-os-pesos">Passo 2: Calcular os Pesos</h2>
+<p>Os pesos na decomposição de Goodman-Bacon dependem de:</p>
+<ol type="1">
+<li><strong>Tamanho relativo dos grupos</strong> na comparação</li>
+<li><strong>Variância do tratamento</strong> dentro da comparação</li>
+</ol>
+<section id="fórmulas-dos-pesos" class="level3">
+<h3 class="anchored" data-anchor-id="fórmulas-dos-pesos">Fórmulas dos Pesos</h3>
+<p>Para uma comparação entre grupos <span class="math inline">\(g\)</span> e <span class="math inline">\(h\)</span>:</p>
+<p><span class="math display">\[
+s_{gh} = \frac{w_{gh}}{\sum w}
+\]</span></p>
+<p>Onde o peso não normalizado é:</p>
+<p><span class="math display">\[
+w_{gh} = n_{gh}^2 \cdot V_{D,gh}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(n_{gh}\)</span>: proporção da amostra na comparação</li>
+<li><span class="math inline">\(V_{D,gh}\)</span>: variância do tratamento na comparação</li>
+</ul>
+</section>
+<section id="cálculo-para-nosso-exemplo" class="level3">
+<h3 class="anchored" data-anchor-id="cálculo-para-nosso-exemplo">Cálculo para Nosso Exemplo</h3>
+<p><strong>Proporções dos grupos:</strong></p>
+<p><span class="math display">\[
+n_U = n_K = n_L = \frac{2}{6} = \frac{1}{3}
+\]</span></p>
+<p><strong>Proporção de períodos tratados:</strong></p>
+<p><span class="math display">\[
+\bar{D}_K = \frac{4}{6} = \frac{2}{3}, \quad \bar{D}_L = \frac{2}{6} = \frac{1}{3}
+\]</span></p>
+<p><strong>Para comparações com grupo nunca tratado:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_{kU} &amp;= \frac{n_K}{n_K + n_U} = \frac{1/3}{2/3} = 0.5 \\
+V_{kU} &amp;= \mu_{kU}(1 - \mu_{kU}) \bar{D}_K (1 - \bar{D}_K) = 0.5 \times 0.5 \times \frac{2}{3} \times \frac{1}{3} = \frac{1}{18} \\
+w_{kU} &amp;= \left(\frac{2}{3}\right)^2 \times \frac{1}{18} = \frac{4}{9} \times \frac{1}{18} = \frac{1}{40.5}
+\end{aligned}
+\]</span></p>
+<p>Similarmente, <span class="math inline">\(w_{\ell U} = \frac{1}{40.5}\)</span>.</p>
+<p><strong>Para comparações entre grupos tratados:</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+V_{k\ell}^k &amp;= \mu_{k\ell}(1 - \mu_{k\ell}) \frac{\bar{D}_K - \bar{D}_L}{1 - \bar{D}_L} \frac{1 - \bar{D}_K}{1 - \bar{D}_L} \\
+&amp;= 0.5 \times 0.5 \times \frac{1/3}{2/3} \times \frac{1/3}{2/3} = 0.25 \times 0.5 \times 0.5 = \frac{1}{16}
+\end{aligned}
+\]</span></p>
+<p><span class="math display">\[
+w_{k\ell}^k = \left[\left(\frac{2}{3}\right) \times \frac{2}{3}\right]^2 \times \frac{1}{16} = \left(\frac{4}{9}\right)^2 \times \frac{1}{16} = \frac{1}{81}
+\]</span></p>
+<p>Similarmente, <span class="math inline">\(w_{k\ell}^\ell = \frac{1}{81}\)</span>.</p>
+</section>
+<section id="pesos-normalizados" class="level3">
+<h3 class="anchored" data-anchor-id="pesos-normalizados">Pesos Normalizados</h3>
+<p><span class="math display">\[
+\sum w = \frac{1}{40.5} + \frac{1}{40.5} + \frac{1}{81} + \frac{1}{81} \approx 0.0741
+\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+s_{kU} &amp;= \frac{1}{3} \approx 0.3333 \\
+s_{\ell U} &amp;= \frac{1}{3} \approx 0.3333 \\
+s_{k\ell}^k &amp;= \frac{1}{6} \approx 0.1667 \\
+s_{k\ell}^\ell &amp;= \frac{1}{6} \approx 0.1667
+\end{aligned}
+\]</span></p>
+<p><strong>Verificação:</strong> <span class="math inline">\(\frac{1}{3} + \frac{1}{3} + \frac{1}{6} + \frac{1}{6} = 1\)</span></p>
+</section>
+</section>
+<section id="passo-3-decomposição-de-goodman-bacon" class="level2">
+<h2 class="anchored" data-anchor-id="passo-3-decomposição-de-goodman-bacon">Passo 3: Decomposição de Goodman-Bacon</h2>
+<p>Agora calculamos a média ponderada dos estimadores DD 2×2:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\beta}^{DD} &amp;= s_{kU} \hat{\beta}_{kU} + s_{\ell U} \hat{\beta}_{\ell U} + s_{k\ell}^k \hat{\beta}_{k\ell}^k + s_{k\ell}^\ell \hat{\beta}_{k\ell}^\ell \\
+&amp;= \frac{1}{3} \times 5.0 + \frac{1}{3} \times 7.625 + \frac{1}{6} \times 5.0 + \frac{1}{6} \times 8.0 \\
+&amp;= 1.667 + 2.542 + 0.833 + 1.333 \\
+&amp;= 6.375
+\end{aligned}
+\]</span></p>
+<section id="tabela-de-decomposição" class="level3">
+<h3 class="anchored" data-anchor-id="tabela-de-decomposição">Tabela de Decomposição</h3>
+<table class="table">
+<colgroup>
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Comparação</th>
+<th>Estimador</th>
+<th>Peso</th>
+<th>Contribuição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\hat{\beta}_{kU} \times s_{kU}\)</span></td>
+<td>5.000</td>
+<td>0.3333</td>
+<td>1.667</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\hat{\beta}_{\ell U} \times s_{\ell U}\)</span></td>
+<td>7.625</td>
+<td>0.3333</td>
+<td>2.542</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\hat{\beta}_{k\ell}^k \times s_{k\ell}^k\)</span></td>
+<td>5.000</td>
+<td>0.1667</td>
+<td>0.833</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\hat{\beta}_{k\ell}^\ell \times s_{k\ell}^\ell\)</span></td>
+<td>8.000</td>
+<td>0.1667</td>
+<td>1.333</td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>1.0000</strong></td>
+<td><strong>6.375</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="passo-4-verificação-com-regressão-twfe" class="level2">
+<h2 class="anchored" data-anchor-id="passo-4-verificação-com-regressão-twfe">Passo 4: Verificação com Regressão TWFE</h2>
+<p>Rodando a regressão:</p>
+<p><span class="math display">\[
+Y_{it} = \alpha_i + \lambda_t + \beta \cdot D_{it} + \varepsilon_{it}
+\]</span></p>
+<p>Obtemos: <span class="math inline">\(\hat{\beta}^{TWFE} = 6.375\)</span></p>
+<p><strong>Os valores batem</strong></p>
+<p>Isso confirma o teorema de Goodman-Bacon: o estimador TWFE é exatamente a média ponderada dos estimadores DD 2×2.</p>
+</section>
+<section id="implicações-práticas" class="level2">
+<h2 class="anchored" data-anchor-id="implicações-práticas">Implicações Práticas</h2>
+<section id="interpretação-do-coeficiente-twfe" class="level3">
+<h3 class="anchored" data-anchor-id="interpretação-do-coeficiente-twfe">1. Interpretação do Coeficiente TWFE</h3>
+<p>O coeficiente <span class="math inline">\(\hat{\beta}^{TWFE} = 6.375\)</span> <strong>não é simplesmente a média dos efeitos do tratamento</strong>. É uma <strong>média ponderada complexa</strong> que depende de:</p>
+<ul>
+<li>Timing do tratamento (quando cada grupo foi tratado)</li>
+<li>Tamanho dos grupos</li>
+<li>Variância do tratamento</li>
+</ul>
+</section>
+<section id="o-problema-das-comparações-contaminadas" class="level3">
+<h3 class="anchored" data-anchor-id="o-problema-das-comparações-contaminadas">2. O Problema das Comparações “Contaminadas”</h3>
+<p>Observe que <span class="math inline">\(\hat{\beta}_{k\ell}^\ell = 8.0\)</span> usa o <strong>Grupo K já tratado</strong> como controle para o Grupo L.</p>
+<p><strong>Por que isso é problemático?</strong></p>
+<p>Se o efeito do tratamento no Grupo K estiver <strong>evoluindo ao longo do tempo</strong> (efeitos dinâmicos), a diferença temporal de K (<span class="math inline">\(\Delta_K = \bar{Y}_{K,POST} - \bar{Y}_{K,MID}\)</span>) inclui:</p>
+<ol type="1">
+<li>Tendência temporal comum (que queremos remover)</li>
+<li><strong>Mudança no efeito do tratamento</strong> (que contamina a estimativa)</li>
+</ol>
+</section>
+<section id="quando-o-twfe-funciona-bem" class="level3">
+<h3 class="anchored" data-anchor-id="quando-o-twfe-funciona-bem">3. Quando o TWFE Funciona Bem</h3>
+<p>O TWFE identifica corretamente o efeito causal médio quando:</p>
+<ol type="1">
+<li><strong>Efeitos homogêneos:</strong> Todos os grupos têm o mesmo efeito (<span class="math inline">\(\tau_K = \tau_L\)</span>)</li>
+<li><strong>Sem efeitos dinâmicos:</strong> O efeito não muda ao longo do tempo (<span class="math inline">\(\tau_{it} = \tau\)</span>)</li>
+<li><strong>Tendências paralelas:</strong> Válidas para todas as comparações 2×2</li>
+</ol>
+</section>
+<section id="quando-o-twfe-falha" class="level3">
+<h3 class="anchored" data-anchor-id="quando-o-twfe-falha">4. Quando o TWFE Falha</h3>
+<p>O TWFE pode dar estimativas <strong>enviesadas</strong> quando:</p>
+<ol type="1">
+<li><strong>Efeitos heterogêneos:</strong> Diferentes grupos têm efeitos diferentes</li>
+<li><strong>Efeitos dinâmicos:</strong> O efeito do tratamento evolui ao longo do tempo</li>
+<li><strong>Pesos negativos:</strong> Em casos extremos, alguns pesos <span class="math inline">\(s\)</span> podem ser negativos!</li>
+</ol>
+</section>
+</section>
+<section id="soluções-alternativas" class="level2">
+<h2 class="anchored" data-anchor-id="soluções-alternativas">Soluções Alternativas</h2>
+<p>Quando há heterogeneidade no timing e nos efeitos, considere: <strong>Callaway &amp; Sant’Anna (2021)</strong> e <strong>Wooldrigde (2021)-ETWFE</strong></p>
+<p>A decomposição de Goodman-Bacon revela que o estimador TWFE, aparentemente simples, esconde uma complexidade considerável quando há múltiplos grupos tratados em diferentes momentos.</p>
+<p><strong>Principais lições:</strong></p>
+<ol type="1">
+<li><p>TWFE = média ponderada de comparações DD 2×2</p></li>
+<li><p>Algumas comparações usam grupos já tratados como controles</p></li>
+<li><p>Com efeitos heterogêneos ou dinâmicos, TWFE pode ser enviesado</p></li>
+</ol>
+</section>
+<section id="event-studies-testando-tendências-paralelas-e-efeitos-dinâmicos" class="level2">
+<h2 class="anchored" data-anchor-id="event-studies-testando-tendências-paralelas-e-efeitos-dinâmicos">Event Studies: Testando Tendências Paralelas e Efeitos Dinâmicos</h2>
+<section id="da-estimativa-única-aos-efeitos-dinâmicos" class="level3">
+<h3 class="anchored" data-anchor-id="da-estimativa-única-aos-efeitos-dinâmicos">Da Estimativa Única aos Efeitos Dinâmicos</h3>
+<p>Até agora, estimamos um <strong>único efeito médio</strong> da desoneração: +25 trabalhadores. Mas essa abordagem esconde informações importantes:</p>
+<ol type="1">
+<li><strong>O efeito foi imediato ou gradual?</strong></li>
+<li><strong>O efeito cresceu ou diminuiu ao longo do tempo?</strong></li>
+<li><strong>Mais importante: as tendências eram realmente paralelas antes de 2012?</strong></li>
+</ol>
+<p>O <strong>Event Study</strong> (ou estudo de eventos) responde a essas perguntas estimando um <strong>efeito separado para cada ano</strong> relativo ao tratamento.</p>
+</section>
+<section id="a-especificação-de-regressão-do-event-study" class="level3">
+<h3 class="anchored" data-anchor-id="a-especificação-de-regressão-do-event-study">A Especificação de Regressão do Event Study</h3>
+<p>Em vez de uma única dummy <code>Post</code>, criamos <strong>dummies para cada ano</strong> relativo ao tratamento:</p>
+<p><span class="math display">\[Y_{it} = \alpha_i + \lambda_t + \sum_{k \neq -1} \beta_k \cdot \mathbb{1}\{\text{Tempo Relativo}_{it} = k\} \cdot D_i + \varepsilon_{it}\]</span></p>
+<p>Onde: - <span class="math inline">\(\text{Tempo Relativo}_{it} = t - 2012\)</span> (anos relativos à desoneração) - <span class="math inline">\(k \in \{-5, -4, -3, -2, -1, 0, 1, 2, 3\}\)</span> são os anos relativos - <span class="math inline">\(\beta_k\)</span> são os <strong>coeficientes de interesse</strong> (efeito no ano <span class="math inline">\(k\)</span>) - <strong>Normalização:</strong> Omitimos <span class="math inline">\(k = -1\)</span> como período de referência</p>
+</section>
+<section id="interpretação-dos-parâmetros-temporais" class="level3">
+<h3 class="anchored" data-anchor-id="interpretação-dos-parâmetros-temporais">Interpretação dos Parâmetros Temporais</h3>
+<p><strong>Coeficientes Pré-Tratamento (</strong><span class="math inline">\(\beta_k\)</span> para <span class="math inline">\(k &lt; 0\)</span>):</p>
+<ul>
+<li>Capturam diferenças nas tendências <em>antes</em> da política</li>
+<li><strong>Devem ser ≈ 0</strong> se as tendências forem paralelas</li>
+<li>Se <span class="math inline">\(\beta_k \neq 0\)</span>: evidência de violação de tendências paralelas</li>
+</ul>
+<p><strong>Coeficientes Pós-Tratamento (</strong><span class="math inline">\(\beta_k\)</span> para <span class="math inline">\(k \geq 0\)</span>):</p>
+<ul>
+<li>Capturam o efeito causal dinâmico da desoneração</li>
+<li><span class="math inline">\(\beta_0\)</span>: efeito imediato (2012)</li>
+<li><span class="math inline">\(\beta_1, \beta_2, \beta_3\)</span>: efeitos subsequentes</li>
+</ul>
+</section>
+<section id="por-que-event-studies-testam-tendências-paralelas" class="level3">
+<h3 class="anchored" data-anchor-id="por-que-event-studies-testam-tendências-paralelas">Por que Event Studies Testam Tendências Paralelas?</h3>
+<p>A hipótese de tendências paralelas <strong>não pode ser testada diretamente</strong> (o contrafactual é inobservável). Mas podemos fazer um <strong>teste indireto</strong>:</p>
+<ul>
+<li><strong>Se as tendências eram paralelas antes</strong>, é plausível que continuariam paralelas na ausência do tratamento</li>
+<li><strong>Se as tendências divergiam antes</strong>, não há razão para acreditar que convergiriam após 2012</li>
+<li><strong>Event study revela essas tendências</strong> através dos coeficientes pré-tratamento</li>
+</ul>
+<p><strong>Teste Visual:</strong> Plotar <span class="math inline">\(\beta_k\)</span> com intervalos de confiança e verificar se <span class="math inline">\(\beta_k \approx 0\)</span> para <span class="math inline">\(k &lt; 0\)</span>.</p>
+</section>
+<section id="implementação-com-dados-simulados" class="level3">
+<h3 class="anchored" data-anchor-id="implementação-com-dados-simulados">Implementação com Dados Simulados</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar variável de tempo relativo</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">&lt;-</span> dados <span class="sc">%&gt;%</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">tempo_relativo =</span> ano <span class="sc">-</span> ano_desoneracao)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>modelo_event <span class="ot">&lt;-</span> <span class="fu">feols</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  n_trabalhadores <span class="sc">~</span> <span class="fu">i</span>(tempo_relativo, desonerado, <span class="at">ref =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">|</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                    empresa_id <span class="sc">+</span> ano,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dados,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cluster =</span> <span class="sc">~</span>empresa_id  <span class="co"># Erros padrão clusterizados</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Extrair resultados</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>resultados_event <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(modelo_event, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ou visualizar diretamente</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="fu">iplot</span>(modelo_event ,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Event Study: Desoneração da Folha"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">"Tempo Relativo"</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Efeito no Emprego"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/event-regressao-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="o-que-o-gráfico-revela" class="level3">
+<h3 class="anchored" data-anchor-id="o-que-o-gráfico-revela">O que o Gráfico Revela?</h3>
+<table class="table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 25%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Coeficiente</th>
+<th>Notação</th>
+<th>Interpretação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>β₋₅</strong></td>
+<td><code>tempo_relativo = -5</code></td>
+<td>Diferença no emprego entre setores desonerados e não desonerados <strong>5 anos antes</strong> da política (2007 vs 2007), controlando por FEs de empresa e tempo.</td>
+</tr>
+<tr class="even">
+<td><strong>β₋₄</strong></td>
+<td><code>tempo_relativo = -4</code></td>
+<td>Diferença no emprego entre setores desonerados e não desonerados <strong>4 anos antes</strong> da política (2008 vs 2008), controlando por FEs.</td>
+</tr>
+<tr class="odd">
+<td><strong>β₋₃</strong></td>
+<td><code>tempo_relativo = -3</code></td>
+<td>Diferença no emprego entre setores desonerados e não desonerados <strong>3 anos antes</strong> da política (2009 vs 2009), controlando por FEs.</td>
+</tr>
+<tr class="even">
+<td><strong>β₋₂</strong></td>
+<td><code>tempo_relativo = -2</code></td>
+<td>Diferença no emprego entre setores desonerados e não desonerados <strong>2 anos antes</strong> da política (2010 vs 2010), controlando por FEs.</td>
+</tr>
+<tr class="odd">
+<td><strong>β₋₁</strong></td>
+<td><code>tempo_relativo = -1</code></td>
+<td><strong>PERÍODO DE REFERÊNCIA</strong> (omitido)<br>Normalizado em zero por construção (2011).</td>
+</tr>
+<tr class="even">
+<td><strong>β₀</strong></td>
+<td><code>tempo_relativo = 0</code></td>
+<td><strong>Efeito causal imediato</strong> da desoneração no ano de implementação (2012).<br>Mudança no emprego dos setores desonerados <strong>relativa</strong> aos não desonerados, comparado com 2011.</td>
+</tr>
+<tr class="odd">
+<td><strong>β₁</strong></td>
+<td><code>tempo_relativo = 1</code></td>
+<td><strong>Efeito causal 1 ano após</strong> a desoneração (2013).<br>Acúmulo do efeito da política após 1 ano.</td>
+</tr>
+<tr class="even">
+<td><strong>β₂</strong></td>
+<td><code>tempo_relativo = 2</code></td>
+<td><strong>Efeito causal 2 anos após</strong> a desoneração (2014).<br>Acúmulo do efeito da política após 2 anos.</td>
+</tr>
+<tr class="odd">
+<td><strong>β₃</strong></td>
+<td><code>tempo_relativo = 3</code></td>
+<td><strong>Efeito causal 3 anos após</strong> a desoneração (2015).<br>Efeito de longo prazo da política.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="notas-importantes" class="level3">
+<h3 class="anchored" data-anchor-id="notas-importantes">Notas Importantes</h3>
+<p><strong>Interpretação Formal dos Coeficientes:</strong></p>
+<p>Para qualquer tempo relativo <em>k</em>, o coeficiente β_k representa:</p>
+<p><span class="math display">\[
+\beta_k = E[Y_{it} | \text{Desonerado}_i = 1, \text{TempoRelativo}_{it} = k] - E[Y_{it} | \text{Desonerado}_i = 0, \text{TempoRelativo}_{it} = k]
+\]</span></p>
+<p>Controlando por efeitos fixos de empresa (α_i) e efeitos fixos de tempo (λ_t).</p>
+<p><strong>Em palavras simples:</strong> &gt; β_k mede a diferença no número de trabalhadores entre setores desonerados e não desonerados no período <em>k</em> relativo à desoneração, <strong>comparado com a diferença no período de referência</strong> (k = -1).</p>
+<p><strong>Condições para Identificação Causal:</strong></p>
+<ol type="1">
+<li><strong>Tendências Paralelas (Pré-Tratamento):</strong>
+<ul>
+<li>β₋₅, β₋₄, β₋₃, β₋₂ devem ser estatisticamente indistinguíveis de zero</li>
+<li>Se todos ≈ 0: forte evidência de que setores desonerados e não desonerados teriam evoluído de forma paralela na ausência da política</li>
+</ul></li>
+<li><strong>Ausência de Antecipação:</strong>
+<ul>
+<li>Coeficientes pré-tratamento não devem mostrar “salto” antes de 2012</li>
+<li>Empresas não devem ter ajustado emprego em antecipação à política</li>
+</ul></li>
+<li><strong>Efeito Causal (Pós-Tratamento):</strong>
+<ul>
+<li>β₀, β₁, β₂, β₃ &gt; 0: a desoneração aumentou o emprego</li>
+<li>Se β₀ &lt; β₁ &lt; β₂: efeito crescente (ajuste gradual)</li>
+<li>Se β₀ ≈ β₁ ≈ β₂: efeito imediato e constante</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="etwfe-tratamento-escalonada" class="level2">
+<h2 class="anchored" data-anchor-id="etwfe-tratamento-escalonada">ETWFE: tratamento Escalonada</h2>
+<p>No exemplo que acabamos de ver, todos os setores desonerados receberam o tratamento <strong>simultaneamente</strong> em 2012. Nesse caso, o TWFE tradicional funciona perfeitamente e produz estimativas não enviesadas do ATT.</p>
+<p>Mas e se a realidade fosse mais complexa? E se a desoneração tivesse sido implementada de forma <strong>escalonada</strong>, com diferentes setores sendo desonerados em anos diferentes?</p>
+</section>
+<section id="simulando-desoneração-escalonada" class="level2">
+<h2 class="anchored" data-anchor-id="simulando-desoneração-escalonada">Simulando Desoneração Escalonada</h2>
+<p>Vamos modificar nossos dados para criar um cenário mais realista de <strong>tratamento escalonado</strong> (staggered treatment):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Usar mesma estrutura de simulação, mas com tratamento escalonado</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Parâmetros (mesmos do exemplo anterior)</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>n_empresas <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>n_anos <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>ano_inicio <span class="ot">&lt;-</span> <span class="dv">2007</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar data frame</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>dados_esc <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n_empresas) {</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Dividir empresas em 3 grupos</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (i <span class="sc">&lt;=</span> <span class="dv">33</span>) {</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grupo K: desonerados em 2012</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    coorte <span class="ot">&lt;-</span> <span class="dv">2012</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    desonerado <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (i <span class="sc">&lt;=</span> <span class="dv">66</span>) {</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grupo L: desonerados em 2014</span></span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>    coorte <span class="ot">&lt;-</span> <span class="dv">2014</span></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>    desonerado <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Grupo U: nunca desonerados</span></span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>    coorte <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    desonerado <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Efeito fixo da empresa (mesmo do exemplo anterior)</span></span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>  efeito_fixo <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">+</span> (<span class="dv">30</span> <span class="sc">*</span> desonerado) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">10</span>)</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span>(n_anos <span class="sc">-</span> <span class="dv">1</span>)) {</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>    ano <span class="ot">&lt;-</span> ano_inicio <span class="sc">+</span> t</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Tendência temporal comum (mesma do exemplo anterior)</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>    tendencia_temporal <span class="ot">&lt;-</span> <span class="dv">5</span> <span class="sc">*</span> t</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Efeito da desoneração (agora depende da coorte)</span></span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (coorte <span class="sc">==</span> <span class="dv">2012</span> <span class="sc">&amp;</span> ano <span class="sc">&gt;=</span> <span class="dv">2012</span>) {</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Grupo K: efeito de 25 trabalhadores</span></span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>      efeito_desoneracao <span class="ot">&lt;-</span> <span class="dv">25</span></span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (coorte <span class="sc">==</span> <span class="dv">2014</span> <span class="sc">&amp;</span> ano <span class="sc">&gt;=</span> <span class="dv">2014</span>) {</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Grupo L: efeito de 20 trabalhadores (ligeiramente menor)</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>      efeito_desoneracao <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>      efeito_desoneracao <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ruído aleatório</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a>    erro <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb24-50"><a href="#cb24-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-51"><a href="#cb24-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Número de trabalhadores</span></span>
+<span id="cb24-52"><a href="#cb24-52" aria-hidden="true" tabindex="-1"></a>    n_trabalhadores <span class="ot">&lt;-</span> efeito_fixo <span class="sc">+</span> tendencia_temporal <span class="sc">+</span> efeito_desoneracao <span class="sc">+</span> erro</span>
+<span id="cb24-53"><a href="#cb24-53" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-54"><a href="#cb24-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Criar variável de tratamento</span></span>
+<span id="cb24-55"><a href="#cb24-55" aria-hidden="true" tabindex="-1"></a>    tratado <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((coorte <span class="sc">==</span> <span class="dv">2012</span> <span class="sc">&amp;</span> ano <span class="sc">&gt;=</span> <span class="dv">2012</span>) <span class="sc">|</span> (coorte <span class="sc">==</span> <span class="dv">2014</span> <span class="sc">&amp;</span> ano <span class="sc">&gt;=</span> <span class="dv">2014</span>), <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb24-56"><a href="#cb24-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-57"><a href="#cb24-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adicionar linha</span></span>
+<span id="cb24-58"><a href="#cb24-58" aria-hidden="true" tabindex="-1"></a>    dados_esc <span class="ot">&lt;-</span> <span class="fu">rbind</span>(dados_esc, <span class="fu">data.frame</span>(</span>
+<span id="cb24-59"><a href="#cb24-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">empresa_id =</span> i,</span>
+<span id="cb24-60"><a href="#cb24-60" aria-hidden="true" tabindex="-1"></a>      <span class="at">ano =</span> ano,</span>
+<span id="cb24-61"><a href="#cb24-61" aria-hidden="true" tabindex="-1"></a>      <span class="at">coorte =</span> coorte,</span>
+<span id="cb24-62"><a href="#cb24-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">tratado =</span> tratado,</span>
+<span id="cb24-63"><a href="#cb24-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">n_trabalhadores =</span> n_trabalhadores</span>
+<span id="cb24-64"><a href="#cb24-64" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb24-65"><a href="#cb24-65" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-66"><a href="#cb24-66" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-67"><a href="#cb24-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-68"><a href="#cb24-68" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar trajetórias</span></span>
+<span id="cb24-69"><a href="#cb24-69" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb24-70"><a href="#cb24-70" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb24-71"><a href="#cb24-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-72"><a href="#cb24-72" aria-hidden="true" tabindex="-1"></a>medias_esc <span class="ot">&lt;-</span> dados_esc <span class="sc">%&gt;%</span></span>
+<span id="cb24-73"><a href="#cb24-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">grupo =</span> <span class="fu">case_when</span>(</span>
+<span id="cb24-74"><a href="#cb24-74" aria-hidden="true" tabindex="-1"></a>    coorte <span class="sc">==</span> <span class="dv">2012</span> <span class="sc">~</span> <span class="st">"K (Deson. 2012)"</span>,</span>
+<span id="cb24-75"><a href="#cb24-75" aria-hidden="true" tabindex="-1"></a>    coorte <span class="sc">==</span> <span class="dv">2014</span> <span class="sc">~</span> <span class="st">"L (Deson. 2014)"</span>,</span>
+<span id="cb24-76"><a href="#cb24-76" aria-hidden="true" tabindex="-1"></a>    coorte <span class="sc">==</span> <span class="dv">0</span> <span class="sc">~</span> <span class="st">"U (Nunca)"</span></span>
+<span id="cb24-77"><a href="#cb24-77" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb24-78"><a href="#cb24-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ano, grupo) <span class="sc">%&gt;%</span></span>
+<span id="cb24-79"><a href="#cb24-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n_trab_medio =</span> <span class="fu">mean</span>(n_trabalhadores), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb24-80"><a href="#cb24-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-81"><a href="#cb24-81" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(medias_esc, <span class="fu">aes</span>(<span class="at">x =</span> ano, <span class="at">y =</span> n_trab_medio, <span class="at">color =</span> grupo, <span class="at">group =</span> grupo)) <span class="sc">+</span></span>
+<span id="cb24-82"><a href="#cb24-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb24-83"><a href="#cb24-83" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb24-84"><a href="#cb24-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">2011.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb24-85"><a href="#cb24-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">2013.5</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">color =</span> <span class="st">"orange"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb24-86"><a href="#cb24-86" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">2012</span>, <span class="at">y =</span> <span class="fu">max</span>(medias_esc<span class="sc">$</span>n_trab_medio), </span>
+<span id="cb24-87"><a href="#cb24-87" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"K desonerado"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb24-88"><a href="#cb24-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="st">"text"</span>, <span class="at">x =</span> <span class="dv">2014</span>, <span class="at">y =</span> <span class="fu">max</span>(medias_esc<span class="sc">$</span>n_trab_medio), </span>
+<span id="cb24-89"><a href="#cb24-89" aria-hidden="true" tabindex="-1"></a>           <span class="at">label =</span> <span class="st">"L desonerado"</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">1.5</span>, <span class="at">color =</span> <span class="st">"orange"</span>, <span class="at">size =</span> <span class="fl">3.5</span>) <span class="sc">+</span></span>
+<span id="cb24-90"><a href="#cb24-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"K (Deson. 2012)"</span> <span class="ot">=</span> <span class="st">"#27ae60"</span>, </span>
+<span id="cb24-91"><a href="#cb24-91" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"L (Deson. 2014)"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>,</span>
+<span id="cb24-92"><a href="#cb24-92" aria-hidden="true" tabindex="-1"></a>                                 <span class="st">"U (Nunca)"</span> <span class="ot">=</span> <span class="st">"#e74c3c"</span>)) <span class="sc">+</span></span>
+<span id="cb24-93"><a href="#cb24-93" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Desoneração Escalonada: Trajetórias de Emprego por Coorte"</span>,</span>
+<span id="cb24-94"><a href="#cb24-94" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Grupo K desonerado em 2012, Grupo L em 2014, Grupo U nunca desonerado"</span>,</span>
+<span id="cb24-95"><a href="#cb24-95" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Ano"</span>, <span class="at">y =</span> <span class="st">"Número Médio de Trabalhadores"</span>, <span class="at">color =</span> <span class="st">"Grupo"</span>) <span class="sc">+</span></span>
+<span id="cb24-96"><a href="#cb24-96" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb24-97"><a href="#cb24-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb24-98"><a href="#cb24-98" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/dados-escalonados-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="o-problema-do-twfe-com-tratamento-escalonado" class="level2">
+<h2 class="anchored" data-anchor-id="o-problema-do-twfe-com-tratamento-escalonado">O Problema do TWFE com Tratamento Escalonado</h2>
+<p>Vamos estimar o TWFE tradicional nesses dados:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># TWFE tradicional</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>mod_twfe <span class="ot">&lt;-</span> <span class="fu">feols</span>(n_trabalhadores <span class="sc">~</span> tratado <span class="sc">|</span> empresa_id <span class="sc">+</span> ano, </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">data =</span> dados_esc,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">vcov =</span> <span class="sc">~</span>empresa_id)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Resultado</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_twfe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OLS estimation, Dep. Var.: n_trabalhadores
+Observations: 900
+Fixed-effects: empresa_id: 100,  ano: 9
+Standard-errors: Clustered (empresa_id) 
+        Estimate Std. Error t value  Pr(&gt;|t|)    
+tratado  23.0884   0.656958 35.1444 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+RMSE: 4.80258     Adj. R2: 0.969085
+                Within R2: 0.603727</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extrair ATT</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>att_twfe <span class="ot">&lt;-</span> <span class="fu">coef</span>(mod_twfe)[<span class="st">"tratado"</span>]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">sprintf</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">ATT estimado pelo TWFE: %.2f trabalhadores</span><span class="sc">\n</span><span class="st">"</span>, att_twfe))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ATT estimado pelo TWFE: 23.09 trabalhadores</code></pre>
+</div>
+</div>
+<p><strong>Problema:</strong> O coeficiente do TWFE é uma <strong>média ponderada</strong> de várias comparações DD 2×2, incluindo:</p>
+<ol type="1">
+<li>Grupo K vs.&nbsp;Grupo U</li>
+<li>Grupo L vs.&nbsp;Grupo U</li>
+<li>Grupo K vs.&nbsp;Grupo L (quando L ainda não tratado)</li>
+<li><strong>Grupo L vs.&nbsp;Grupo K (quando K já tratado)</strong> (problemático!)</li>
+</ol>
+<p>A última comparação usa o Grupo K <strong>já desonerado</strong> como controle para o Grupo L. Se o efeito no Grupo K estiver evoluindo, essa comparação fica contaminada e o TWFE pode ser enviesado. Em outras palavras, se o ATT variar no tempo teremos problemas.</p>
+</section>
+<section id="a-solução-etwfe-extended-twfe" class="level2">
+<h2 class="anchored" data-anchor-id="a-solução-etwfe-extended-twfe">A Solução: ETWFE (Extended TWFE)</h2>
+<p>Wooldridge (2021, 2023) propôs <strong>saturar o modelo</strong> com todas as interações possíveis entre tratamento, coorte e tempo:</p>
+<p><span class="math display">\[
+Y_{it} = \alpha_i + \lambda_t + \sum_{g \neq U} \sum_{t} \beta_{gt} \cdot \mathbb{1}[G_i = g] \cdot \mathbb{1}[T = t] \cdot D_{it} + \varepsilon_{it}
+\]</span></p>
+<p>Onde: - <span class="math inline">\(G_i\)</span>: coorte da empresa <span class="math inline">\(i\)</span> (ano em que foi desonerada) - <span class="math inline">\(\beta_{gt}\)</span>: efeito da desoneração para coorte <span class="math inline">\(g\)</span> no ano <span class="math inline">\(t\)</span> - <span class="math inline">\(D_{it} = 1\)</span> se empresa <span class="math inline">\(i\)</span> está desonerada no ano <span class="math inline">\(t\)</span></p>
+<p><strong>Intuição:</strong> Cada coorte × ano tem seu próprio coeficiente, permitindo heterogeneidade total nos efeitos.</p>
+<section id="estimando-o-etwfe" class="level3">
+<h3 class="anchored" data-anchor-id="estimando-o-etwfe">Estimando o ETWFE</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(etwfe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: pacote 'etwfe' foi compilado no R versão 4.4.3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimar ETWFE</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>mod_etwfe <span class="ot">&lt;-</span> <span class="fu">etwfe</span>(</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fml  =</span> n_trabalhadores <span class="sc">~</span> <span class="dv">1</span>,  <span class="co"># sem controles</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">tvar =</span> ano,                   <span class="co"># variável de tempo</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">gvar =</span> coorte,                <span class="co"># variável de coorte</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dados_esc,             <span class="co"># dataset</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">vcov =</span> <span class="sc">~</span>empresa_id            <span class="co"># erros clusterizados</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>resultados_etwfe <span class="ot">&lt;-</span> broom<span class="sc">::</span><span class="fu">tidy</span>(mod_etwfe, <span class="at">conf.int =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ver resumo</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod_etwfe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OLS estimation, Dep. Var.: n_trabalhadores
+Observations: 900
+Fixed-effects: coorte: 3,  ano: 9
+Standard-errors: Clustered (empresa_id) 
+                               Estimate Std. Error t value  Pr(&gt;|t|)    
+.Dtreat:coorte::2012:ano::2012  25.6121    1.04419 24.5281 &lt; 2.2e-16 ***
+.Dtreat:coorte::2012:ano::2013  24.8691    1.19296 20.8465 &lt; 2.2e-16 ***
+.Dtreat:coorte::2012:ano::2014  22.6393    1.41846 15.9605 &lt; 2.2e-16 ***
+.Dtreat:coorte::2012:ano::2015  24.5765    1.44198 17.0436 &lt; 2.2e-16 ***
+.Dtreat:coorte::2014:ano::2014  19.9948    1.31612 15.1922 &lt; 2.2e-16 ***
+.Dtreat:coorte::2014:ano::2015  20.1489    1.59112 12.6634 &lt; 2.2e-16 ***
+... 10 variables were removed because of collinearity (.Dtreat:coorte::2012:ano::2008, .Dtreat:coorte::2012:ano::2009 and 8 others [full set in $collin.var])
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+RMSE: 10.7     Adj. R2: 0.863225
+             Within R2: 0.238559</code></pre>
+</div>
+</div>
+<p><strong>O que aconteceu?</strong></p>
+<p>O <code>etwfe()</code> criou automaticamente todas as interações: - <code>.Dtreat × coorte::2012 × ano::2012</code> - <code>.Dtreat × coorte::2012 × ano::2013</code> - … (e assim por diante para todas as combinações)</p>
+<p>Os coeficientes brutos do modelo ETWFE <strong>não são</strong> o ATT</p>
+</section>
+<section id="efeitos-marginais-att-interpretável" class="level3">
+<h3 class="anchored" data-anchor-id="efeitos-marginais-att-interpretável">Efeitos Marginais (ATT Interpretável)</h3>
+<p>Para obter o ATT, precisamos <strong>agregar</strong> os coeficientes brutos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular ATT médio</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>att_etwfe <span class="ot">&lt;-</span> <span class="fu">emfx</span>(mod_etwfe, <span class="at">type =</span> <span class="st">"simple"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>att_etwfe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ .Dtreat Estimate Std. Error    z Pr(&gt;|z|)     S 2.5 % 97.5 %
+    TRUE       23      0.688 33.4   &lt;0.001 810.4  21.6   24.3
+
+Term: .Dtreat
+Type:  response 
+Comparison: TRUE - FALSE</code></pre>
+</div>
+</div>
+<p><strong>O que é o ATT médio?</strong></p>
+<p>É a <strong>média ponderada</strong> de todos os efeitos <span class="math inline">\(\beta_{gt}\)</span> para as observações tratadas:</p>
+<p><span class="math display">\[
+\widehat{ATT} = \frac{1}{N_{\text{tratado}}} \sum_{i: D_{it}=1} \hat{\beta}_{G_i, t}
+\]</span></p>
+<p><strong>Em palavras:</strong> Aumento médio no emprego causado pela desoneração, agregando: - Todas as empresas desoneradas - Em todos os anos pós-desoneração - Ponderando adequadamente cada observação</p>
+</section>
+</section>
+<section id="efeitos-dinâmicos-event-study" class="level2">
+<h2 class="anchored" data-anchor-id="efeitos-dinâmicos-event-study">Efeitos Dinâmicos (Event Study)</h2>
+<p>O mais interessante é ver como o efeito <strong>evolui ao longo do tempo</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Event study: efeitos por tempo relativo</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>emfx_event <span class="ot">&lt;-</span> <span class="fu">emfx</span>(mod_etwfe, <span class="at">type =</span> <span class="st">"event"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(emfx_event ,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Event Study: Desoneração da Folha"</span>,</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">"Tempo Relativo"</span>,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Efeito no Emprego"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/event-study-etwfe-esc-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Observe que <code>emfx</code> apenas relata efeitos pós-tratamento aqui. Isso ocorre porque todos os efeitos pré-tratamento foram eliminados da estimação em decorrência da configuração ETWFE. Especificamente, no padrão em que o grupo de controle é composto pelas unidades “ainda não” tratadas, todos os efeitos pré-tratamento são definidos mecanicamente como zero. Alternativamente, é possível especificar as unidades “nunca” tratadas como grupo de controle chamando etwfe(…, cgroup = “never”). Essa opção retorna efeitos pré-tratamento, embora com o possível custo de estimativas menos precisas por não utilizar todas as informações disponíveis.</p>
+<p><strong>Interpretação de cada linha:</strong></p>
+<ul>
+<li><code>event = -2</code>: 2 anos <strong>antes</strong> da desoneração → deve ser ≈ 0 (tendências paralelas)</li>
+<li><code>event = -1</code>: 1 ano antes → deve ser ≈ 0</li>
+<li><code>event = 0</code>: Ano da desoneração → primeiro efeito</li>
+<li><code>event = 1</code>: 1 ano após → efeito pode ter crescido</li>
+<li><code>event = 2</code>: 2 anos após → efeito pode ter crescido mais</li>
+</ul>
+<p><strong>Como é calculado?</strong></p>
+<p>Para cada tempo relativo <span class="math inline">\(j\)</span>:</p>
+<p><span class="math display">\[
+\widehat{ATT}_j = \frac{1}{N_j} \sum_{i: \text{tempo relativo} = j} \hat{\beta}_{G_i, t}
+\]</span></p>
+<p><strong>Exemplo:</strong> <code>event = 1</code> agrega: - Grupo K em 2013 (1 ano após desoneração em 2012) - Grupo L em 2015 (1 ano após desoneração em 2014)</p>
+</section>
+<section id="efeitos-por-coorte" class="level2">
+<h2 class="anchored" data-anchor-id="efeitos-por-coorte">Efeitos por Coorte</h2>
+<p>Podemos também ver o efeito <strong>para cada coorte</strong>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Efeitos por coorte</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>emfx_coorte <span class="ot">&lt;-</span> <span class="fu">emfx</span>(mod_etwfe, <span class="at">type =</span> <span class="st">"group"</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>emfx_coorte</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ coorte Estimate Std. Error    z Pr(&gt;|z|)     S 2.5 % 97.5 %
+   2012     24.4      0.696 35.1   &lt;0.001 894.9  23.1   25.8
+   2014     20.1      1.057 19.0   &lt;0.001 264.7  18.0   22.1
+
+Term: .Dtreat
+Type:  response 
+Comparison: TRUE - FALSE</code></pre>
+</div>
+</div>
+<p><strong>Interpretação:</strong></p>
+<ul>
+<li><strong>Coorte K (2012):</strong> ATT médio de ~25 trabalhadores</li>
+<li><strong>Coorte L (2014):</strong> ATT médio de ~20 trabalhadores</li>
+</ul>
+<p>Isso confirma <strong>heterogeneidade</strong> entre coortes: setores desonerados em 2012 tiveram efeito ligeiramente maior (25) do que os desonerados em 2014 (20).</p>
+</section>
+<section id="resumo-coeficientes-brutos-vs.-efeitos-marginais" class="level2">
+<h2 class="anchored" data-anchor-id="resumo-coeficientes-brutos-vs.-efeitos-marginais">Resumo: Coeficientes Brutos vs.&nbsp;Efeitos Marginais</h2>
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 31%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Conceito</th>
+<th>O Que É</th>
+<th>Interpretação</th>
+<th>Uso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Coeficientes Brutos</strong> (<span class="math inline">\(\hat{\beta}_{gt}\)</span>)</td>
+<td>Parâmetros da regressão ETWFE</td>
+<td>Efeito condicional para coorte <span class="math inline">\(g\)</span> no tempo <span class="math inline">\(t\)</span></td>
+<td>Não diretamente interpretável</td>
+</tr>
+<tr class="even">
+<td><strong>ATT Simples</strong></td>
+<td><code>emfx(type = "simple")</code></td>
+<td>Média de todos <span class="math inline">\(\hat{\beta}_{gt}\)</span> tratados</td>
+<td>Efeito médio geral</td>
+</tr>
+<tr class="odd">
+<td><strong>ATT por Tempo Relativo</strong></td>
+<td><code>emfx(type = "event")</code></td>
+<td>Média de <span class="math inline">\(\hat{\beta}_{gt}\)</span> para cada <span class="math inline">\(j\)</span></td>
+<td>Event study (efeitos dinâmicos)</td>
+</tr>
+<tr class="even">
+<td><strong>ATT por Coorte</strong></td>
+<td><code>emfx(type = "group")</code></td>
+<td>Média de <span class="math inline">\(\hat{\beta}_{gt}\)</span> para cada coorte</td>
+<td>Heterogeneidade entre grupos</td>
+</tr>
+</tbody>
+</table>
+
+
 </section>
 </section>
 
