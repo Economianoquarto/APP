@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Caio Lopes">
+<meta name="dcterms.date" content="2025-04-19">
+
+<title>APP - Controle Sintético</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">APP</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Controle Sintético</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Ensino</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Caio Lopes </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 19, 2025</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="introdução" class="level1">
+<h1>Introdução</h1>
+<p>O <strong>Método de Controle Sintético</strong> é um estimador de efeito causal. Em um artigo seminal, “Synthetic Control Methods for Comparative Case Studies” [1], Alberto Abadie, Alexis Diamond e Jens Hainmueller introduzem e aplicam essa técnica para avaliar o impacto do programa de controle de tabaco da Califórnia.</p>
+<section id="o-que-é-o-método-de-controle-sintético" class="level2">
+<h2 class="anchored" data-anchor-id="o-que-é-o-método-de-controle-sintético">O que é o Método de Controle Sintético?</h2>
+<p>A ideia central do controle sintético é criar um contrafactual “sintético” para a unidade tratada. Em vez de escolher um único estado como controle, o método constrói uma combinação ponderada de múltiplos estados (o “pool de doadores”). Os pesos são calculados de forma que o controle sintético resultante se assemelhe o máximo possível à unidade tratada antes da implementação da política.</p>
+<p>O resultado é uma unidade de controle artificial, ou “sintética”, que representa o que teria acontecido com a unidade tratada se a política nunca tivesse sido implementada. A diferença entre a trajetória real da unidade tratada e a trajetória do seu controle sintético após a intervenção é a nossa estimativa do efeito da política.</p>
+</section>
+<section id="programa-anti-tabaco-da-califórnia" class="level2">
+<h2 class="anchored" data-anchor-id="programa-anti-tabaco-da-califórnia">Programa anti Tabaco da Califórnia</h2>
+<p>O artigo de Abadie, Diamond e Hainmueller (ADH) usa o método para avaliar o impacto de um abrangente programa de controle de tabaco implementado na Califórnia em 1988. Esta política incluiu:</p>
+<ul>
+<li>Um aumento de 25 centavos no imposto sobre maços de cigarro.</li>
+<li>Financiamento de campanhas de mídia antitabaco.</li>
+<li>Investimento em educação para a saúde.</li>
+<li>Incentivo a leis locais para ambientes livres de fumo.</li>
+</ul>
+<p>O objetivo era claro: reduzir o consumo de tabaco no estado. Para avaliar seu sucesso, os autores precisavam estimar qual teria sido o consumo de cigarros na Califórnia se o programa não tivesse sido implementado.</p>
+<section id="a-criação-da-califórnia-sintética" class="level3">
+<h3 class="anchored" data-anchor-id="a-criação-da-califórnia-sintética">A Criação da “Califórnia Sintética”</h3>
+<p>Os autores utilizaram dados de 38 outros estados americanos (o “pool de doadores”) para construir uma “Califórnia Sintética”. O método atribuiu pesos a um pequeno número de estados cujas características, combinadas, melhor reproduziam a trajetória do consumo de cigarros e outras variáveis relevantes da Califórnia no período pré-intervenção (1970-1988).</p>
+<p>Os estados que mais contribuíram para a Califórnia Sintética foram:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Estado</th>
+<th>Peso na Combinação</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nevada</td>
+<td>0.234</td>
+</tr>
+<tr class="even">
+<td>Montana</td>
+<td>0.199</td>
+</tr>
+<tr class="odd">
+<td>Colorado</td>
+<td>0.164</td>
+</tr>
+<tr class="even">
+<td>Connecticut</td>
+<td>0.069</td>
+</tr>
+<tr class="odd">
+<td>Utah</td>
+<td>0.334</td>
+</tr>
+</tbody>
+</table>
+<p><em>Fonte: Abadie, Diamond, e Hainmueller (2010).</em> [1]</p>
+<p>É notável que estados vizinhos como Oregon e Arizona, ou grandes estados como Nova York e Texas, receberam peso zero, pois suas trajetórias não ajudavam a replicar a da Califórnia antes de 1988.</p>
+</section>
+<section id="resultados-o-impacto-real-da-política-antitabaco" class="level3">
+<h3 class="anchored" data-anchor-id="resultados-o-impacto-real-da-política-antitabaco">Resultados: O Impacto Real da Política Antitabaco</h3>
+<p>Ao comparar o consumo de cigarros per capita real da Califórnia com o da sua contraparte sintética após 1988, os resultados apontam um efeito causam.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imagem1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Gráfico do Controle Sintético</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imagem2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Gráfico do Controle Sintético</figcaption><p></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="imagem3.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Gráfico do Controle Sintético</figcaption><p></p>
+</figure>
+</div>
+<p>O autores estimaram que, no ano 2000, o consumo de cigarros per capita na Califórnia era <strong>cerca de 26 maços menor</strong> do que teria sido na ausência da Proposição 99. Isso representa uma redução de aproximadamente 25% no consumo, um efeito substancial e que se tornou mais pronunciado ao longo do tempo.</p>
+</section>
+<section id="referências" class="level3">
+<h3 class="anchored" data-anchor-id="referências">Referências</h3>
+<p>[1] Abadie, A., Diamond, A., &amp; Hainmueller, J. (2010). Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California’s Tobacco Control Program. <em>Journal of the American Statistical Association</em>, 105(490), 493-505.</p>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

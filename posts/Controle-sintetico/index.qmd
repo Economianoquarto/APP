@@ -1,0 +1,66 @@
+---
+title: "Controle Sintético"
+author: "Caio Lopes"
+date: "2025-04-19"
+categories: [Ensino]
+#image: "image.jpg"
+---
+
+
+# Introdução
+
+O **Método de Controle Sintético** é um estimador de efeito causal. Em um artigo seminal, "Synthetic Control Methods for Comparative Case Studies" [1], Alberto Abadie, Alexis Diamond e Jens Hainmueller introduzem e aplicam essa técnica para avaliar o impacto do programa de controle de tabaco da Califórnia.
+
+## O que é o Método de Controle Sintético?
+
+A ideia central do controle sintético é criar um contrafactual "sintético" para a unidade tratada. Em vez de escolher um único estado como controle, o método constrói uma combinação ponderada de múltiplos estados (o "pool de doadores"). Os pesos são calculados de forma que o controle sintético resultante se assemelhe o máximo possível à unidade tratada  antes da implementação da política.
+
+O resultado é uma unidade de controle artificial, ou "sintética", que representa o que teria acontecido com a unidade tratada se a política nunca tivesse sido implementada. A diferença entre a trajetória real da unidade tratada e a trajetória do seu controle sintético após a intervenção é a nossa estimativa do efeito da política.
+
+
+## Programa anti Tabaco da Califórnia
+
+O artigo de Abadie, Diamond e Hainmueller (ADH) usa o método para avaliar o impacto de um abrangente programa de controle de tabaco implementado na Califórnia em 1988. Esta política incluiu:
+
+- Um aumento de 25 centavos no imposto sobre maços de cigarro.
+- Financiamento de campanhas de mídia antitabaco.
+- Investimento em educação para a saúde.
+- Incentivo a leis locais para ambientes livres de fumo.
+
+O objetivo era claro: reduzir o consumo de tabaco no estado. Para avaliar seu sucesso, os autores precisavam estimar qual teria sido o consumo de cigarros na Califórnia se o programa não tivesse sido implementado.
+
+### A Criação da "Califórnia Sintética"
+
+Os autores utilizaram dados de 38 outros estados americanos (o "pool de doadores") para construir uma "Califórnia Sintética". O método atribuiu pesos a um pequeno número de estados cujas características, combinadas, melhor reproduziam a trajetória do consumo de cigarros e outras variáveis relevantes da Califórnia no período pré-intervenção (1970-1988).
+
+Os estados que mais contribuíram para a Califórnia Sintética foram:
+
+| Estado      | Peso na Combinação |
+|-------------|--------------------|
+| Nevada      | 0.234              |
+| Montana     | 0.199              |
+| Colorado    | 0.164              |
+| Connecticut | 0.069              |
+| Utah        | 0.334              |
+
+*Fonte: Abadie, Diamond, e Hainmueller (2010).* [1]
+
+É notável que estados vizinhos como Oregon e Arizona, ou grandes estados como Nova York e Texas, receberam peso zero, pois suas trajetórias não ajudavam a replicar a da Califórnia antes de 1988.
+
+### Resultados: O Impacto Real da Política Antitabaco
+
+Ao comparar o consumo de cigarros per capita real da Califórnia com o da sua contraparte sintética após 1988, os resultados apontam um efeito causam.
+
+![Gráfico do Controle Sintético](imagem1.png) 
+
+
+![Gráfico do Controle Sintético](imagem2.png) 
+
+![Gráfico do Controle Sintético](imagem3.png) 
+
+O autores estimaram que, no ano 2000, o consumo de cigarros per capita na Califórnia era **cerca de 26 maços menor** do que teria sido na ausência da Proposição 99. Isso representa uma redução de aproximadamente 25% no consumo, um efeito substancial e que se tornou mais pronunciado ao longo do tempo.
+
+
+### Referências
+
+[1] Abadie, A., Diamond, A., & Hainmueller, J. (2010). Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California’s Tobacco Control Program. *Journal of the American Statistical Association*, 105(490), 493-505.
