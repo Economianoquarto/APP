@@ -43,7 +43,7 @@ O DiD combina ambas as abordagens de forma engenhosa. A primeira diferença (tem
 Vamos decompor isso com um exemplo intuitivo usando símbolos:
 
 | **Grupo** | **Antes (2008-2011)** | **Depois (2012-2017)** | **Diferença Temporal** |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Setores Desonerados** | D + S | D + S + T + E | T + E |
 | **Setores Não Desonerados** | S | S + T | T |
 | **Diferença entre Grupos** | D | D + E | **E** ← **DiD** |
@@ -152,7 +152,7 @@ Vamos provar que $\beta_3$ é exatamente igual ao estimador DiD que calculamos m
 Usando a equação de regressão, podemos calcular o valor esperado de $Y$ para cada combinação de grupo e período:
 
 | Grupo | Período | Desonerado | Post | Interação | $E[Y]$ |
-|------------|------------|------------|------------|------------|------------|
+|----|----|----|----|----|----|
 | Não Desonerado | Antes | 0 | 0 | 0 | $\beta_0$ |
 | Não Desonerado | Depois | 0 | 1 | 0 | $\beta_0 + \beta_2$ |
 | Desonerado | Antes | 1 | 0 | 0 | $\beta_0 + \beta_1$ |
@@ -175,7 +175,7 @@ $$\text{DiD} = \Delta_{\text{Desonerado}} - \Delta_{\text{Não Desonerado}} = (\
 Podemos reorganizar a tabela acima para ver claramente como cada componente contribui:
 
 | Grupo | Período | Valor Esperado | Decomposição |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | Não Desonerado | Antes | $\beta_0$ | Baseline |
 | Não Desonerado | Depois | $\beta_0 + \beta_2$ | Baseline + Tendência |
 | Desonerado | Antes | $\beta_0 + \beta_1$ | Baseline + Efeito Fixo |
@@ -628,7 +628,7 @@ $$
 ### Tabela de Decomposição
 
 | Comparação | Estimador | Peso | Contribuição |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | $\hat{\beta}_{kU} \times s_{kU}$ | 5.000 | 0.3333 | 1.667 |
 | $\hat{\beta}_{\ell U} \times s_{\ell U}$ | 7.625 | 0.3333 | 2.542 |
 | $\hat{\beta}_{k\ell}^k \times s_{k\ell}^k$ | 5.000 | 0.1667 | 0.833 |
@@ -782,7 +782,7 @@ iplot(modelo_event ,
 ### O que o Gráfico Revela?
 
 | Coeficiente | Notação | Interpretação |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **β₋₅** | `tempo_relativo = -5` | Diferença no emprego entre setores desonerados e não desonerados **5 anos antes** da política (2007 vs 2007), controlando por FEs de empresa e tempo. |
 | **β₋₄** | `tempo_relativo = -4` | Diferença no emprego entre setores desonerados e não desonerados **4 anos antes** da política (2008 vs 2008), controlando por FEs. |
 | **β₋₃** | `tempo_relativo = -3` | Diferença no emprego entre setores desonerados e não desonerados **3 anos antes** da política (2009 vs 2009), controlando por FEs. |
@@ -1109,7 +1109,7 @@ Isso confirma **heterogeneidade** entre coortes: setores desonerados em 2012 tiv
 ## Resumo: Coeficientes Brutos vs. Efeitos Marginais
 
 | Conceito | O Que É | Interpretação | Uso |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | **Coeficientes Brutos** ($\hat{\beta}_{gt}$) | Parâmetros da regressão ETWFE | Efeito condicional para coorte $g$ no tempo $t$ | Não diretamente interpretável |
 | **ATT Simples** | `emfx(type = "simple")` | Média de todos $\hat{\beta}_{gt}$ tratados | Efeito médio geral |
 | **ATT por Tempo Relativo** | `emfx(type = "event")` | Média de $\hat{\beta}_{gt}$ para cada $j$ | Event study (efeitos dinâmicos) |
