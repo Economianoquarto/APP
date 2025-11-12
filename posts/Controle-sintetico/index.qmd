@@ -60,7 +60,57 @@ Ao comparar o consumo de cigarros per capita real da Califórnia com o da sua co
 
 O autores estimaram que, no ano 2000, o consumo de cigarros per capita na Califórnia era **cerca de 26 maços menor** do que teria sido na ausência da Proposição 99. Isso representa uma redução de aproximadamente 25% no consumo, um efeito substancial e que se tornou mais pronunciado ao longo do tempo.
 
+## Efeito dareunificação da Alemanha em 1990 sobre o PIB
+
+A questão que os pesquisadores Alberto Abadie, Alexis Diamond e Jens Hainmueller se propuseram a responder em seu artigo "Comparative Politics and the Synthetic Control Method" [2] é aparentemente simples, mas metodologicamente complexa: Qual foi o custo econômico da reunificação para a Alemanha Ocidental?
+
+## O Desafio: Como Encontrar um Contrafactual para a História?
+
+Após a queda do Muro de Berlim, a Alemanha Ocidental iniciou o monumental processo de integração da Alemanha Oriental. Isso envolveu transferências massivas de capital, reestruturação industrial. Intuitivamente, esse processo teve um custo econômico para os alemães ocidentais, mas como medi-lo?
+
+Não podemos simplesmente comparar o crescimento da Alemanha pós-1990 com o de outro país. O Reino Unido? Os EUA? O Japão? Nenhum desses países serve como um "gêmeo" perfeito para a Alemanha Ocidental. Cada um tem sua própria trajetória econômica, suas próprias políticas e seus próprios choques. Uma comparação direta seria, na melhor das hipóteses, imprecisa e, na pior, completamente enganosa. É precisamente para resolver este tipo de problema que o método de controle sintético foi projetado.
+
+## Construindo a "Alemanha Ocidental Sintética"
+
+Os autores do estudo usaram dados de 1960 a 2003 para a Alemanha Ocidental e um "pool de doadores" composto por 16 outros países desenvolvidos da OCDE (como EUA, Japão, Reino Unido, França, etc.). O objetivo era usar os dados do período pré-reunificação (1960-1989) para construir uma **Alemanha Ocidental Sintética**.
+
+O algoritmo de otimização buscou uma combinação ponderada desses 16 países que melhor se assemelhasse à Alemanha Ocidental real antes de 1990, com base em preditores-chave do crescimento econômico, como:
+
+- PIB per capita em anos anteriores
+- Taxa de inflação
+- Abertura comercial
+- Participação da indústria no PIB
+- Níveis de escolaridade e investimento
+
+O resultado foi uma Alemanha Sintética composta por uma mistura de cinco países, cujas características combinadas espelhavam de forma notável a trajetória econômica da Alemanha Ocidental antes da queda do muro.
+
+| País          | Peso no Controle Sintético |
+|---------------|----------------------------|
+| Áustria       | 0.42                       |
+| Estados Unidos| 0.22                       |
+| Japão         | 0.16                       |
+| Suíça         | 0.11                       |
+| Holanda       | 0.09                       |
+
+*Fonte: Abadie, Diamond, e Hainmueller (2015). [1]*
+
+
+## Resultados encontrados
+
+Com a Alemanha Sintética construída, os autores puderam comparar sua trajetória de PIB per capita com a da Alemanha Ocidental real após 1990. O resultado é visualmente impressionante.
+
+> No período pré-reunificação, as trajetórias do PIB per capita para a Alemanha Ocidental e sua contraparte sintética são extremamente próximas. Após a reunificação, no entanto, as trajetórias divergem. O PIB per capita na Alemanha Ocidental cai acentuadamente em relação ao da Alemanha sintética. [1]
+
+Os resultados quantitativos indicam que a reunificação teve um **custo econômico substancial e duradouro** para a Alemanha Ocidental. Em média, o evento reduziu o PIB per capita em cerca de **$1.600 dólares por ano** durante o período de 1990 a 2003. Isso representa uma perda agregada de aproximadamente 8% do PIB da Alemanha Ocidental em 1990.
+
+
+A seguir o excel com a intuição do passo-a-passo para a construção da Alemanhã sintética, uma vez que os vetores de pesos foram encontrados: 
+
+[Visualizar exemplo em excel](Replicacao_Alemanha_CORRIGIDA_COM_V.xlsx){target="_blank"}
 
 ### Referências
 
 [1] Abadie, A., Diamond, A., & Hainmueller, J. (2010). Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California’s Tobacco Control Program. *Journal of the American Statistical Association*, 105(490), 493-505.
+
+[2] Abadie, A., Diamond, A., & Hainmueller, J. (2015). Comparative Politics and the Synthetic Control Method. *American Journal of Political Science*, 59(2), 495-510.
+

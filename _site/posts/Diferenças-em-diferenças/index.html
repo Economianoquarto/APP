@@ -238,10 +238,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Vamos decompor isso com um exemplo intuitivo usando símbolos:</p>
 <table class="table">
 <colgroup>
-<col style="width: 26%">
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 24%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -422,10 +422,10 @@ DiD = [E[Y^{1} | D=1, Post] - [E[Y^{0} | D=1, Post] + [E[Y^{0} | D=1, Post] - E[
 <p>Podemos reorganizar a tabela acima para ver claramente como cada componente contribui:</p>
 <table class="table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 26%">
-<col style="width: 24%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1010,10 +1010,10 @@ s_{k\ell}^\ell &amp;= \frac{1}{6} \approx 0.1667
 <h3 class="anchored" data-anchor-id="tabela-de-decomposição">Tabela de Decomposição</h3>
 <table class="table">
 <colgroup>
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 24%">
-<col style="width: 26%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1197,9 +1197,9 @@ Y_{it} = \alpha_i + \lambda_t + \beta \cdot D_{it} + \varepsilon_{it}
 <h3 class="anchored" data-anchor-id="o-que-o-gráfico-revela">O que o Gráfico Revela?</h3>
 <table class="table">
 <colgroup>
-<col style="width: 34%">
-<col style="width: 25%">
-<col style="width: 40%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1590,10 +1590,10 @@ Comparison: TRUE - FALSE</code></pre>
 <h2 class="anchored" data-anchor-id="resumo-coeficientes-brutos-vs.-efeitos-marginais">Resumo: Coeficientes Brutos vs.&nbsp;Efeitos Marginais</h2>
 <table class="table">
 <colgroup>
-<col style="width: 23%">
-<col style="width: 23%">
-<col style="width: 29%">
-<col style="width: 23%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1631,431 +1631,55 @@ Comparison: TRUE - FALSE</code></pre>
 </tbody>
 </table>
 </section>
-</section>
-<section id="triplas-diferenças-ddd-a-solução-para-tendências-divergentes" class="level1">
-<h1>Triplas Diferenças (DDD): A Solução para Tendências Divergentes</h1>
-<p>Até agora, exploramos como o Diferenças em Diferenças (DiD) pode isolar o efeito causal de uma política sob a hipótese crucial de <strong>tendências paralelas</strong>. Mas o que acontece se essa hipótese for violada? E se o nosso grupo de controle, por alguma razão não observada, tiver uma trajetória de crescimento diferente do grupo de tratamento, mesmo na ausência da política?</p>
-<p>É aqui que o método de <strong>Triplas Diferenças (DDD)</strong>, também conhecido como Diferenças-em-Diferenças-em-Diferenças, entra em cena. O DDD é uma extensão poderosa do DiD que adiciona uma camada extra de controle, permitindo-nos obter estimativas causais mesmo quando a hipótese de tendências paralelas do DiD tradicional não se sustenta.</p>
-<section id="a-motivação-quando-o-did-falha" class="level2">
-<h2 class="anchored" data-anchor-id="a-motivação-quando-o-did-falha">A Motivação: Quando o DiD Falha</h2>
+<section id="triplas-diferenças-ddd" class="level2">
+<h2 class="anchored" data-anchor-id="triplas-diferenças-ddd">Triplas Diferenças (DDD)</h2>
+<p>Até agora, exploramos como o Diferenças em Diferenças (DiD) pode isolar o efeito causal de uma política sob a hipótese crucial de <strong>tendências paralelas</strong>.</p>
+<p>E se o nosso grupo de controle, por alguma razão não observada, tiver uma trajetória de crescimento diferente do grupo de tratamento, mesmo na ausência da política?</p>
+<p>O método de <strong>Triplas Diferenças (DDD)</strong> é uma extensão do DiD que adiciona uma camada extra de controle, permitindo-nos obter estimativas causais mesmo quando a hipótese de tendências paralelas do DiD tradicional não se sustenta.</p>
+<section id="a-motivação-quando-o-did-falha" class="level3">
+<h3 class="anchored" data-anchor-id="a-motivação-quando-o-did-falha">A Motivação: Quando o DiD Falha</h3>
 <p>Vamos revisitar nosso exemplo da desoneração da folha de pagamento. Nossa análise DiD comparou os setores desonerados (tratamento) com os setores não desonerados (controle). A validade do nosso resultado depende da suposição de que, se a desoneração não tivesse ocorrido, o emprego em ambos os grupos teria seguido a mesma tendência.</p>
-<p>Agora, imagine o seguinte cenário:</p>
-<blockquote class="blockquote">
-<p>Os setores não desonerados (nosso grupo de controle) são, em sua maioria, exportadores de commodities. Durante o período pós-tratamento (2012-2015), os preços internacionais dessas commodities caem drasticamente, afetando negativamente o emprego nesses setores. Enquanto isso, os setores desonerados (como TI e serviços) são focados no mercado interno e não sofrem esse choque.</p>
-</blockquote>
-<p>Nesse caso, a nossa análise DiD estaria <strong>enviesada</strong>. A queda no emprego do grupo de controle não se deve apenas à tendência econômica geral (que afeta a todos), mas também a um choque específico que só atingiu a eles. Ao usarmos esse grupo como contrafactual, estaríamos superestimando o efeito da desoneração, pois a “base de comparação” deles caiu por um motivo não relacionado à política.</p>
-<p>O DDD resolve esse problema introduzindo um <strong>grupo de controle para o grupo de controle</strong>.</p>
+<p>A verdade é que o critério para ser contemplado pela política foi: pertencer ao setor desonerado e não ser optante do simples nacional.</p>
+<p>Agora imagine a seguinte situação:</p>
+<p>De maneira resumida: a tendência não é paralela para as empresas dos setores desonerados e não desonerados, mas é paralela para para os setores desonerados e não desonerados que não estão sob o regime de tributação do Simples Nacional.</p>
+</section>
 </section>
 <section id="a-intuição-do-ddd" class="level2">
 <h2 class="anchored" data-anchor-id="a-intuição-do-ddd">A Intuição do DDD</h2>
-<p>A lógica é encontrar um quarto grupo que nos ajude a limpar o viés do nosso estimador DiD. A ideia é aplicar o DiD duas vezes:</p>
+<p>A ideia é aplicar o DiD duas vezes:</p>
 <ol type="1">
-<li><strong>Primeiro DiD:</strong> Calculamos o DiD exatamente como antes, comparando o grupo de tratamento com o grupo de controle “contaminado”. Chamaremos este de <strong>DiD para o grupo Alvo</strong>.</li>
-<li><strong>Segundo DiD:</strong> Calculamos um segundo DiD, mas desta vez para um novo conjunto de grupos. Idealmente, pegamos um grupo de “comparação” que é afetado pelo mesmo choque que o nosso controle original, e o comparamos com um grupo de controle “limpo”, que não é afetado nem pela política nem pelo choque. No nosso exemplo, poderíamos comparar empresas exportadoras de commodities em estados que receberam um incentivo fiscal estadual (comparação) versus empresas exportadoras em estados que não receberam (controle limpo).</li>
-</ol>
-<p>O resultado do segundo DiD nos dá uma estimativa do <strong>viés</strong> — ou seja, o efeito do choque específico (a queda nos preços das commodities) que estava confundindo nossa análise inicial.</p>
-<ol start="3" type="1">
-<li><strong>Terceira Diferença:</strong> Subtraímos o segundo DiD (o viés) do primeiro DiD. O que sobra é o efeito puro do tratamento, livre do fator de confusão.</li>
+<li><p><strong>Primeiro DiD:</strong> Calculamos o DiD para um critério: setores.</p></li>
+<li><p><strong>Segundo DiD:</strong> Calculamos um segundo DiD para o outro critério: regime de tributação</p></li>
+<li><p><strong>Terceira Diferença:</strong> Subtraímos o segundo DiD do primeiro DiD.</p></li>
 </ol>
 </section>
 <section id="decompondo-o-ddd-um-exemplo-prático" class="level2">
 <h2 class="anchored" data-anchor-id="decompondo-o-ddd-um-exemplo-prático">Decompondo o DDD: Um Exemplo Prático</h2>
-<p>Para solidificar a intuição, vamos usar os dados do arquivo <code>ddd_exemplo.xlsx</code>. Imagine que a política de desoneração foi implementada apenas em um <strong>Estado Tratado</strong>, enquanto o <strong>Estado de Controle</strong> não a adotou. Dentro de cada estado, temos empresas do setor <strong>Alvo</strong> (que seriam elegíveis para a desoneração no estado tratado) e empresas de um setor de <strong>Comparação</strong> (que não seriam elegíveis em nenhum dos estados, mas que são afetadas pelo mesmo choque setorial que o grupo Alvo de Controle).</p>
-<p>Nossa estrutura é a seguinte:</p>
-<table class="table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Estado</th>
-<th>Grupo</th>
-<th>Tratado pela Política?</th>
-<th>Afetado pelo Choque Setorial?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Tratado</td>
-<td>Alvo</td>
-<td><strong>Sim</strong></td>
-<td>Não</td>
-</tr>
-<tr class="even">
-<td>Tratado</td>
-<td>Comparação</td>
-<td>Não</td>
-<td>Sim</td>
-</tr>
-<tr class="odd">
-<td>Controle</td>
-<td>Alvo</td>
-<td>Não</td>
-<td>Não</td>
-</tr>
-<tr class="even">
-<td>Controle</td>
-<td>Comparação</td>
-<td>Não</td>
-<td>Sim</td>
-</tr>
-</tbody>
-</table>
-<p>Vamos calcular o efeito passo a passo, usando as médias da planilha de resumo.</p>
-<section id="passo-1-calcular-o-did-para-o-grupo-alvo" class="level3">
-<h3 class="anchored" data-anchor-id="passo-1-calcular-o-did-para-o-grupo-alvo">Passo 1: Calcular o DiD para o Grupo Alvo</h3>
-<p>Primeiro, focamos apenas no grupo <strong>Alvo</strong> e calculamos o DiD tradicional entre os estados Tratado e Controle.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Grupo Alvo</th>
-<th>Antes</th>
-<th>Depois</th>
-<th>Diferença Temporal</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Estado Tratado</strong></td>
-<td>105.34</td>
-<td>111.22</td>
-<td>+5.88</td>
-</tr>
-<tr class="even">
-<td><strong>Estado Controle</strong></td>
-<td>103.65</td>
-<td>105.67</td>
-<td>+2.02</td>
-</tr>
-<tr class="odd">
-<td><strong>Diferença (DiD Alvo)</strong></td>
-<td></td>
-<td></td>
-<td><strong>+3.86</strong></td>
-</tr>
-</tbody>
-</table>
-<p>Este é o nosso primeiro estimador de diferenças em diferenças. Se as tendências fossem paralelas, este seria o efeito da política. Mas suspeitamos que não são.</p>
-</section>
-<section id="passo-2-calcular-o-did-para-o-grupo-de-comparação" class="level3">
-<h3 class="anchored" data-anchor-id="passo-2-calcular-o-did-para-o-grupo-de-comparação">Passo 2: Calcular o DiD para o Grupo de Comparação</h3>
-<p>Agora, fazemos a mesma coisa para o grupo de <strong>Comparação</strong>. Este grupo não foi afetado pela política, então qualquer “efeito” que encontrarmos aqui é, na verdade, o <strong>viés</strong> causado pela violação da hipótese de tendências paralelas.</p>
-<table class="table">
-<colgroup>
-<col style="width: 47%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 29%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Grupo Comparação</th>
-<th>Antes</th>
-<th>Depois</th>
-<th>Diferença Temporal</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Estado Tratado</strong></td>
-<td>101.25</td>
-<td>103.59</td>
-<td>+2.34</td>
-</tr>
-<tr class="even">
-<td><strong>Estado Controle</strong></td>
-<td>99.96</td>
-<td>101.66</td>
-<td>+1.70</td>
-</tr>
-<tr class="odd">
-<td><strong>Diferença (DiD Comparação)</strong></td>
-<td></td>
-<td></td>
-<td><strong>+0.64</strong></td>
-</tr>
-</tbody>
-</table>
-<p>Este resultado de +0.64 nos diz que, mesmo sem a política, a diferença de tendências entre os estados Tratado e Controle para este tipo de setor gerou um “efeito” espúrio. Este é o nosso viés.</p>
-</section>
-<section id="passo-3-calcular-a-terceira-diferença-ddd" class="level3">
-<h3 class="anchored" data-anchor-id="passo-3-calcular-a-terceira-diferença-ddd">Passo 3: Calcular a Terceira Diferença (DDD)</h3>
-<p>Finalmente, subtraímos o DiD do grupo de Comparação (o viés) do DiD do grupo Alvo.</p>
-<p><span class="math display">\[ DDD = DiD_{Alvo} - DiD_{Comparação} \]</span> <span class="math display">\[ DDD = 3.86 - 0.64 = 3.22 \]</span></p>
+<p>Para solidificar a intuição, vamos usar os dados do arquivo <code>ddd_exemplo.xlsx</code>.</p>
 <p>O estimador de Triplas Diferenças é <strong>3.22</strong>. Este é o nosso efeito causal final, ajustado para as tendências divergentes entre os grupos de tratamento e controle.</p>
-</section>
 </section>
 <section id="o-modelo-de-regressão-ddd" class="level2">
 <h2 class="anchored" data-anchor-id="o-modelo-de-regressão-ddd">O Modelo de Regressão DDD</h2>
 <p>Assim como no DiD, podemos estimar o DDD de forma mais robusta através de uma regressão OLS. O modelo requer a inclusão de uma interação tripla:</p>
-<p><span class="math display">\[ Y_{ist} = \beta_0 + \beta_1 T_s + \beta_2 P_t + \beta_3 A_i + \beta_4 (T_s \times P_t) + \beta_5 (T_s \times A_i) + \beta_6 (P_t \times A_i) + \beta_7 (T_s \times P_t \times A_i) + \varepsilon_{ist} \]</span></p>
-<p>Onde: - <span class="math inline">\(Y_{ist}\)</span> é a variável de resultado para a empresa <span class="math inline">\(i\)</span> no estado <span class="math inline">\(s\)</span> no período <span class="math inline">\(t\)</span>. - <span class="math inline">\(T_s\)</span> é uma dummy para o <strong>Estado Tratado</strong>. - <span class="math inline">\(P_t\)</span> é uma dummy para o período <strong>Pós-tratamento</strong>. - <span class="math inline">\(A_i\)</span> é uma dummy para o grupo <strong>Alvo</strong>.</p>
+<p><span class="math display">\[ Y_{ist} = \beta_0 + \beta_1 T_i + \beta_2 P_t + \beta_3 S_i + \beta_4 (T_i \times P_t) + \beta_5 (T_i \times S_i) + \beta_6 (P_t \times S_i) + \beta_7 (T_i \times P_t \times S_i) + \varepsilon_{it} \]</span> Onde:</p>
+<ul>
+<li><p><span class="math inline">\(Y_{it}\)</span> é a variável de resultado para a empresa <span class="math inline">\(i\)</span> no período <span class="math inline">\(t\)</span>.</p></li>
+<li><p><span class="math inline">\(T_{i}\)</span> é uma dummy para o <strong>Não simples (alvo)</strong>.</p></li>
+<li><p><span class="math inline">\(P_{t}\)</span> é uma dummy para o período <strong>Pós-tratamento</strong>.</p></li>
+<li><p><span class="math inline">\(S_{i}\)</span> é uma dummy para o grupo <strong>Tratados</strong>.</p></li>
+</ul>
 <p><strong>Interpretação dos Coeficientes:</strong></p>
 <ul>
-<li>As dummies individuais (<span class="math inline">\(\beta_1, \beta_2, \beta_3\)</span>) controlam pelos níveis de base de cada dimensão.</li>
-<li>As interações duplas (<span class="math inline">\(\beta_4, \beta_5, \beta_6\)</span>) controlam pelos efeitos DiD em subgrupos (o DiD entre período e estado, o DiD entre estado e grupo, e o DiD entre período e grupo).</li>
-<li>O coeficiente da interação tripla, <span class="math inline">\(\beta_7\)</span>, é o <strong>estimador DDD</strong>. Ele captura a mudança diferencial na tendência temporal do grupo de tratamento que está acima e além de todas as outras tendências de nível inferior.</li>
+<li><p>As dummies individuais (<span class="math inline">\(\beta_1, \beta_2, \beta_3\)</span>) controlam pelos níveis de base de cada dimensão.</p></li>
+<li><p>As interações duplas (<span class="math inline">\(\beta_4, \beta_5, \beta_6\)</span>) controlam pelos efeitos DiD em subgrupos (o DiD entre período e estado, o DiD entre estado e grupo, e o DiD entre período e grupo).</p></li>
+<li><p>O coeficiente da interação tripla, <span class="math inline">\(\beta_7\)</span>, é o <strong>estimador DDD</strong>. Ele captura a mudança diferencial na tendência temporal do grupo de tratamento que está acima e além de todas as outras tendências de nível inferior.</p></li>
 </ul>
 <p>Ao estimar este modelo com os dados do exemplo, o coeficiente <span class="math inline">\(\beta_7\)</span> seria aproximadamente <strong>3.22</strong>, confirmando nossa intuição e cálculo manual.</p>
-</section>
-<section id="implementação-prática-com-os-dados-do-exemplo" class="level2">
-<h2 class="anchored" data-anchor-id="implementação-prática-com-os-dados-do-exemplo">Implementação Prática com os Dados do Exemplo</h2>
-<p>Vamos agora implementar o DDD usando os dados do arquivo <code>ddd_exemplo.xlsx</code>. Primeiro, carregamos os dados e calculamos o estimador manualmente, depois confirmamos com uma regressão.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregar os dados</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>dados_ddd <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"ddd_exemplo.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"dados"</span>)</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar a estrutura</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dados_ddd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 48
-Columns: 5
-$ ID      &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,…
-$ Estado  &lt;chr&gt; "Tratado", "Tratado", "Tratado", "Tratado", "Tratado", "Tratad…
-$ Periodo &lt;chr&gt; "Antes", "Antes", "Antes", "Antes", "Antes", "Antes", "Antes",…
-$ Grupo   &lt;chr&gt; "Alvo", "Alvo", "Alvo", "Alvo", "Alvo", "Alvo", "Comparação", …
-$ Y       &lt;dbl&gt; 105.497, 104.862, 105.648, 106.523, 104.766, 104.766, 102.579,…</code></pre>
-</div>
-</div>
-<section id="cálculo-manual-do-ddd" class="level3">
-<h3 class="anchored" data-anchor-id="cálculo-manual-do-ddd">Cálculo Manual do DDD</h3>
-<p>Vamos replicar o cálculo passo a passo que fizemos anteriormente.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular médias por combinação de Estado, Periodo e Grupo</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>medias <span class="ot">&lt;-</span> dados_ddd <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Estado, Periodo, Grupo) <span class="sc">%&gt;%</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Y_medio =</span> <span class="fu">mean</span>(Y), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibir as médias</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>medias <span class="sc">%&gt;%</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(Estado, Periodo), <span class="at">values_from =</span> Y_medio) <span class="sc">%&gt;%</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">caption =</span> <span class="st">"Médias de Y por Grupo, Estado e Período"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped">
-<caption>Médias de Y por Grupo, Estado e Período</caption>
-<colgroup>
-<col style="width: 15%">
-<col style="width: 21%">
-<col style="width: 22%">
-<col style="width: 19%">
-<col style="width: 21%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Grupo</th>
-<th style="text-align: right;">Controle_Antes</th>
-<th style="text-align: right;">Controle_Depois</th>
-<th style="text-align: right;">Tratado_Antes</th>
-<th style="text-align: right;">Tratado_Depois</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Alvo</td>
-<td style="text-align: right;">103.65</td>
-<td style="text-align: right;">105.67</td>
-<td style="text-align: right;">105.34</td>
-<td style="text-align: right;">111.22</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Comparação</td>
-<td style="text-align: right;">99.96</td>
-<td style="text-align: right;">101.66</td>
-<td style="text-align: right;">101.25</td>
-<td style="text-align: right;">103.59</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Agora calculamos os dois estimadores DiD:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DiD para o Grupo Alvo</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>did_alvo <span class="ot">&lt;-</span> medias <span class="sc">%&gt;%</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Grupo <span class="sc">==</span> <span class="st">"Alvo"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Periodo, <span class="at">values_from =</span> Y_medio) <span class="sc">%&gt;%</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diff_temporal =</span> Depois <span class="sc">-</span> Antes) <span class="sc">%&gt;%</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Estado, diff_temporal) <span class="sc">%&gt;%</span></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Estado, <span class="at">values_from =</span> diff_temporal) <span class="sc">%&gt;%</span></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DiD_Alvo =</span> Tratado <span class="sc">-</span> Controle) <span class="sc">%&gt;%</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(DiD_Alvo)</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co"># DiD para o Grupo de Comparação</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>did_comparacao <span class="ot">&lt;-</span> medias <span class="sc">%&gt;%</span></span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Grupo <span class="sc">==</span> <span class="st">"Comparação"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Periodo, <span class="at">values_from =</span> Y_medio) <span class="sc">%&gt;%</span></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">diff_temporal =</span> Depois <span class="sc">-</span> Antes) <span class="sc">%&gt;%</span></span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Estado, diff_temporal) <span class="sc">%&gt;%</span></span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> Estado, <span class="at">values_from =</span> diff_temporal) <span class="sc">%&gt;%</span></span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">DiD_Comparacao =</span> Tratado <span class="sc">-</span> Controle) <span class="sc">%&gt;%</span></span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(DiD_Comparacao)</span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular o DDD</span></span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>ddd_estimador <span class="ot">&lt;-</span> did_alvo <span class="sc">-</span> did_comparacao</span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibir resultados</span></span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"DiD (Grupo Alvo):"</span>, <span class="fu">round</span>(did_alvo, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>DiD (Grupo Alvo): 3.86 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"DiD (Grupo Comparação):"</span>, <span class="fu">round</span>(did_comparacao, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>DiD (Grupo Comparação): 0.65 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"DDD (Estimador Final):"</span>, <span class="fu">round</span>(ddd_estimador, <span class="dv">2</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>DDD (Estimador Final): 3.21 </code></pre>
-</div>
-</div>
-</section>
-<section id="estimação-por-regressão-ols" class="level3">
-<h3 class="anchored" data-anchor-id="estimação-por-regressão-ols">Estimação por Regressão OLS</h3>
-<p>Agora vamos estimar o DDD usando uma regressão com interação tripla:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar variáveis dummy</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>dados_ddd <span class="ot">&lt;-</span> dados_ddd <span class="sc">%&gt;%</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">Tratado =</span> <span class="fu">ifelse</span>(Estado <span class="sc">==</span> <span class="st">"Tratado"</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Post =</span> <span class="fu">ifelse</span>(Periodo <span class="sc">==</span> <span class="st">"Depois"</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">Alvo =</span> <span class="fu">ifelse</span>(Grupo <span class="sc">==</span> <span class="st">"Alvo"</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimar o modelo DDD</span></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>modelo_ddd <span class="ot">&lt;-</span> <span class="fu">lm</span>(Y <span class="sc">~</span> Tratado <span class="sc">+</span> Post <span class="sc">+</span> Alvo <span class="sc">+</span> </span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>                    Tratado<span class="sc">:</span>Post <span class="sc">+</span> Tratado<span class="sc">:</span>Alvo <span class="sc">+</span> Post<span class="sc">:</span>Alvo <span class="sc">+</span> </span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>                    Tratado<span class="sc">:</span>Post<span class="sc">:</span>Alvo, </span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data =</span> dados_ddd)</span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibir resultados</span></span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_ddd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Y ~ Tratado + Post + Alvo + Tratado:Post + Tratado:Alvo + 
-    Post:Alvo + Tratado:Post:Alvo, data = dados_ddd)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1.63117 -0.71225  0.02958  0.52033  1.88850 
-
-Coefficients:
-                  Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)        99.9635     0.3779 264.512  &lt; 2e-16 ***
-Tratado             1.2850     0.5345   2.404  0.02092 *  
-Post                1.6998     0.5345   3.181  0.00284 ** 
-Alvo                3.6863     0.5345   6.897 2.61e-08 ***
-Tratado:Post        0.6455     0.7558   0.854  0.39818    
-Tratado:Alvo        0.4088     0.7558   0.541  0.59157    
-Post:Alvo           0.3215     0.7558   0.425  0.67285    
-Tratado:Post:Alvo   3.2133     1.0689   3.006  0.00455 ** 
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.9257 on 40 degrees of freedom
-Multiple R-squared:  0.938, Adjusted R-squared:  0.9271 
-F-statistic:  86.4 on 7 and 40 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-<p>O coeficiente da interação tripla <code>Tratado:Post:Alvo</code> é o nosso estimador DDD. Vamos extraí-lo de forma mais clara:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extrair o coeficiente DDD</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>coef_ddd <span class="ot">&lt;-</span> <span class="fu">tidy</span>(modelo_ddd, <span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"Tratado:Post:Alvo"</span>)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Exibir</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>coef_ddd <span class="sc">%&gt;%</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate, std.error, p.value, conf.low, conf.high) <span class="sc">%&gt;%</span></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">3</span>, <span class="at">caption =</span> <span class="st">"Estimador DDD via Regressão OLS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-sm table-striped">
-<caption>Estimador DDD via Regressão OLS</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">p.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Tratado:Post:Alvo</td>
-<td style="text-align: right;">3.213</td>
-<td style="text-align: right;">1.069</td>
-<td style="text-align: right;">0.005</td>
-<td style="text-align: right;">1.053</td>
-<td style="text-align: right;">5.374</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
 <section id="interpretação-dos-resultados" class="level3">
 <h3 class="anchored" data-anchor-id="interpretação-dos-resultados">Interpretação dos Resultados</h3>
 <p>O estimador DDD de aproximadamente <strong>3.22</strong> nos diz que, após controlar pelas tendências divergentes entre os estados Tratado e Controle (capturadas pelo grupo de Comparação), o efeito causal da desoneração sobre o emprego no grupo Alvo é de cerca de 3.22 unidades.</p>
 <p>Este resultado é <strong>menor</strong> do que o DiD simples de 3.86 que obtivemos para o grupo Alvo. A diferença de 0.64 representa o <strong>viés</strong> que estava inflando nossa estimativa inicial, causado pela violação da hipótese de tendências paralelas.</p>
 </section>
-</section>
-<section id="visualização-do-ddd" class="level2">
-<h2 class="anchored" data-anchor-id="visualização-do-ddd">Visualização do DDD</h2>
-<p>Uma forma eficaz de entender o DDD é visualizar as trajetórias de todos os quatro grupos:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular médias para o gráfico</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>medias_plot <span class="ot">&lt;-</span> dados_ddd <span class="sc">%&gt;%</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Periodo_num =</span> <span class="fu">ifelse</span>(Periodo <span class="sc">==</span> <span class="st">"Antes"</span>, <span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Estado, Grupo, Periodo_num) <span class="sc">%&gt;%</span></span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Y_medio =</span> <span class="fu">mean</span>(Y), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Criar o gráfico</span></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(medias_plot, <span class="fu">aes</span>(<span class="at">x =</span> Periodo_num, <span class="at">y =</span> Y_medio, </span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>                        <span class="at">color =</span> Estado, <span class="at">linetype =</span> Grupo, <span class="at">group =</span> <span class="fu">interaction</span>(Estado, Grupo))) <span class="sc">+</span></span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Antes"</span>, <span class="st">"Depois"</span>)) <span class="sc">+</span></span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Tratado"</span> <span class="ot">=</span> <span class="st">"#E74C3C"</span>, <span class="st">"Controle"</span> <span class="ot">=</span> <span class="st">"#3498DB"</span>)) <span class="sc">+</span></span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Alvo"</span> <span class="ot">=</span> <span class="st">"solid"</span>, <span class="st">"Comparação"</span> <span class="ot">=</span> <span class="st">"dashed"</span>)) <span class="sc">+</span></span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Visualização do Estimador de Triplas Diferenças (DDD)"</span>,</span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Trajetórias de Y para os quatro grupos"</span>,</span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Período"</span>,</span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Valor Médio de Y"</span>,</span>
-<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Estado"</span>,</span>
-<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"Grupo"</span></span>
-<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
-<span id="cb50-24"><a href="#cb50-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb50-25"><a href="#cb50-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
-<span id="cb50-26"><a href="#cb50-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb50-27"><a href="#cb50-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb50-28"><a href="#cb50-28" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/visualizar-ddd-1.png" class="img-fluid" width="960"></p>
-</div>
-</div>
-<p><strong>Interpretação do Gráfico:</strong></p>
-<ul>
-<li>As linhas <strong>sólidas</strong> representam o grupo <strong>Alvo</strong> (elegível para a desoneração no estado tratado).</li>
-<li>As linhas <strong>tracejadas</strong> representam o grupo de <strong>Comparação</strong> (não elegível, mas afetado por choques setoriais).</li>
-<li>A linha <strong>vermelha</strong> representa o <strong>Estado Tratado</strong> (onde a política foi implementada).</li>
-<li>A linha <strong>azul</strong> representa o <strong>Estado de Controle</strong> (onde a política não foi implementada).</li>
-</ul>
-<p>Observe que:</p>
-<ol type="1">
-<li>O grupo Alvo no Estado Tratado (linha vermelha sólida) tem o maior crescimento entre os períodos Antes e Depois.</li>
-<li>O grupo de Comparação também mostra crescimento diferencial entre os estados (linhas tracejadas), mas este crescimento <strong>não</strong> é devido à política, e sim a outros fatores (choques setoriais, tendências divergentes).</li>
-<li>O DDD subtrai o crescimento espúrio do grupo de Comparação do crescimento total do grupo Alvo, isolando o efeito puro da política.</li>
-</ol>
 </section>
 <section id="quando-usar-o-ddd" class="level2">
 <h2 class="anchored" data-anchor-id="quando-usar-o-ddd">Quando Usar o DDD?</h2>
@@ -2063,18 +1687,18 @@ F-statistic:  86.4 on 7 and 40 DF,  p-value: &lt; 2.2e-16</code></pre>
 <ol type="1">
 <li><p><strong>Suspeita de Violação de Tendências Paralelas</strong>: Quando há razões teóricas ou empíricas para acreditar que o grupo de controle tem uma trajetória diferente do grupo de tratamento, mesmo na ausência da política.</p></li>
 <li><p><strong>Disponibilidade de um Grupo de Comparação Adequado</strong>: É necessário identificar um grupo que seja afetado pelos mesmos choques que o grupo de controle, mas que não seja afetado pela política de interesse.</p></li>
+<li><p><strong>Alguns exemplos específicos</strong></p></li>
+</ol>
+<ul>
 <li><p><strong>Políticas Implementadas em Diferentes Regiões</strong>: Quando uma política é implementada em alguns estados ou municípios, mas não em outros, e há preocupações sobre diferenças regionais em tendências econômicas.</p></li>
 <li><p><strong>Setores com Dinâmicas Distintas</strong>: Quando diferentes setores econômicos têm trajetórias de crescimento naturalmente diferentes, e a política afeta apenas alguns deles.</p></li>
-</ol>
+</ul>
 </section>
 <section id="hipóteses-do-ddd" class="level2">
 <h2 class="anchored" data-anchor-id="hipóteses-do-ddd">Hipóteses do DDD</h2>
 <p>Para que o estimador DDD identifique o efeito causal, as seguintes hipóteses devem ser satisfeitas:</p>
 <ol type="1">
-<li><strong>Tendências Paralelas Condicionais</strong>: Na ausência do tratamento, a diferença nas tendências entre o grupo Alvo e o grupo de Comparação seria a mesma no Estado Tratado e no Estado de Controle. Formalmente:</li>
-</ol>
-<p><span class="math display">\[ E[Y^{0}_{Alvo,Tratado,Post} - Y^{0}_{Alvo,Tratado,Pre}] - E[Y^{0}_{Comparação,Tratado,Post} - Y^{0}_{Comparação,Tratado,Pre}] = \]</span> <span class="math display">\[ E[Y^{0}_{Alvo,Controle,Post} - Y^{0}_{Alvo,Controle,Pre}] - E[Y^{0}_{Comparação,Controle,Post} - Y^{0}_{Comparação,Controle,Pre}] \]</span></p>
-<ol start="2" type="1">
+<li><p><strong>Tendências Paralelas Condicionais</strong>: Na ausência do tratamento, a diferença nas tendências entre o grupo Alvo e o grupo de Comparação seria a mesma no Estado Tratado e no Estado de Controle. Formalmente:</p></li>
 <li><p><strong>Ausência de Efeitos de Transbordamento (Spillovers)</strong>: O tratamento no grupo Alvo do Estado Tratado não afeta os resultados dos outros grupos.</p></li>
 <li><p><strong>Composição Estável</strong>: A composição dos grupos não muda de forma endógena em resposta à política.</p></li>
 <li><p><strong>Grupo de Comparação Válido</strong>: O grupo de Comparação deve ser afetado pelos mesmos choques confundidores que o grupo Alvo, mas não pela política de interesse.</p></li>
@@ -2089,12 +1713,6 @@ F-statistic:  86.4 on 7 and 40 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li><p><strong>Hipóteses Mais Fortes</strong>: Embora o DDD relaxe a hipótese de tendências paralelas do DiD, ele impõe sua própria hipótese de tendências paralelas condicionais, que também pode ser violada.</p></li>
 <li><p><strong>Escolha do Grupo de Comparação</strong>: A validade do DDD depende criticamente da escolha adequada do grupo de Comparação. Se este grupo não for afetado pelos mesmos choques que o grupo de controle, o estimador DDD será enviesado.</p></li>
 </ol>
-</section>
-<section id="conclusão" class="level2">
-<h2 class="anchored" data-anchor-id="conclusão">Conclusão</h2>
-<p>O método de Triplas Diferenças representa uma extensão poderosa do DiD clássico, permitindo-nos obter estimativas causais mesmo quando a hipótese de tendências paralelas é violada. Ao adicionar uma terceira diferença, o DDD controla por tendências divergentes entre os grupos de tratamento e controle, isolando o efeito puro da política de interesse.</p>
-<p>No nosso exemplo da desoneração da folha de pagamento, o DDD nos permitiu corrigir o viés causado por choques setoriais específicos que afetavam diferencialmente os estados Tratado e Controle. O estimador final de 3.22 é uma medida mais confiável do efeito causal da política do que o DiD simples de 3.86.</p>
-<p>Como sempre na econometria aplicada, a escolha entre DiD e DDD (ou outros métodos) deve ser guiada pela natureza dos dados, pela plausibilidade das hipóteses identificadoras e pela disponibilidade de grupos de comparação adequados. O DDD é uma ferramenta valiosa no arsenal do pesquisador, mas deve ser aplicado com cuidado e com plena compreensão de suas hipóteses e limitações.</p>
 
 
 </section>
