@@ -335,6 +335,23 @@ plotPlacebo(rdd_sens2)
 
 ```
 
+# RDD fuzzy
+
+Para estimar um RDD fuzzy é necessário fazer um MQO em 2 estágios para encontrar o LATE:
+
+1- Primeiro estágio: predizer o tratamento usando a variável de cutoff $Z_i$ e a running variable.
+$$
+D_{i} = \alpha + \beta z_{i} + \gamma x_{i} + \varepsilon_{i}
+$$
+
+ - Normalize $x$ para que $\beta$ represente o pulo na probabilidade de tratamento ($x=0$)
+ 
+2- Estime o segundo estágio com os valores preditos
+$$
+Y_{i} = \delta + \tau z_{i} + \lambda x_{i} + \epsilon_{i}
+$$
+O coeficiente $\tau$ fornece o LATE
+
 
 
 # Referências

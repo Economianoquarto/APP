@@ -760,6 +760,19 @@ F-statistic: 16.82 on 3 and 20 DF,  p-value: 1.083e-05</code></pre>
 </div>
 </section>
 </section>
+<section id="rdd-fuzzy" class="level1">
+<h1>RDD fuzzy</h1>
+<p>Para estimar um RDD fuzzy é necessário fazer um MQO em 2 estágios para encontrar o LATE:</p>
+<p>1- Primeiro estágio: predizer o tratamento usando a variável de cutoff <span class="math inline">\(Z_i\)</span> e a running variable. <span class="math display">\[
+D_{i} = \alpha + \beta z_{i} + \gamma x_{i} + \varepsilon_{i}
+\]</span></p>
+<ul>
+<li>Normalize <span class="math inline">\(x\)</span> para que <span class="math inline">\(\beta\)</span> represente o pulo na probabilidade de tratamento (<span class="math inline">\(x=0\)</span>)</li>
+</ul>
+<p>2- Estime o segundo estágio com os valores preditos <span class="math display">\[
+Y_{i} = \delta + \tau z_{i} + \lambda x_{i} + \epsilon_{i}
+\]</span> O coeficiente <span class="math inline">\(\tau\)</span> fornece o LATE</p>
+</section>
 <section id="referências" class="level1">
 <h1>Referências</h1>
 <p>[1] Hahn, J., Todd, P., &amp; Van der Klaauw, W. (2001). Identification and Estimation of Treatment Effects with a Regression-Discontinuity Design. <em>Econometrica, 69</em>(1), 201-209.</p>
