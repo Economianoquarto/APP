@@ -1,0 +1,348 @@
+---
+title: "RDD"
+author: "Caio Lopes"
+date: "2025-04-19"
+categories: [Ensino]
+#image: "image.jpg"
+---
+
+# Introdução
+
+O *Regression Discontinuity Design* (RDD), ou Regressão com Descontinuidade, é mais um método para estimação do efeito causais (treatment effect).
+
+Sua a fundamentação teórica, encontra-se no trabalho seminal de **Hahn, Todd e Van der Klaauw (2001)** \[1\], que formalizou as condições sob as quais o RDD identifica um efeito de tratamento causal. Em seguida, faremos um paralelo entre duas aplicações empíricas clássicas:
+
+1.  **Lee (2008)** \[2\]: O estudo sobre a vantagem eleitoral de incumbentes nos EUA, um exemplo de como uma regra (vencer por uma margem mínima) cria um quase-experimento.
+
+2.  **Carpenter & Dobkin (2009)** \[3\]: A análise do efeito da idade mínima para consumo de álcool sobre a mortalidade, um caso onde a variável de tratamento é perfeitamente determinada por uma lei.
+
+# A Fundação Teórica
+
+O artigo de Hahn, Todd e Van der Klaauw (HTV) foi crucial para estabelecer a credibilidade do RDD como um método quase-experimental. Eles mostraram que, sob hipoteses relativamente fracas, o RDD pode identificar um efeito de tratamento local com a mesma validade de um experimento aleatório.
+
+## O Setup Básico do RDD
+
+Imagine uma situação onde uma intervenção (tratamento) é atribuída com base em uma **variável de continuidade** (*running variable*), que chamaremos de `Z`. Existe um **ponto de corte** (*cutoff*), `c`, que determina quem recebe o tratamento. Por exemplo, `Z` pode ser a nota de um aluno em um exame, e todos com nota `Z >= c` recebem uma bolsa de estudos.
+
+O RDD explora a ideia de que indivíduos com valores de `Z` muito próximos ao cutoff `c`, mas de lados opostos, são, em média, muito semelhantes em todas as outras características (observáveis e não observáveis). A única diferença sistemática entre eles é o recebimento do tratamento. Portanto, qualquer "salto" ou **descontinuidade** na variável de resultado nesse ponto pode ser atribuído ao efeito causal do tratamento.
+
+## Sharp vs. Fuzzy RDD
+
+HTV formalizam a distinção entre dois tipos de RDD:
+
+1.  **Sharp RDD (RDD Nítido)**: O tratamento é uma função determinística do cutoff. Todos os indivíduos com `Z >= c` recebem o tratamento, e ninguém com `Z < c` o recebe. A probabilidade de tratamento salta de 0 para 1 exatamente no cutoff.
+
+2.  **Fuzzy RDD (RDD Difuso)**: O cutoff influencia a *probabilidade* de receber o tratamento, mas não a determina perfeitamente. Por exemplo, uma bolsa de estudos pode ser *oferecida* a todos com `Z >= c`, mas nem todos a aceitam. Nesse caso, a probabilidade de tratamento salta de um valor `p_abaixo` para um valor `p_acima` no cutoff, mas não necessariamente de 0 para 1.
+
+## A Condição de Identificação Fundamental
+
+A grande contribuição de HTV foi esclarecer o pressuposto central que permite a identificação do efeito causal. Este pressuposto é a **continuidade das funções de regressão dos resultados potenciais no cutoff**.
+
+Vamos definir os resultados potenciais:
+
+-   `Y(1)`: O resultado que um indivíduo teria se recebesse o tratamento.
+-   `Y(0)`: O resultado que o mesmo indivíduo teria se não recebesse o tratamento.
+
+O pressuposto fundamental do RDD é que as médias condicionais de `Y(1)` e `Y(0)` são contínuas em relação à variável de continuidade `Z` no ponto `c`.
+
+> **Pressuposto de Continuidade (HTV, 2001):** As funções `E[Y(1) | Z=z]` e `E[Y(0) | Z=z]` são contínuas em `z=c`.
+
+Em palavras simples, isso significa que, na ausência do tratamento, a relação entre a variável de continuidade e o resultado seria suave e não teria um salto no cutoff. Se essa condição for válida, qualquer salto observado no resultado real no cutoff deve ser atribuído ao tratamento.
+
+## O que o RDD Estima: O LATE
+
+Sob este pressuposto, HTV mostram que o RDD identifica o **Efeito Médio do Tratamento Local** (*Local Average Treatment Effect* - LATE) no cutoff. O estimador é a razão entre o salto no resultado e o salto na probabilidade de tratamento:
+
+$$ \text{LATE} = \frac{\lim_{z \to c^+} E[Y|Z=z] - \lim_{z \to c^-} E[Y|Z=z]}{\lim_{z \to c^+} E[D|Z=z] - \lim_{z \to c^-} E[D|Z=z]} $$
+
+Onde: - `Y` é o resultado observado. - `D` é o indicador de tratamento (0 ou 1). - O numerador é o "salto" no resultado no cutoff. - O denominador é o "salto" na probabilidade de tratamento no cutoff.
+
+No caso de um **Sharp RDD**, o denominador é 1 (o salto na probabilidade é de 0 para 1), então o LATE é simplesmente o tamanho do salto no resultado.
+
+# Parte 2: O Paralelo Teórico nas Aplicações
+
+Os estudos de Lee (2008) e Carpenter & Dobkin (2009) são exemplos perfeitos que ilustram a teoria de HTV em contextos muito diferentes. Ambos são **Sharp RDDs** e sua credibilidade reside na impossibilidade (ou grande dificuldade) de manipular a variável de continuidade.
+
+Vamos comparar os dois estudos lado a lado:
+
+| Característica | Lee (2008): Vantagem de Incumbência | Carpenter & Dobkin (2009): Álcool e Mortalidade |
+|------------------|---------------------------|---------------------------|
+| **Questão Causal** | Qual o efeito causal de vencer uma eleição sobre os votos na próxima? | Qual o efeito causal do acesso legal ao álcool sobre a mortalidade? |
+| **Variável de Continuidade (Z)** | Margem de vitória do partido Democrata na eleição *t-1*. | Idade do indivíduo. |
+| **Cutoff (c)** | 0 (zero). | 21 anos. |
+| **Tratamento (D)** | Vencer a eleição em *t-1* (ser o incumbente). | Ter permissão legal para comprar e consumir álcool. |
+| **Resultado (Y)** | Porcentagem de votos do partido Democrata na eleição *t*. | Taxa de mortalidade (por todas as causas, acidentes, suicídio, etc.). |
+| **Tipo de RDD** | **Sharp RDD**. A vitória é uma função determinística da margem \> 0. | **Sharp RDD**. A permissão legal é uma função determinística da idade. |
+
+## A Lógica da Identificação em Cada Contexto
+
+### Lee (2008): Eleições como Experimentos Aleatórios
+
+A genialidade do estudo de Lee é argumentar que, em eleições muito disputadas (com margem de vitória próxima de zero), o vencedor é **tão bom quanto aleatório**. Um candidato que vence por 0.1% dos votos é, em média, extremamente semelhante a um que perde por 0.1%. Eles têm financiamento, qualidade e apelo eleitoral virtualmente idênticos.
+
+-   **Validade do Pressuposto de Continuidade**: É plausível que a porcentagem de votos na próxima eleição (`Y`) variaria suavemente com a margem de vitória anterior (`Z`) se não houvesse o "prêmio" da incumbência. Não há razão para acreditar que um candidato que vence por 0.1% teria uma trajetória de votos futura drasticamente diferente de um que perde por 0.1%, a não ser pelo fato de ter vencido.
+-   **Impossibilidade de Manipulação**: É extremamente difícil para um candidato controlar o resultado de uma eleição com precisão suficiente para garantir uma vitória por uma margem mínima. 
+
+O estudo encontra um salto de cerca de **7-8 pontos percentuais** na porcentagem de votos na eleição seguinte, que é o LATE da incumbência.
+
+### Carpenter & Dobkin (2009): Leis como Descontinuidades Perfeitas
+
+Este estudo explora uma regra institucional ainda mais rígida: a idade mínima para o consumo de álcool (MLDA - *Minimum Legal Drinking Age*).
+
+-   **Validade do Pressuposto de Continuidade**: A variável de continuidade é a idade. É altamente plausível que a taxa de mortalidade (`Y`) mude suavemente com a idade (`Z`). Não há razão biológica ou social para que a mortalidade de uma pessoa salte abruptamente no dia do seu 21º aniversário, a não ser por uma mudança de comportamento induzida por uma nova permissão legal.
+-   **Impossibilidade de Manipulação**: A idade de uma pessoa é uma variável que não pode ser manipulada. Ninguém pode escolher fazer 21 anos mais cedo para beber legalmente. Isso torna o design RDD extremamente crível neste contexto.
+
+O estudo encontra um salto discreto de cerca de **9% na taxa de mortalidade** geral logo após os 21 anos, atribuído ao aumento do consumo de álcool e comportamentos de risco associados.
+
+# Conclusão: A Unidade na Diversidade do RDD
+
+Ao comparar os estudos de Lee (2008) e Carpenter & Dobkin (2009) através das lentes teóricas de Hahn, Todd e Van der Klaauw (2001), vemos um padrão unificador. Ambos os estudos, embora aplicados a domínios completamente diferentes (ciência política e saúde pública), compartilham a mesma lógica fundamental:
+
+1.  **Identificam uma regra arbitrária** (vencer uma eleição, atingir 21 anos) que gera uma descontinuidade no tratamento.
+2.  **Argumentam que a variável de continuidade não é manipulável** em torno do cutoff, garantindo que a comparação local seja válida.
+3.  **Demonstram visualmente e estimam quantitativamente um "salto"** na variável de resultado, que, sob o pressuposto de continuidade, pode ser interpretado como um efeito causal local.
+
+O RDD, portanto, nos permite transformar dados observacionais em evidências quase-experimentais, fornecendo respostas críveis para algumas das questões mais importantes das ciências sociais aplicadas.
+
+# Replicação de Carpenter & Dobkin (2009)
+
+O Blog de Leppert (2020) \[4\] traz um tutorial de como aplicar o RDD por da replicação de Carpenter & Dobkin (2009) usando o pacote `rddtools`.
+
+Primeiro, vamos carregar todos os pacotes necessários para a análise.
+
+```{r setup_replication,  echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+
+# Instalar pacotes se necessário
+if (!require("dplyr")) install.packages("dplyr")
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("rddtools")) install.packages("rddtools")
+if (!require("magrittr")) install.packages("magrittr")
+
+# Carregar pacotes
+library(dplyr)
+library(ggplot2)
+library(rddtools)
+library(magrittr)
+
+
+```
+
+Agora, vamos carregar os dados reais do estudo (estão disponíveis no github de Leppert
+
+```{r read_real_data}
+carpenter_dobkin_2009 <- readRDS("carpenter_dobkin_2009.rds")
+```
+
+Vamos visualizar os dados. Há um salto notável na taxa de mortalidade aos 21 anos.
+
+```{r plot_scatter_tutorial}
+carpenter_dobkin_2009 %>% 
+  ggplot(aes(x = agecell, y = all)) + 
+  geom_point() +
+  geom_vline(xintercept = 21, color = "red", size = 1, linetype = "dashed") + 
+  annotate("text", x = 20.4, y = 105, label = "Minimum Drinking Age",
+           size=4) +
+  labs(y = "Mortality rate (per 100.000)",
+       x = "Age (binned)")
+```
+
+
+O RDD pode ser estimado por OLS. A primeira regressão aplica a mesma inclinação em ambos os lados do cutoff.
+
+
+Primeiro, criamos uma variável dummy (`threshold`). Em seguida, especificamos um modelo linear para regredir a mortalidade (`all`) na dummy `threshold` e na idade (`agecell`) centrada em 21.
+
+```{r lm_same_slope_tutorial}
+lm_same_slope <- carpenter_dobkin_2009 %>% 
+  mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$% 
+  lm(all ~ threshold + I(agecell - 21))
+
+summary(lm_same_slope)
+```
+
+
+O pacote `rddtools` simplifica este processo.
+
+```{r rddtools_same_slope_tutorial}
+rdd_data(y = carpenter_dobkin_2009$all, 
+         x = carpenter_dobkin_2009$agecell, 
+         cutpoint = 21) %>% 
+  rdd_reg_lm(slope = "same") %>% 
+  summary()
+```
+
+O gráfico mostra a linha de regressão ajustada, que tem a mesma inclinação em ambos os lados do cutoff.
+
+```{r plot_same_slope_tutorial}
+carpenter_dobkin_2009 %>%
+  select(agecell, all) %>%
+  mutate(threshold = as.factor(ifelse(agecell >= 21, 1, 0))) %>%
+  ggplot(aes(x = agecell, y = all)) +
+  geom_point(aes(color = threshold)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 21, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Mortality rate (per 100.000)",
+       x = "Age (binned)")
+```
+
+O coeficiente da variável dummy `threshold` é o efeito médio do tratamento. Em média, a taxa de mortalidade por 100.000 para indivíduos que atingem a idade mínima para beber é **`r format(round(lm_same_slope$coefficients[2],2), nsmall=2)`** pontos mais alta.
+
+A segunda regressão aplica inclinações diferentes em ambos os lados do cutoff.
+Isso é alcançado especificando uma interação entre a dummy `threshold` e a idade centrada.
+
+```{r lm_different_slope_tutorial}
+lm_different_slope <- carpenter_dobkin_2009 %>%
+  mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$%
+  lm(all ~ threshold + I(agecell - 21) + threshold:I(agecell - 21))
+
+summary(lm_different_slope)
+```
+No `rddtools`, usamos o argumento `slope = "separate"`.
+
+```{r rddtools_different_slope_tutorial}
+rdd_data(y = carpenter_dobkin_2009$all, 
+         x = carpenter_dobkin_2009$agecell, 
+         cutpoint = 21) %>% 
+  rdd_reg_lm(slope = "separate") %>% 
+  summary()
+```
+O gráfico mostra as diferentes inclinações.
+
+```{r plot_different_slope_tutorial}
+carpenter_dobkin_2009 %>%
+  select(agecell, all) %>%
+  mutate(threshold = as.factor(ifelse(agecell >= 21, 1, 0))) %>%
+  ggplot(aes(x = agecell, y = all, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 21, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Mortality rate (per 100.000)",
+       x = "Age (binned)")
+```
+
+Esta abordagem não altera a interpretação do efeito do tratamento! Em média, a taxa de mortalidade por 100.000 para indivíduos que atingem a idade mínima para beber é **`r format(round(lm_different_slope$coefficients[2],2), nsmall=2)`** pontos mais alta.
+
+### Análise de Sensibilidade: Modificando a Forma Funcional
+
+Deve-se prestar atenção especial à especificação da forma funcional.
+
+Abaixo, modelamos uma relação quadrática entre idade e mortalidade.
+
+```{r lm_quadratic_tutorial}
+lm_quadratic <- carpenter_dobkin_2009 %>% 
+mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$% 
+  lm(all ~ threshold + I(agecell - 21) + I((agecell -21)^2) + threshold:I(agecell - 21) +
+       threshold:I((agecell - 21)^2))
+
+summary(lm_quadratic)
+```
+
+
+Em `rdd_reg_lm()`, modificamos o argumento `order = 2`.
+
+```{r rddtools_quadratic_tutorial}
+rdd_data(y = carpenter_dobkin_2009$all, 
+         x = carpenter_dobkin_2009$agecell, 
+         cutpoint = 21) %>% 
+  rdd_reg_lm(slope = "separate", order = 2) %>% 
+  summary()
+```
+
+
+À direita do cutoff, este modelo parece se ajustar melhor aos dados!
+
+```{r plot_quadratic_tutorial}
+carpenter_dobkin_2009 %>%
+  select(agecell, all) %>%
+  mutate(threshold = as.factor(ifelse(agecell >= 21, 1, 0))) %>%
+  ggplot(aes(x = agecell, y = all, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+              formula = y ~ x + I(x ^ 2),
+              se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 21, color = "red",
+    size = 1, linetype = "dashed") +
+  labs(y = "Mortality rate (per 100.000)",
+       x = "Age (binned)")
+```
+
+Em média, a taxa de mortalidade por 100.000 para indivíduos que atingem a idade mínima para beber é agora **`r format(round(lm_quadratic$coefficients[2],2), nsmall=2)`** pontos mais alta.
+
+### Análise de Sensibilidade: Tamanho do amostra (Sensibilidade ao Bandwidth)
+
+É aconselhável verificar a sensibilidade dos resultados em relação à limitação do tamanho da amostra.
+
+Em vez de usar toda a faixa de idade, usamos apenas indivíduos com idade entre 20 e 22 anos.
+
+```{r lm_sensitivity_tutorial}
+lm_sensitivity <- carpenter_dobkin_2009 %>%
+  filter(agecell >= 20 & agecell <= 22) %>%
+  mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$%
+  lm(all ~ threshold + I(agecell - 21) + threshold:I(agecell - 21))
+
+summary(lm_sensitivity)
+```
+
+
+```{r plot_sensitivity_tutorial}
+carpenter_dobkin_2009 %>%
+  filter(agecell >= 20 & agecell <= 22) %>%
+  select(agecell, all) %>%
+  mutate(threshold = as.factor(ifelse(agecell >= 21, 1, 0))) %>%
+  ggplot(aes(x = agecell, y = all, color = threshold)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  scale_color_brewer(palette = "Accent") +
+  guides(color = FALSE) +
+  geom_vline(xintercept = 21, color = "red",
+             size = 1, linetype = "dashed") +
+  labs(y = "Mortality rate (per 100.000)",
+       x = "Age (binned)")
+```
+
+Este resultado é bastante semelhante à abordagem anterior com o modelo quadrático. Em média, a taxa de mortalidade por 100.000 para indivíduos que atingem a idade mínima para beber é **`r format(round(lm_sensitivity$coefficients[2],2), nsmall=2)`** pontos mais alta.
+
+Usando o `rddtools` podemos fazer a análise por ordem do polinômio
+
+```{r rddtools_Bandwidth}
+rdd_sens <-rdd_data(y = carpenter_dobkin_2009$all, 
+         x = carpenter_dobkin_2009$agecell, 
+         cutpoint = 21) 
+
+rdd_sens_ik <- rdd_bw_ik(rdd_sens)
+rdd_sens2 <- rdd_reg_lm(rdd_object=rdd_sens, order=2, bw=rdd_sens_ik) 
+
+
+plotSensi(rdd_sens2, from=1, to=5, by=1)
+
+```
+
+### Análise de Sensibilidade: placebo do cutoff
+
+Podemos repetir a análise para placebos falsos
+
+```{r rddtools_placebo}
+
+plotPlacebo(rdd_sens2)
+
+```
+
+
+
+# Referências
+
+\[1\] Hahn, J., Todd, P., & Van der Klaauw, W. (2001). Identification and Estimation of Treatment Effects with a Regression-Discontinuity Design. *Econometrica, 69*(1), 201-209.
+
+\[2\] Lee, D. S. (2008). Randomized experiments from non-random selection in U.S. House elections. *Journal of Econometrics*, 142(2), 675-697.
+
+\[3\] Carpenter, C., & Dobkin, C. (2009). The Effect of Alcohol Consumption on Mortality: Regression Discontinuity Evidence from the Minimum Drinking Age. *American Economic Journal: Applied Economics, 1*(1), 164–182.
+
+\[4\] Leppert, P. R Tutorial: Regression Discontinuity Design. Disponível em: https://rpubs.com/phle/r_tutorial_regression_discontinuity_design. Acesso em: 01/12/2025.
