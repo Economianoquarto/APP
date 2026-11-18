@@ -40,8 +40,8 @@ A grande contribuição de HTV foi esclarecer o pressuposto central que permite 
 
 Vamos definir os resultados potenciais:
 
--   `Y(1)`: O resultado que um indivíduo teria se recebesse o tratamento.
--   `Y(0)`: O resultado que o mesmo indivíduo teria se não recebesse o tratamento.
+- `Y(1)`: O resultado que um indivíduo teria se recebesse o tratamento.
+- `Y(0)`: O resultado que o mesmo indivíduo teria se não recebesse o tratamento.
 
 O pressuposto fundamental do RDD é que as médias condicionais de `Y(1)` e `Y(0)` são contínuas em relação à variável de continuidade `Z` no ponto `c`.
 
@@ -80,8 +80,8 @@ Vamos comparar os dois estudos lado a lado:
 
 A genialidade do estudo de Lee é argumentar que, em eleições muito disputadas (com margem de vitória próxima de zero), o vencedor é **tão bom quanto aleatório**. Um candidato que vence por 0.1% dos votos é, em média, extremamente semelhante a um que perde por 0.1%. Eles têm financiamento, qualidade e apelo eleitoral virtualmente idênticos.
 
--   **Validade do Pressuposto de Continuidade**: É plausível que a porcentagem de votos na próxima eleição (`Y`) variaria suavemente com a margem de vitória anterior (`Z`) se não houvesse o "prêmio" da incumbência. Não há razão para acreditar que um candidato que vence por 0.1% teria uma trajetória de votos futura drasticamente diferente de um que perde por 0.1%, a não ser pelo fato de ter vencido.
--   **Impossibilidade de Manipulação**: É extremamente difícil para um candidato controlar o resultado de uma eleição com precisão suficiente para garantir uma vitória por uma margem mínima. 
+- **Validade do Pressuposto de Continuidade**: É plausível que a porcentagem de votos na próxima eleição (`Y`) variaria suavemente com a margem de vitória anterior (`Z`) se não houvesse o "prêmio" da incumbência. Não há razão para acreditar que um candidato que vence por 0.1% teria uma trajetória de votos futura drasticamente diferente de um que perde por 0.1%, a não ser pelo fato de ter vencido.
+- **Impossibilidade de Manipulação**: É extremamente difícil para um candidato controlar o resultado de uma eleição com precisão suficiente para garantir uma vitória por uma margem mínima.
 
 O estudo encontra um salto de cerca de **7-8 pontos percentuais** na porcentagem de votos na eleição seguinte, que é o LATE da incumbência.
 
@@ -89,8 +89,8 @@ O estudo encontra um salto de cerca de **7-8 pontos percentuais** na porcentagem
 
 Este estudo explora uma regra institucional ainda mais rígida: a idade mínima para o consumo de álcool (MLDA - *Minimum Legal Drinking Age*).
 
--   **Validade do Pressuposto de Continuidade**: A variável de continuidade é a idade. É altamente plausível que a taxa de mortalidade (`Y`) mude suavemente com a idade (`Z`). Não há razão biológica ou social para que a mortalidade de uma pessoa salte abruptamente no dia do seu 21º aniversário, a não ser por uma mudança de comportamento induzida por uma nova permissão legal.
--   **Impossibilidade de Manipulação**: A idade de uma pessoa é uma variável que não pode ser manipulada. Ninguém pode escolher fazer 21 anos mais cedo para beber legalmente. Isso torna o design RDD extremamente crível neste contexto.
+- **Validade do Pressuposto de Continuidade**: A variável de continuidade é a idade. É altamente plausível que a taxa de mortalidade (`Y`) mude suavemente com a idade (`Z`). Não há razão biológica ou social para que a mortalidade de uma pessoa salte abruptamente no dia do seu 21º aniversário, a não ser por uma mudança de comportamento induzida por uma nova permissão legal.
+- **Impossibilidade de Manipulação**: A idade de uma pessoa é uma variável que não pode ser manipulada. Ninguém pode escolher fazer 21 anos mais cedo para beber legalmente. Isso torna o design RDD extremamente crível neste contexto.
 
 O estudo encontra um salto discreto de cerca de **9% na taxa de mortalidade** geral logo após os 21 anos, atribuído ao aumento do consumo de álcool e comportamentos de risco associados.
 
@@ -146,9 +146,7 @@ carpenter_dobkin_2009 %>%
        x = "Age (binned)")
 ```
 
-
 O RDD pode ser estimado por OLS. A primeira regressão aplica a mesma inclinação em ambos os lados do cutoff.
-
 
 Primeiro, criamos uma variável dummy (`threshold`). Em seguida, especificamos um modelo linear para regredir a mortalidade (`all`) na dummy `threshold` e na idade (`agecell`) centrada em 21.
 
@@ -157,9 +155,15 @@ lm_same_slope <- carpenter_dobkin_2009 %>%
   mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$% 
   lm(all ~ threshold + I(agecell - 21))
 
+
+summary(lm_same_slope)
+
+lm_same_slope <- carpenter_dobkin_2009 %>% 
+  mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$% 
+  lm(all ~  I(agecell - 21))
+
 summary(lm_same_slope)
 ```
-
 
 O pacote `rddtools` simplifica este processo.
 
@@ -190,8 +194,7 @@ carpenter_dobkin_2009 %>%
 
 O coeficiente da variável dummy `threshold` é o efeito médio do tratamento. Em média, a taxa de mortalidade por 100.000 para indivíduos que atingem a idade mínima para beber é **`r format(round(lm_same_slope$coefficients[2],2), nsmall=2)`** pontos mais alta.
 
-A segunda regressão aplica inclinações diferentes em ambos os lados do cutoff.
-Isso é alcançado especificando uma interação entre a dummy `threshold` e a idade centrada.
+A segunda regressão aplica inclinações diferentes em ambos os lados do cutoff. Isso é alcançado especificando uma interação entre a dummy `threshold` e a idade centrada.
 
 ```{r lm_different_slope_tutorial}
 lm_different_slope <- carpenter_dobkin_2009 %>%
@@ -200,6 +203,7 @@ lm_different_slope <- carpenter_dobkin_2009 %>%
 
 summary(lm_different_slope)
 ```
+
 No `rddtools`, usamos o argumento `slope = "separate"`.
 
 ```{r rddtools_different_slope_tutorial}
@@ -209,6 +213,7 @@ rdd_data(y = carpenter_dobkin_2009$all,
   rdd_reg_lm(slope = "separate") %>% 
   summary()
 ```
+
 O gráfico mostra as diferentes inclinações.
 
 ```{r plot_different_slope_tutorial}
@@ -243,7 +248,6 @@ mutate(threshold = ifelse(agecell >= 21, 1, 0)) %$%
 summary(lm_quadratic)
 ```
 
-
 Em `rdd_reg_lm()`, modificamos o argumento `order = 2`.
 
 ```{r rddtools_quadratic_tutorial}
@@ -253,7 +257,6 @@ rdd_data(y = carpenter_dobkin_2009$all,
   rdd_reg_lm(slope = "separate", order = 2) %>% 
   summary()
 ```
-
 
 À direita do cutoff, este modelo parece se ajustar melhor aos dados!
 
@@ -290,7 +293,6 @@ lm_sensitivity <- carpenter_dobkin_2009 %>%
 
 summary(lm_sensitivity)
 ```
-
 
 ```{r plot_sensitivity_tutorial}
 carpenter_dobkin_2009 %>%
@@ -339,20 +341,15 @@ plotPlacebo(rdd_sens2)
 
 Para estimar um RDD fuzzy é necessário fazer um MQO em 2 estágios para encontrar o LATE:
 
-1- Primeiro estágio: predizer o tratamento usando a variável de cutoff $Z_i$ e a running variable.
-$$
+1- Primeiro estágio: predizer o tratamento usando a variável de cutoff $Z_i$ e a running variable. $$
 D_{i} = \alpha + \beta z_{i} + \gamma x_{i} + \varepsilon_{i}
 $$
 
- - Normalize $x$ para que $\beta$ represente o pulo na probabilidade de tratamento ($x=0$)
- 
-2- Estime o segundo estágio com os valores preditos
-$$
-Y_{i} = \delta + \tau z_{i} + \lambda x_{i} + \epsilon_{i}
-$$
-O coeficiente $\tau$ fornece o LATE
+- Normalize $x$ para que $\beta$ represente o pulo na probabilidade de tratamento ($x=0$)
 
-
+2- Estime o segundo estágio com os valores preditos $$
+Y_{i} = \delta + \tau \hat{D}_{i} + \lambda x_{i} + \epsilon_{i}
+$$ O coeficiente $\tau$ fornece o LATE
 
 # Referências
 

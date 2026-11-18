@@ -6,20 +6,15 @@ categories: [Ensino]
 #image: "image.jpg"
 ---
 
-# Pergunta 
+# Pergunta
 
-
-Forçar os alunos a frequentarem a escola por mais tempo realmente melhora seus resultados educacionais e, mais importante, seus salários futuros? Esse foi o problema de pesquisa em **"Does Compulsory School Attendance Affect Schooling and Earnings?"** de Joshua D. Angrist e Alan B. Krueger. [1]
-
+Forçar os alunos a frequentarem a escola por mais tempo realmente melhora seus resultados educacionais e, mais importante, seus salários futuros? Esse foi o problema de pesquisa em **"Does Compulsory School Attendance Affect Schooling and Earnings?"** de Joshua D. Angrist e Alan B. Krueger. [1](# "Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? The Quarterly Journal of Economics, 106(4), 979–1014.")
 
 ## O Problema: Viés de Variável Omitida
 
 Se simplesmente compararmos os salários de pessoas com mais anos de estudo com os de pessoas com menos anos, enfrentamos um problema clássico: o **viés de variável omitida**.
 
-Pessoas que estudam mais podem ter outras características que também influenciam seus salários:
--   **Habilidade inata:** Indivíduos mais "capazes" podem achar a escola mais fácil e, portanto, estudar por mais tempo.
--   **Ambiente familiar:** Famílias que valorizam a educação podem incentivar mais os estudos e também oferecer outras vantagens.
--   **Paciência e perseverança:** As mesmas qualidades que levam alguém a continuar na escola podem ser valorizadas no mercado de trabalho.
+Pessoas que estudam mais podem ter outras características que também influenciam seus salários: - **Habilidade inata:** Indivíduos mais "capazes" podem achar a escola mais fácil e, portanto, estudar por mais tempo. - **Ambiente familiar:** Famílias que valorizam a educação podem incentivar mais os estudos e também oferecer outras vantagens. - **Paciência e perseverança:** As mesmas qualidades que levam alguém a continuar na escola podem ser valorizadas no mercado de trabalho.
 
 Esses fatores "não observáveis" tornam difícil isolar o verdadeiro efeito causal de um ano a mais de estudo.
 
@@ -27,16 +22,14 @@ Esses fatores "não observáveis" tornam difícil isolar o verdadeiro efeito cau
 
 Eles encontraram um **experimento natural** que afeta a quantidade de estudo de uma pessoa, mas que não tem (ou não deveria ter) nenhuma relação com sua habilidade ou ambiente familiar.
 
-O instrumento? A **data de nascimento** do indivíduo. [1]
+O instrumento? A **data de nascimento** do indivíduo. [1](# "Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? The Quarterly Journal of Economics, 106(4), 979–1014.")
 
 Como isso funciona? A lógica combina duas regras institucionais:
 
 1.  **Idade de Início Escolar:** A maioria dos distritos escolares exige que a criança complete 6 anos até uma data específica (por exemplo, 1º de janeiro) para poder se matricular. Isso faz com que crianças nascidas no início do ano (janeiro, fevereiro) comecem a escola mais velhas do que as nascidas no final do ano (novembro, dezembro).
 2.  **Idade de Evasão Escolar (Lei de Escolaridade Obrigatória):** A lei permite que um aluno abandone a escola ao completar uma certa idade (geralmente 16 ou 17 anos).
 
-A combinação dessas duas regras cria um efeito interessante:
--   Um aluno nascido em **janeiro** começa a escola mais velho. Ele atingirá a idade legal para evasão (16 anos) com menos tempo de estudo concluído.
--   Um aluno nascido em **dezembro** começa mais novo. Ele atingirá os mesmos 16 anos com alguns meses a mais de estudo obrigatório já cursados.
+A combinação dessas duas regras cria um efeito interessante: - Um aluno nascido em **janeiro** começa a escola mais velho. Ele atingirá a idade legal para evasão (16 anos) com menos tempo de estudo concluído. - Um aluno nascido em **dezembro** começa mais novo. Ele atingirá os mesmos 16 anos com alguns meses a mais de estudo obrigatório já cursados.
 
 Portanto, a data de nascimento, de forma aleatória, "força" alguns alunos a estudarem um pouco mais que outros.
 
@@ -58,10 +51,9 @@ O resultado foi surpreendente: a estimativa do retorno de um ano adicional de es
 
 Isso sugere que, para a população afetada pela lei (aqueles no limiar de abandonar a escola), o viés de variável omitida não é tão grande quanto se pensava. Em outras palavras, o retorno financeiro por serem "forçados" a estudar um pouco mais é real e comparável ao retorno médio observado na população em geral.
 
-
 ## Aprofundando a Análise
 
- vamos nos aprofundar na teoria por trás dessa técnica com o artigo seminal de Guido Imbens e Joshua Angrist: **"Identification and Estimation of Local Average Treatment Effects"**. [1]
+vamos nos aprofundar na teoria por trás dessa técnica com o artigo seminal de Guido Imbens e Joshua Angrist: **"Identification and Estimation of Local Average Treatment Effects"**. [1](# "Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? The Quarterly Journal of Economics, 106(4), 979–1014.")
 
 Este artigo nos dá um framework mais robusto para entender exatamente o que a abordagem de VI está medindo.
 
@@ -73,9 +65,9 @@ Isso nos leva a uma questão crucial: se o instrumento só afeta uma parte da po
 
 Vamos definir:
 
--   **Z**: Nossa variável instrumental. Pode ser `Z=1` (incentivado a receber o tratamento) ou `Z=0` (não incentivado). No nosso exemplo anterior, `Z=1` poderia ser nascer no final do ano.
+- **Z**: Nossa variável instrumental. Pode ser `Z=1` (incentivado a receber o tratamento) ou `Z=0` (não incentivado). No nosso exemplo anterior, `Z=1` poderia ser nascer no final do ano.
 
--   **D**: O tratamento em si. `D=1` (recebeu o tratamento) ou `D=0` (não recebeu). No exemplo, `D=1` seria ter um ano a mais de estudo.
+- **D**: O tratamento em si. `D=1` (recebeu o tratamento) ou `D=0` (não recebeu). No exemplo, `D=1` seria ter um ano a mais de estudo.
 
 Podemos dividir a população em quatro grupos:
 
@@ -87,12 +79,11 @@ Podemos dividir a população em quatro grupos:
 
 4.  **Defiers (Desafiadores):** Fazem o oposto do incentivo. Recebem o tratamento se *não* são incentivados e vice-versa. (Ex: Alunos que estudariam mais se nascessem em janeiro e menos se nascessem em dezembro).
 
-
 Para que a análise de VI funcione, Imbens e Angrist estabelecem uma condição chave chamada **Monotonicidade**: **não existem Defiers**. Essa é uma suposição bastante razoável na maioria dos cenários. É difícil imaginar por que alguém decidiria estudar mais justamente porque a lei o libera mais cedo.
 
-## O que a VI Realmente Estima? 
+## O que a VI Realmente Estima?
 
-A estimativa de Variáveis Instrumentais não mede o efeito do tratamento para toda a população. Em vez disso, ela mede o **Local Average Treatment Effect (LATE)**, que é o efeito médio do tratamento *apenas para os Compliers*. [5]
+A estimativa de Variáveis Instrumentais não mede o efeito do tratamento para toda a população. Em vez disso, ela mede o **Local Average Treatment Effect (LATE)**, que é o efeito médio do tratamento *apenas para os Compliers*. \[5\]
 
 O LATE é o efeito do tratamento sobre o grupo de indivíduos que foram induzidos a receber o tratamento pela mudança no instrumento. No nosso exemplo, é o retorno de um ano a mais de estudo especificamente para os alunos que só permaneceram na escola por causa da combinação de sua data de nascimento e da lei.
 
@@ -118,8 +109,7 @@ $$
 Efeito_{Z \to D} = E[D | Z=1] - E[D | Z=0]
 $$
 
-Em português: "Qual a diferença na proporção de pessoas que receberam o tratamento (`D`) entre o grupo incentivado (`Z=1`) e o não incentivado (`Z=0`)?"
-Este denominador representa, na verdade, a proporção de **Compliers** na população.
+Em português: "Qual a diferença na proporção de pessoas que receberam o tratamento (`D`) entre o grupo incentivado (`Z=1`) e o não incentivado (`Z=0`)?" Este denominador representa, na verdade, a proporção de **Compliers** na população.
 
 #### Estimator IV
 
@@ -135,16 +125,14 @@ Essa fórmula nos diz que o LATE é o efeito "Intention-to-Treat" reescalonado p
 
 O conceito de LATE é uma das contribuições mais importantes da econometria moderna. Ele nos força a ser muito precisos sobre o que estamos medindo.
 
--   O **ITT** nos dá o efeito de uma *política de incentivo* na população como um todo.
--   O **LATE** nos dá o efeito do *tratamento em si*, mas apenas para o subgrupo que responde a esse incentivo.
+- O **ITT** nos dá o efeito de uma *política de incentivo* na população como um todo.
+- O **LATE** nos dá o efeito do *tratamento em si*, mas apenas para o subgrupo que responde a esse incentivo.
 
 Compreender essa distinção é fundamental para interpretar corretamente os resultados de estudos que usam variáveis instrumentais e para desenhar políticas públicas mais eficazes.
 
-
-
 ## Outro exemplo
 
-Vamos analisar um dos exemplos mais famosos de um experimento natural: o sorteio militar da Guerra do Vietnã, detalhado no artigo de Joshua Angrist de 1990, **"Lifetime Earnings and the Vietnam Era Draft Lottery"**. [3]
+Vamos analisar um dos exemplos mais famosos de um experimento natural: o sorteio militar da Guerra do Vietnã, detalhado no artigo de Joshua Angrist de 1990, **"Lifetime Earnings and the Vietnam Era Draft Lottery"**. [3](# "Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. The American Economic Review, 80(3), 313–336.")
 
 A pergunta de pesquisa é: servir no exército durante a Guerra do Vietnã afetou os rendimentos futuros dos veteranos?
 
@@ -154,7 +142,7 @@ Assim como no problema da educação, uma comparação simples entre os salário
 
 ## O Instrumento Perfeito: A Loteria do Alistamento
 
-Para contornar esse problema, Angrist utiliza um instrumento brilhante: o **sorteio do alistamento militar (draft lottery)**. [3]
+Para contornar esse problema, Angrist utiliza um instrumento brilhante: o **sorteio do alistamento militar (draft lottery)**. [3](# "Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. The American Economic Review, 80(3), 313–336.")
 
 Durante a era do Vietnã, o governo dos EUA realizou um sorteio para determinar a ordem de convocação. Cada data de nascimento do ano recebia um número aleatório de 1 a 365 (o "Random Sequence Number" ou RSN). O governo então definia um teto (por exemplo, 125). Homens cujos aniversários correspondiam a números abaixo do teto eram **elegíveis para convocação**, enquanto aqueles com números acima estavam essencialmente isentos.
 
@@ -162,11 +150,11 @@ A aleatoriedade do sorteio é a chave: ter um número baixo ou alto não tem nen
 
 Temos aqui a configuração perfeita para uma análise de VI:
 
--   **Instrumento (Z):** Ser elegível para o alistamento (ter um número de sorteio abaixo do teto). `Z=1` se elegível, `Z=0` se não.
+- **Instrumento (Z):** Ser elegível para o alistamento (ter um número de sorteio abaixo do teto). `Z=1` se elegível, `Z=0` se não.
 
--   **Tratamento (D):** Servir no exército (ter status de veterano). `D=1` se veterano, `D=0` se não.
+- **Tratamento (D):** Servir no exército (ter status de veterano). `D=1` se veterano, `D=0` se não.
 
--   **Resultado (Y):** Rendimentos (salários) anos após o período de serviço.
+- **Resultado (Y):** Rendimentos (salários) anos após o período de serviço.
 
 ## Aplicando os Conceitos de ITT e LATE
 
@@ -192,7 +180,7 @@ $$
 ITT = E[\text{Salário} | \text{Elegível}] - E[\text{Salário} | \text{Não Elegível}]
 $$
 
-Os resultados, como vistos na Tabela 1 do artigo, mostram que os homens brancos que foram *elegíveis* para o alistamento (o grupo "incentivado") ganhavam consistentemente menos, anos depois, do que aqueles que não eram elegíveis. [7] Este é o **efeito da intenção de tratar**: a simples elegibilidade para a convocação já teve um impacto negativo nos rendimentos futuros.
+Os resultados, como vistos na Tabela 1 do artigo, mostram que os homens brancos que foram *elegíveis* para o alistamento (o grupo "incentivado") ganhavam consistentemente menos, anos depois, do que aqueles que não eram elegíveis. \[7\] Este é o **efeito da intenção de tratar**: a simples elegibilidade para a convocação já teve um impacto negativo nos rendimentos futuros.
 
 ### Calculando o LATE
 
@@ -202,8 +190,8 @@ $$
 LATE = \frac{E[Y | Z=1] - E[Y | Z=0]}{E[D | Z=1] - E[D | Z=0]}
 $$
 
--   O **numerador** é o ITT que acabamos de discutir (a diferença nos salários).
--   O **denominador** é a diferença na probabilidade de servir no exército entre os elegíveis e os não elegíveis. Esse número é a proporção de **Compliers**. A Tabela 2 do artigo mostra que ser elegível aumentava a probabilidade de servir em cerca de 10 a 16 pontos percentuais. 
+- O **numerador** é o ITT que acabamos de discutir (a diferença nos salários).
+- O **denominador** é a diferença na probabilidade de servir no exército entre os elegíveis e os não elegíveis. Esse número é a proporção de **Compliers**. A Tabela 2 do artigo mostra que ser elegível aumentava a probabilidade de servir em cerca de 10 a 16 pontos percentuais.
 
 Ao dividir a diferença de salários pela diferença na probabilidade de servir, Angrist isola o efeito do serviço militar *apenas para os Compliers* — os homens que foram efetivamente induzidos ao serviço pelo sorteio.
 
@@ -213,19 +201,18 @@ O resultado principal do estudo é que, para este grupo, o serviço militar dura
 
 O estudo do sorteio do Vietnã é um exemplo poderoso e claro de como os conceitos de ITT e LATE funcionam na prática.
 
--   Ele demonstra como um evento aleatório (a loteria) pode ser usado para responder a uma pergunta causal complexa.
+- Ele demonstra como um evento aleatório (a loteria) pode ser usado para responder a uma pergunta causal complexa.
 
--   Ele mostra que o efeito de uma política (o alistamento) não é homogêneo e que a VI nos permite identificar o efeito para um grupo específico e relevante: aqueles cuja decisão foi alterada pelo instrumento.
+- Ele mostra que o efeito de uma política (o alistamento) não é homogêneo e que a VI nos permite identificar o efeito para um grupo específico e relevante: aqueles cuja decisão foi alterada pelo instrumento.
 
--   O resultado (um grande impacto negativo nos rendimentos) teve implicações políticas significativas para o debate sobre a compensação a veteranos.
+- O resultado (um grande impacto negativo nos rendimentos) teve implicações políticas significativas para o debate sobre a compensação a veteranos.
 
 Este artigo solidificou a importância da busca por experimentos naturais e da interpretação cuidadosa do que as estimativas de VI realmente significam.
 
+## Referências
 
-### Referências
+[1] "Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? The Quarterly Journal of Economics, 106(4), 979–1014."
 
-[1]: # "Angrist, J. D., & Krueger, A. B. (1991). Does Compulsory School Attendance Affect Schooling and Earnings? The Quarterly Journal of Economics, 106(4), 979–1014."
+[2] "Imbens, G. W., & Angrist, J. D. (1994). Identification and Estimation of Local Average Treatment Effects. Econometrica, 62(2), 467–475."
 
-[2]: #  "Imbens, G. W., & Angrist, J. D. (1994). Identification and Estimation of Local Average Treatment Effects. Econometrica, 62(2), 467–475."
-
-[3]: # "Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. The American Economic Review, 80(3), 313–336."
+[3] "Angrist, J. D. (1990). Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records. The American Economic Review, 80(3), 313–336."
